@@ -5,8 +5,8 @@ Spring semester 2022, 19.09.2022 – 24.03.2023
 The research paper can be found here: TODO
 
 ## Project experts/customers
-• Prof. Dierk König
-• Fabian Affolter
+• Prof. Dierk König<br>
+• Fabian Affolter<br>
 
 ## Project team
 • Florian Schnidrig, Student iCompetence
