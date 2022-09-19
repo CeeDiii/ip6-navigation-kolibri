@@ -1,6 +1,6 @@
 # IP6: Research Projector for Advanced Navigation Support Kolibri
-Bachelor Thesis project - University of Applied Sciences Northwestern Switzerland
-Spring semester 2022, 19.09.2022 – 24.03.2023
+Bachelor Thesis project - University of Applied Sciences Northwestern Switzerland<br>
+Spring semester 2022, 19.09.2022 – 24.03.2023<br>
 
 The research paper can be found here: TODO
 
