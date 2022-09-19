@@ -9,8 +9,8 @@ The research paper can be found here: TODO
 • Fabian Affolter<br>
 
 ## Project team
-• Florian Schnidrig, Student iCompetence
-• Cedric Altermatt, Student Computer Science
+• Florian Schnidrig, Student iCompetence<br>
+• Cedric Altermatt, Student Computer Science<br>
 
 ## Project Idea
 In the predecessor project the students have developed a solution for basic navigation in Kolibri. This solution should be enriched and further-developed. TODO
