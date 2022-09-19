@@ -12,6 +12,8 @@ export { NavigationController }
  * @property { (newNavPoint:String, listener:NavigationListenerType) => Boolean } addNavigationPoint - Delegates function to the model.
  *              Takes a string with the identifier for a new Navigation Point. Add the Navigation Point to the model, if it does not already exist. 
  *              Return true, if the operation was successful.
+ * @property { (newLocation:String) => void } setLocation - Delegates function to the model
+ *              Set the currently selected location of the navigation.
  * @property { () => String } getLocation - Delegates function to the model
  *              Get the currently selected location of the navigation.
  * @property { (navPoint:String, newIndex:Number) => void } setOrderOfNavigationPoint - Delegates function to the model
@@ -79,6 +81,7 @@ const NavigationController = model => {
             addModelChangeListener(callback);
             return model.addNavigationPoint(newNavPoint);
         },
+        setLocation: newLocation => model.setLocation(newLocation),
         getLocation: () => model.getLocation(),
         setOrderOfNavigationPoint: (navPoint, newIndex) =>  model.setOrderOfNavigationPoint(navPoint, newIndex),
         getNavigationPoints: () => model.getNavigationPoints(),
