@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'arial', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    perspective: none;
+}
+
+.navigation {
+    position: fixed;
+    inset: 20px;
+    background: #dda9fe;
+    width: 80px;
+    border-left: 10px solid #dda9fe;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 15px 15px 25px rgba(0, 0, 0, 0.05);
+    transition: 0.5s;
+}
+
+.navigation.open {
+    width: 300px;
+    transition: 0.5s;
+}
+
+.toggle {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    background: #eeeeee;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation ul {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.navigation ul li{
+    position: relative;
+    list-style: none;
+    width: 100%;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+
+.navigation ul li:hover {
+    background: #eeeeee;
+}
+
+.navigation ul li.active {
+    background: #be58fd;
+}
+
+.navigation ul li a{
+    position: relative;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: black;
+}
+
+.navigation .toggle img.icon {
+    content: url("icons/menu.svg");
+}
+
+.navigation.open .toggle img.icon {
+    content: url("icons/close.svg");
+}
+
+.list#home img.icon{
+    content: url("icons/home.svg");
+}
+
+.list#person img.icon{
+    content: url("icons/person.svg");
+}
+
+.list#car img.icon{
+    content: url("icons/car.svg");
+}
+
+.list#demo img.icon{
+    content: url("icons/demo.svg");
+}
+
+.navigation span.icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.navigation span.text {
+    position: relative;
+    display: block;
+    height: 60px;
+    padding: 0 10px;
+    line-height: 60px;
+}
+
+.navigation img.icon {
+    height: 24px;
+    width: 24px;
+}

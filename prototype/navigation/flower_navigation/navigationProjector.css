@@ -1,0 +1,110 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    perspective: none;
+}
+
+nav {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 80px;
+    height: 375px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav .navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-45deg);
+}
+
+nav .navigation .toggle{
+    height: 60px;
+    width: 60px;
+    background: #fcc647;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    z-index: 100;
+    cursor: pointer;
+    transform: rotate(-225deg);
+    transition: all 0.6s ease;
+}
+
+nav .navigation span {
+    position: absolute;
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+nav .navigation span a {
+    height: 130px;
+    width: 60px;
+    background: #dda9fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    transform: rotate(0deg);
+}
+
+nav .navigation span a:hover {
+    background: #d696ff;
+}
+
+nav .navigation span a.active {
+    background: #be58fd;
+}
+
+nav.open .toggle {
+    transform: rotate(0deg);
+}
+
+nav.open .navigation span {
+    transform: rotate(calc(var(--i) * (217deg/4))) translateY(120px);
+    opacity: 1;
+}
+
+nav .navigation span a img {
+    transform: rotate(calc(var(--i) * (217deg/ -4) + 45deg));
+    opacity: 0.8;
+    transition: 0.2s;
+}
+
+.toggle img.icon {
+    content:  url("icons/plus.svg");
+}
+
+#home img.icon {
+    content:  url("icons/home.svg");
+}
+
+#person img.icon {
+    content:  url("icons/person.svg");
+}
+
+#car img.icon {
+    content:  url("icons/car.svg");
+}
+
+#demo img.icon {
+    content:  url("icons/demo.svg");
+}
+
+img.icon {
+    height: 25px;
+    width: 25px;
+}
