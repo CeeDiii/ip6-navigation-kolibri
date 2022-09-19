@@ -1,12 +1,7 @@
 import { EventType }                                        from "./navigation/EventType.js";
 import { NavigationModel }                                  from "./navigation/navigationModel.js";
 import { NavigationController }                             from "./navigation/navigationController.js";
-// import { NavigationProjector }                              from "./navigation/navigationProjector.js";
-// --- Example Navigations ---
-// import { NavigationProjector }                              from "./navigation/basic_navigation/navigationProjector.js";
-// import { NavigationProjector }                              from "./navigation/dashboard_navigation/navigationProjector.js";
 import { NavigationProjector }                              from "./navigation/bubble_state_navigation/navigationProjector.js";
-// import { NavigationProjector }                              from "./navigation/flower_navigation/navigationProjector.js";
 import { CarListController, CarSelectionController }        from "./pages/car/carController.js";
 import { Car, carSelectionMold }                            from './pages/car/car.js';
 import { PersonListController, PersonSelectionController }  from "./pages/person/personController.js";
