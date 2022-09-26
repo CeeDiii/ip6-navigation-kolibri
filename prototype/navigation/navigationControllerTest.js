@@ -45,7 +45,7 @@ ncSuite.add('setOrderOfNavigationPoint', assert => {
     controller.setOrderOfNavigationPoint("2", 1);
     controller.setOrderOfNavigationPoint("3", 0);
     assert.is(controller.getNavigationPoints().length, 4);
-    for (let i = 0; i < controller.getNavigationPoints(); i++) {
+    for (let i = 0; i < controller.getNavigationPoints().length; i++) {
         assert.is(controller.getNavigationPoints()[i], (3 - i).toString());
     }
 });
