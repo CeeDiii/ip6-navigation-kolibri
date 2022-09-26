@@ -4,6 +4,13 @@
  * @interface AnimalVirtual
  */
 /**
+ * Let the animal eat.
+ *
+ * @name AnimalVirtual#eat
+ * @return { Number } hungerLevel
+ *
+ */
+/**
  * Move the animal.
  *
  * @function
@@ -16,13 +23,6 @@
  * @function
  * @name AnimalVirtual#talk
  * @param { String } sound
- *
- */
-/**
- * Let the animal eat.
- *
- * @name AnimalVirtual#eat
- * @return { Number } hungerLevel
  *
  */
 
