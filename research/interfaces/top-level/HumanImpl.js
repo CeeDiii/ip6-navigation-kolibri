@@ -3,7 +3,7 @@ export { HumanImpl }
 /**
  * A human.
  * @constructor
- * @implements { Animal }
+ * @implements { AnimalTopLevel }
  */
 function HumanImpl(name, age, gender) {
     this.name = name;
@@ -11,9 +11,11 @@ function HumanImpl(name, age, gender) {
     this.gender = gender;
 }
 
-HumanImpl.prototype.eat = () => console.log("Dining in a fine restaurant");
+HumanImpl.prototype.eat = () => {
+    console.log("Dining in a fine restaurant");
+    return 1;
+};
 
-// Even though the interface function takes no parameter, we can implement the function with it
 HumanImpl.prototype.move = vehicle => {
     if (vehicle === 'E-Scooter') {
         console.log("Cruising like a dystopian.");
@@ -24,8 +26,7 @@ HumanImpl.prototype.move = vehicle => {
     }
 };
 
-// Even though the interface defines an input parameter, the implementation takes none
-HumanImpl.prototype.talk = () => console.log("Casual chatting");
+HumanImpl.prototype.talk = sound => console.log("Casual chatting: " + sound);
 
 HumanImpl.prototype.introduce = function() {
     console.log("I am " + this.name + " and I am " + this.age + " years old. My gender is " + this.gender)
