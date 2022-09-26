@@ -2,7 +2,6 @@ export { HumanImpl }
 
 /**
  * A human.
- * @constructor
  * @implements { AnimalTopLevel }
  */
 const HumanImpl = class {

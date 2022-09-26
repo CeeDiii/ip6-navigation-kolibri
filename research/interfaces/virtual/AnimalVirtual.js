@@ -6,6 +6,7 @@
 /**
  * Let the animal eat.
  *
+ * @function
  * @name AnimalVirtual#eat
  * @return { Number } hungerLevel
  *
