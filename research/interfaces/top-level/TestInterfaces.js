@@ -8,3 +8,6 @@ animal.talk("Bla bla");
 const human = new HumanImpl("Luigi", 42, "male");
 human.introduce();
 human.move("Bike");
+
+// try and instantiate the interface
+const animalTopLevel = new AnimalTopLevel();

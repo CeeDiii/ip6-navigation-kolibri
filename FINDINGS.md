@@ -30,6 +30,8 @@
 * documentation is forced
 * flexible
 * declared parameters need to be implemented, otherwise an error is thrown
+* return type is checked
+* interfaces cannot be instantiated
 #### Disadvantages
 * badly documented by jsdoc
 * adaption to the interface are allowed, even though the linter marks it as a problem

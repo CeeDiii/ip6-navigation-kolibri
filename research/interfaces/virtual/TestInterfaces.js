@@ -8,3 +8,7 @@ animal.talk("Arrooooo");
 const human = new WolfImpl(42, "male");
 human.introduce();
 human.move("Bike");
+
+// try and instantiate the interface
+const virtualAnimal = new AnimalVirtual();
+virtualAnimal.eat();
