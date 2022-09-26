@@ -3,11 +3,11 @@ import { WolfImpl } from "./WolfImpl.js";
 /** @type { AnimalVirtual } */
 const animal = new WolfImpl("Mario", 42, "male");
 animal.eat();
-animal.move("Car");
+animal.move(35);
 animal.talk("Arrooooo");
-const human = new WolfImpl(42, "male");
-human.introduce();
-human.move("Bike");
+const wolf = new WolfImpl(42, "male");
+wolf.introduce();
+wolf.move(20);
 
 // try and instantiate the interface
 const virtualAnimal = new AnimalVirtual();
