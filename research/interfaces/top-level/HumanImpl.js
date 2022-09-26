@@ -17,7 +17,7 @@ const HumanImpl = class {
         return 1;
     };
 
-    move = vehicle => {
+    move = vehicle => { // the parameter is not declared in the interface but still allowed
         if (vehicle === 'E-Scooter') {
             console.log("Cruising like a dystopian.");
         } else if (vehicle === 'Bike') {
@@ -25,6 +25,7 @@ const HumanImpl = class {
         } else if (vehicle === 'Car') {
             console.log("You better move with an electric car");
         }
+        return { key: 42} // the return value is not declared but still allowed
     };
 
     talk = sound => console.log("Casual chatting: " + sound);

@@ -16,8 +16,10 @@ const WolfImpl = class {
         return 1;
     };
 
-
-    move = () => console.log("Sneaking through the forest");
+    move = speed => { // the parameter is not declared in the interface but still allowed
+        console.log("Sneaking through the forest at this speed: " + speed);
+        return { key: 42 } // the return value is not declared but still allowed
+    }
 
     talk = sound  => console.log("Howling across the mountains: " + sound);
 
