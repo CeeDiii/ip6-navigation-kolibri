@@ -47,3 +47,4 @@ Class expression: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refere
 JSDoc interface: https://jsdoc.app/tags-interface.html, 24.09.2022<br>
 JSDoc interface examples: https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#interface-record, 24.09.2022<br>
 JSDoc interface alternative implementation (ref to book): https://gate4.com/blog/interfaces-mit-javascript/, 24.09.2022<br>
+Pro JavaScript Design Patterns: Harmes, R. & Diaz, D. (2008). Pro JavaScript Design Patterns. Apress., p.11- p.20
