@@ -15,13 +15,21 @@
 * no obligation to correctly implement the interface 
 * proposal on how to properly use interfaces from Pro Javascript Design Patterns book
 * @implements can only be used on a @constructor function
+#### top-level interface
+* officially throws an error when being called without implementation but does not work
+* has to be defined with jsdoc comments, so there is no clear need to declare the function signature
+#### virtual interface
+* clean and easy
+* clear abstraction from declaration and implementation
+* less unexpected behaviour when implementing it
 #### Advantages 
 * easy to set up
 * documentation is forced
 * flexible
 #### Disadvantages
-* almost no restrictions from OOP language interfaces apply (e.g. parameter definition in interface, return type, etc.)
-* very high adaptation is allowed
+* badly documented by jsdoc
+* adaption to the interface are allowed, even though the linter marks it as a problem
+* 
 
 ## Sources
 Object Prototypes: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes, 24.09.2022<br> 
