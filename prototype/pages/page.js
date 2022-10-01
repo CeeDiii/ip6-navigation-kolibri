@@ -32,6 +32,7 @@ const Page = pageProjector => {
         initialize: () => {
             content = pageProjector.projectPage()
         }
+        //TODO add addCss and removeCss functions
     }
 };
 
