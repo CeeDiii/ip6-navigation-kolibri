@@ -34,7 +34,7 @@ export { Page }
 const Page = pageProjector => {
     let initialized = false;
     let content = document.createElement('div');
-    content.innerText = "Empty page. Please initialize";
+    content.innerText = "Empty page. Please initialize.";
 
     return {
         initialize: () => {
