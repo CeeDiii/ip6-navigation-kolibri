@@ -1,18 +1,11 @@
 export { Page }
 
 /**
- * PageProjectorType is a projector for page content.
- *
- * @typedef PageProjectorType
- * @property { () => HTMLDivElement } projectPage
- */
-
-/**
  * IPage is an interface. TODO complete jsdoc
  *
  * @typedef IPage<T>
  * @template T
- * @property { () => void }                               activate
+ * @property { () => HTMLDivElement }                     activate
  * @property { (currentContent: HTMLDivElement) => void } passivate
  * @property { () => void }                               initialize
  *
@@ -21,14 +14,16 @@ export { Page }
 /**
  * Constructor for an IPage. TODO complete jsdoc
  *
- * @param { PageProjectorType } pageProjector
+ * @param { IPageProjector } pageProjector
  * @returns  IPage<T>
  * @constructor
  * @example
  * TODO add example
  */
 const Page = pageProjector => {
-    let content = "";
+    let content = document.createElement('div');
+    content.innerText = "Empty page. Please initialize";
+
     return {
         activate: () => content,
         passivate: currentContent => {
