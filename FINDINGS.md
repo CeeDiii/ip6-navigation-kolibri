@@ -66,6 +66,9 @@
 ## JSDoc
 * JSDoc supports Typescript annotations such as @param, @returns, @callback etc.
 * Generics do not exist in plain Javascript
+## Lifecycle
+### Styles
+* stylesheets can be toggled or replaced
 ## Sources
 Object Prototypes: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes, 24.09.2022<br> 
 Object Constructor: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor?retiredLocale=de, 24.09.2022<br>
@@ -76,3 +79,4 @@ JSDoc interface examples: https://github.com/google/closure-compiler/wiki/Annota
 JSDoc interface alternative implementation (ref to book): https://gate4.com/blog/interfaces-mit-javascript/, 24.09.2022<br>
 Pro JavaScript Design Patterns: Harmes, R. & Diaz, D. (2008). Pro JavaScript Design Patterns. Apress., p.11- p.20<br>
 JSDoc Typescript annotations: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html, 01.10.2022<br>
+Toggle or replace stylesheets: https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-apply-the-new-style-to-the-page, 01.10.2022<br>
