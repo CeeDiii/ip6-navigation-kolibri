@@ -83,7 +83,6 @@ const NavigationProjector = controller => {
      */
     const changeSelectedNavigationPoint = newLocation => {
         if (!!newLocation) {
-            console.log(newLocation);
             const newLocationTag = document.getElementById(newLocation);
             const innerList = document.querySelectorAll('.list');
             innerList.forEach(item =>
