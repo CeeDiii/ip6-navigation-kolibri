@@ -39,7 +39,6 @@ const PageModel = (pageName, pageContent) => {
         },
         passivate: latestContentState => {
             singleAttr.getObs(VALUE).setValue(latestContentState);
-            singleAttr.getObs(ACTIVE).setValue(false);
         },
         singleAttr,
         //TODO add addCss and removeCss functions

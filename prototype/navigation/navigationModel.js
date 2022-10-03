@@ -1,4 +1,4 @@
-import { Attribute, VALUE } from "../kolibri/presentationModel.js";
+import { Attribute, HASH } from "../kolibri/presentationModel.js";
 import { NavigationEvent } from "./NavigationEvent.js";
 
 export { NavigationModel }
@@ -13,36 +13,29 @@ export { NavigationModel }
  * Model containing the application navigation-data
  *
  * @typedef NavigationModelType
- * @template T
- * @property { (newNavPoint:IPage<T>) => Boolean } addNavigationPoint
+ * @property { (newNavPoint:PageModelType) => Boolean } addNavigationPoint
+ * @property { AttributeType } singleAttr
  */
 
 /** 
  * @constructor
- * @template T
- * @param   { !IPage<T> } initialHomePage - the string that represents the identifier of the homepage, acts as a fallback, if no hash is provided with the page call
  * @return  { NavigationModelType }
  * @example
  * const navigationModel = NavigationModel("home");
  */
-const NavigationModel = initialHomePage => {
-    const navigationPoints    = {}; // TODO
-    const location            = Attribute(initialHomePage); // TODO
 
-    const getObsValue = obs => obs.getObs(VALUE).getValue();
+const NavigationModel = () => {
+    const singleAttr = Attribute({});
 
     const addNavigationPoint = newNavPoint => { // TODO
-        const navPointExists = navigationPoints[newNavPoint.getName().getObs(VALUE).getValue()];
+        const navPointExists = singleAttr.valueOf()[newNavPoint.getObs(HASH).getValue()];
         if(navPointExists !== undefined) return false;
-        const navPointAttr = Attribute(newNavPoint);
-        getObsValue(navPointAttr).getName().setConverter(attr => attr.toString());
-        navigationPoints[newNavPoint.getName().getObs(VALUE).getValue()] = navPointAttr;
+        singleAttr.valueOf()[newNavPoint.getObs(HASH).getValue()] = Attribute(newNavPoint);
         return true;
     };
 
-    addNavigationPoint(initialHomePage);
-
     return {
         addNavigationPoint,
+        singleAttr,
     }
 };
