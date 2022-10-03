@@ -1,4 +1,4 @@
-import {Attribute, VALUE} from "../kolibri/presentationModel";
+import { Attribute, VALUE } from "../kolibri/presentationModel.js";
 
 export { Page }
 
