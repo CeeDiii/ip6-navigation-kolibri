@@ -1,5 +1,7 @@
 export { homePage }
 
+// TODO Make it possible to create a page as HTML file
+
 const homePage = () => {
 
     const content = document.createElement('div');
