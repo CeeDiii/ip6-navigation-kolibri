@@ -10,14 +10,23 @@ export { NavigationProjector }
 const NavigationProjector = controller => {
     let pageContent = document.createElement('div');
     pageContent.innerHTML = 'Yay';
+
+    const link1 = document.createElement('a');
+    link1.setAttribute('href','#home');
+    link1.innerHTML = "home";
+    const link2 = document.createElement('a');
+    link2.setAttribute('href','#test');
+    link2.innerHTML = "test";
+
     controller.onLocationChanged((newLocation, oldLocation) => {
-        if(oldLocation !== null) {
-            oldLocation.passivate(pageContent);
+        if(oldLocation !== null && oldLocation !== undefined) {
+            oldLocation.valueOf().passivate(pageContent);
         }
-        if(newLocation !== null) {
-            pageContent = newLocation.activate();
+        if(newLocation !== null  && newLocation !== undefined) {
+            pageContent = newLocation.valueOf().activate();
         }
         document.getElementById('content').innerHTML = '';
+        document.getElementById('content').append(link1, link2);
         document.getElementById('content').appendChild(pageContent);
     });
 };

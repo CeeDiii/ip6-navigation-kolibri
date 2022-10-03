@@ -10,15 +10,16 @@ const homePageModel = PageModel('home', homePage);
 const homePageController = PageController(homePageModel);
 const homePageProjector = PageProjector(homePageController);
 
-const subPageModel = PageModel('sub', homePage);
-const subPageController = PageController(subPageModel);
-const subPageProjector = PageProjector(subPageController);
+const testPageModel = PageModel('test', homePage);
+const testPageController = PageController(testPageModel);
+const testPageProjector = PageProjector(testPageController);
 
 const navigationModel = NavigationModel();
 const navigationController = NavigationController(navigationModel);
 const navigationProjector = NavigationProjector(navigationController);
 
-
+navigationModel.addNavigationPoint(homePageModel);
+navigationModel.addNavigationPoint(testPageModel);
 /*
 const homePageProj = PageProjector(homePage);
 const homePageController =

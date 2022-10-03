@@ -11,7 +11,7 @@ export { NavigationController }
  * @property { (newNavPoint:PageModelType) => void } addNavigationPoint - Delegates function to the model.
  *              Takes a string with the identifier for a new Navigation Point. Add the Navigation Point to the model, if it does not already exist. 
  *              Return true, if the operation was successful.
- * @property { (callback: onValueChangeCallback<PageModelType>)  => void } onLocationChanged -
+ * @property { (callback: onValueChangeCallback<AttributeType<PageModelType>>)  => void } onLocationChanged -
  */
 
 /**

@@ -34,7 +34,6 @@ const PageModel = (pageName, pageContent) => {
 
     return {
         activate: () => {
-            singleAttr.getObs(ACTIVE).setValue(true);
             return singleAttr.getObs(VALUE).getValue();
         },
         passivate: latestContentState => {

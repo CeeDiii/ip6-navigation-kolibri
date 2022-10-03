@@ -28,9 +28,9 @@ const NavigationModel = () => {
     const singleAttr = Attribute({});
 
     const addNavigationPoint = newNavPoint => { // TODO
-        const navPointExists = singleAttr.valueOf()[newNavPoint.getObs(HASH).getValue()];
+        const navPointExists = singleAttr.valueOf()[newNavPoint.singleAttr.getObs(HASH).getValue()];
         if(navPointExists !== undefined) return false;
-        singleAttr.valueOf()[newNavPoint.getObs(HASH).getValue()] = Attribute(newNavPoint);
+        singleAttr.valueOf()[newNavPoint.singleAttr.getObs(HASH).getValue()] = newNavPoint;
         return true;
     };
 
