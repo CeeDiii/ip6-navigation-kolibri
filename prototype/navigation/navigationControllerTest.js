@@ -2,7 +2,7 @@ import { TestSuite }            from "../kolibri/util/test.js";
 import { NavigationController } from "./navigationController.js";
 import { NavigationModel }      from "./navigationModel.js";
 import { PageProjector }        from "../pages/pageProjector.js";
-import { Page }                 from "../pages/page.js";
+import { PageModel }                 from "../pages/pageModel.js";
 import { VALUE }                from "../kolibri/presentationModel.js";
 
 
@@ -16,7 +16,7 @@ const getActivePageName = controller => {
 
 ncSuite.add('getLocation-home' , assert => {
     const homePageProj = PageProjector(undefined);
-    const homePagePage = Page('home', homePageProj);
+    const homePagePage = PageModel('home', homePageProj);
 
     const model      = NavigationModel(homePagePage);
     const controller = NavigationController(model);
@@ -26,8 +26,8 @@ ncSuite.add('getLocation-home' , assert => {
 
 ncSuite.add('setLocation-test', assert => {
     const homePageProj = PageProjector(undefined);
-    const homePagePage = Page('home', homePageProj);
-    const testPage     = Page('test', homePageProj);
+    const homePagePage = PageModel('home', homePageProj);
+    const testPage     = PageModel('test', homePageProj);
 
     const model      = NavigationModel(homePagePage);
     const controller = NavigationController(model);

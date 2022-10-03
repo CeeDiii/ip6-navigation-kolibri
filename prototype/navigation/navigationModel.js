@@ -15,8 +15,6 @@ export { NavigationModel }
  * @typedef NavigationModelType
  * @template T
  * @property { (newNavPoint:IPage<T>) => Boolean } addNavigationPoint
- * @property { () => AttributeType<IPage<T>>} getLocation
- * @property { (newLocation:String) => void } setLocation
  */
 
 /** 
@@ -32,7 +30,6 @@ const NavigationModel = initialHomePage => {
     const location            = Attribute(initialHomePage); // TODO
 
     const getObsValue = obs => obs.getObs(VALUE).getValue();
-    //const compareNavPoints = (first, second) => getObsValue(first.getName()).toLowerCase() === getObsValue(second.getName()).toLowerCase();
 
     const addNavigationPoint = newNavPoint => { // TODO
         const navPointExists = navigationPoints[newNavPoint.getName().getObs(VALUE).getValue()];
@@ -47,7 +44,5 @@ const NavigationModel = initialHomePage => {
 
     return {
         addNavigationPoint,
-        getLocation: () => location,
-        setLocation: newLocation => location.getObs(VALUE).setValue(navigationPoints[newLocation].getObs(VALUE).getValue()),
     }
 };

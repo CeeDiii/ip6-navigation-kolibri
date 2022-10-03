@@ -1,4 +1,4 @@
-import { VALUE } from "../kolibri/presentationModel.js";
+import { ACTIVE, VALUE } from "../kolibri/presentationModel.js";
 
 export { NavigationController }
 
@@ -12,10 +12,6 @@ export { NavigationController }
  * @property { (newNavPoint:IPage<T>) => void } addNavigationPoint - Delegates function to the model.
  *              Takes a string with the identifier for a new Navigation Point. Add the Navigation Point to the model, if it does not already exist. 
  *              Return true, if the operation was successful.
- * @property { (newLocation:String) => void } setLocation - Delegates function to the model
- *              Set the currently selected location of the navigation.
- * @property { () => Attribute<Page<T>> } getLocation - Delegates function to the model
- *              Get the currently selected location of the navigation.
  */
 
 /**
@@ -36,7 +32,6 @@ const NavigationController = model => {
 
     return {
         addNavigationPoint: newNavPoint => model.addNavigationPoint(newNavPoint),
-        setLocation: newLocation => model.setLocation(newLocation),
-        getLocation: () => model.getLocation(),
+        onActiveChanged: model.getLocation().getObs(ACTIVE).onChange,
     }
 };

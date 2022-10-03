@@ -1,5 +1,5 @@
 import { TestSuite }            from "../kolibri/util/test.js";
-import { Page }                 from "./page.js";
+import { PageModel }                 from "./pageModel.js";
 import { PageProjector }        from "./pageProjector.js";
 
 const ncSuite = TestSuite("page");
@@ -11,7 +11,7 @@ ncSuite.add('initialize-activate-test' , assert => {
         return content;
     };
     const pageProjector = PageProjector(projectPageFunc);
-    const page = Page(pageProjector);
+    const page = PageModel(pageProjector);
     page.initialize();
     const content = page.activate();
     assert.is(content.innerText, 'Hello World');
@@ -20,7 +20,7 @@ ncSuite.add('initialize-activate-test' , assert => {
 ncSuite.add('uninitialized-activate-test' , assert => {
     const projectPageFunc = () => { /* do nothing */ };
         const pageProjector = PageProjector(projectPageFunc);
-        const page = Page(pageProjector);
+        const page = PageModel(pageProjector);
         const content = page.activate();
         assert.is(content.innerText, 'Empty page. Please initialize.');
 });
@@ -32,12 +32,12 @@ ncSuite.add('already-initialized-test' , assert => {
         return content;
     };
     const pageProjector = PageProjector(projectPageFunc);
-    const page = Page(pageProjector);
+    const page = PageModel(pageProjector);
     page.initialize();
     try {
         page.initialize();
     } catch (e) {
-        assert.is(e, 'Page has already been initialized.');
+        assert.is(e, 'PageModel has already been initialized.');
     }
 });
 
@@ -48,7 +48,7 @@ ncSuite.add('passivate-test' , assert => {
         return content;
     };
     const pageProjector = PageProjector(projectPageFunc);
-    const page = Page(pageProjector);
+    const page = PageModel(pageProjector);
     page.initialize();
     const content = page.activate();
     content.innerText = 'Goodbye World';
