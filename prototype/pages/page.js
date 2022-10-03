@@ -1,3 +1,5 @@
+import {Attribute, VALUE} from "../kolibri/presentationModel";
+
 export { Page }
 
 /**
@@ -21,6 +23,7 @@ export { Page }
  * Constructor for an IPage<T>
  *
  * @template T
+ * @param { !String } pageName
  * @param { !IPageProjector } pageProjector
  * @returns IPage<T>
  * @constructor
@@ -31,8 +34,11 @@ export { Page }
  * page.activate();
  * page.passivate(latestContentState);
  */
-const Page = pageProjector => {
-    let initialized = false;
+const Page = (pageName, pageProjector) => {
+    const qualifier   = pageName;
+    const hash        = '#' + pageName;
+    const name        = Attribute(pageName); // TODO Make all 'Attributes' as one
+    const initialized = Attribute(false);
     let content = document.createElement('div');
     content.innerText = "Empty page. Please initialize.";
 
@@ -42,11 +48,15 @@ const Page = pageProjector => {
                 throw 'Page has already been initialized.';
             } else {
                 content = pageProjector.projectPage();
-                initialized = true;
+                initialized.getObs(VALUE).setValue(true);
             }
         },
         activate: () => content,
         passivate: latestContentState => content = latestContentState,
+        getQualifier: () => qualifier,
+        getHash: () => hash,
+        getName: () => name,
+        setName: newName => name.getObs(VALUE).setValue(newName),
         //TODO add addCss and removeCss functions
     }
 };
