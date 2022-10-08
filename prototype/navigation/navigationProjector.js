@@ -36,7 +36,7 @@ const NavigationProjector = () => {
     const head = document.getElementsByTagName('head')[0];
     const styles = document.createElement('link');
     styles.rel = 'stylesheet';
-    styles.href = './navigation/bubble_state_navigation/navigationProjector.css';
+    styles.href = './navigation/navigationProjector.css';
     head.appendChild(styles);
 
     const projectNavigation = navigationPoints => {
