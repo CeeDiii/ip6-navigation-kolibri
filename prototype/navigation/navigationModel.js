@@ -18,7 +18,7 @@ export { NavigationModel }
  */
 
 const NavigationModel = () => {
-    const singleAttr = Attribute({});
+    const singleAttr = Attribute({}); // TODO find solution with attribute but without anonymous object / JS Map
 
     const addNavigationPoint = newNavPoint => { // TODO
         const newNavAttr = newNavPoint.singleAttr;
@@ -31,6 +31,6 @@ const NavigationModel = () => {
 
     return {
         addNavigationPoint,
-        singleAttr,
+        singleAttr, // TODO remove direct access to singleAttr, provide onChanged methods
     }
 };

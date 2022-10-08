@@ -37,9 +37,9 @@ const PageModel = (pageName, pageContent) => {
             return singleAttr.getObs(VALUE).getValue();
         },
         passivate: latestContentState => {
-            singleAttr.getObs(VALUE).setValue(latestContentState);
+            singleAttr.getObs(VALUE).setValue(latestContentState); // TODO remove parameter see TODO in controller
         },
-        singleAttr,
+        singleAttr, // TODO remove direct access to attribute and implement onChanged methods for all required attributes
         //TODO add addCss and removeCss functions
     }
 };

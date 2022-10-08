@@ -22,8 +22,9 @@ export { PageController }
  */
 
 const PageController = model => ({
-    activate: ()                  => model.activate(),
-    passivate: latestContentState => model.passivate(latestContentState),
-    onActiveChanged:                 model.singleAttr.getObs(ACTIVE).onChange,
-    onValueChanged:                  model.singleAttr.getObs(VALUE).onChange,
+    activate: ()                  => model.activate(), // returns "projector", getter for content variable in model
+    passivate: latestContentState => model.passivate(latestContentState), // TODO remove parameter and store content from projector on passivate // setter for content variable in model
+    onActiveChanged:                 model.singleAttr.getObs(ACTIVE).onChange, // signals the status change of activate / passivate
+    onValueChanged:                  model.singleAttr.getObs(VALUE).onChange, // represents the content change
+
 });

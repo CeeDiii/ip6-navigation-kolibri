@@ -24,7 +24,7 @@ const NavigationController = model => {
     const currentLocation = Attribute(null);
 
     // Use native browser functionality with hashes to reload content from model
-    window.onhashchange = () => {
+    window.onhashchange = () => { // TODO remove
         if(valueOf(currentLocation) !== {}) {
             currentLocation.getObs(ACTIVE).setValue(false);
         }
@@ -32,12 +32,15 @@ const NavigationController = model => {
         currentLocation.getObs(ACTIVE).setValue(true);
     };
 
-    // TODO implement facade functions for activate and passivate that can be called from projectors
+    // TODO add click event listener on anchor tags
+
+    // TODO implement facade functions for activate and passivate that can be called from projectors, if projector is not part of controller
     // activate = page => { page.activate() }
     // passivate = (page, newContent) => { page.passivate(newContent) }
 
     return {
         addNavigationPoint: newNavPoint => model.addNavigationPoint(newNavPoint),
         onLocationChanged:  currentLocation.getObs(VALUE).onChange,
+        // TODO add projector method, if projector is not part of controller
     }
 };

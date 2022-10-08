@@ -31,7 +31,7 @@ const NavigationProjector = () => {
     //     document.getElementById('content').appendChild(pageContent);
     // });
 
-    const navigationAnchors = Attribute([]);
+    const navigationAnchors = Attribute([]); // TODO make observable list, controller listens to onAdd
 
     const head = document.getElementsByTagName('head')[0];
     const styles = document.createElement('link');
@@ -39,7 +39,9 @@ const NavigationProjector = () => {
     styles.href = './navigation/navigationProjector.css';
     head.appendChild(styles);
 
-    const projectNavigation = navigationPoints => {
+    // TODO add click event listener for controller to register
+
+    const projectNavigation = () => {
         const nav       = document.getElementById('nav');
         const div       = document.createElement('div');
         const ul        = document.createElement('ul');
