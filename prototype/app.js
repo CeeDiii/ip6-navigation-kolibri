@@ -20,15 +20,3 @@ const navigationProjector = NavigationProjector(navigationController);
 
 navigationModel.addNavigationPoint(homePageModel);
 navigationModel.addNavigationPoint(testPageModel);
-/*
-const homePageProj = PageProjector(homePage);
-const homePageController =
-
-const homePagePage = PageModel('home', homePageProj);
-const testPage = PageModel('test', homePageProj);
-
-const model = NavigationModel(homePagePage);
-const controller = NavigationController(model);
-
-controller.addNavigationPoint(testPage);
-*/
