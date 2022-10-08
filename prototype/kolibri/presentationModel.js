@@ -7,7 +7,7 @@ import { id }         from "./stdlib.js";
 
 export { Attribute, QualifiedAttribute,
          presentationModelFromAttributeNames,
-         valueOf, readQualifierValue,
+         valueOf, obsValueOf, readQualifierValue,
          VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH }
 
 /**
@@ -30,7 +30,16 @@ export { Attribute, QualifiedAttribute,
  * @param {AttributeType<String>} attribute
  * @return T
  */
-const valueOf = attribute => attribute.getObs(VALUE).getValue(); // TODO übernehmen!!!!
+const valueOf = attribute => attribute.getObs(VALUE).getValue();
+
+/**
+ * Convenience function to read the current state of the attribute's VALUE observable for the given attribute.
+ * @template T
+ * @param {AttributeType<String>} attribute
+ * @param {!ObservableTypeString} obsType
+ * @return T
+ */
+const obsValueOf = (attribute, obsType) => attribute.getObs(obsType).getValue();
 
 /**
  * @typedef { Object<String, AttributeType> } PresentationModel

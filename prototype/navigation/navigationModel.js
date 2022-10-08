@@ -1,4 +1,4 @@
-import { Attribute, HASH } from "../kolibri/presentationModel.js";
+import {Attribute, HASH, valueOf, obsValueOf} from "../kolibri/presentationModel.js";
 
 export { NavigationModel }
 
@@ -21,9 +21,11 @@ const NavigationModel = () => {
     const singleAttr = Attribute({});
 
     const addNavigationPoint = newNavPoint => { // TODO
-        const navPointExists = singleAttr.valueOf()[newNavPoint.singleAttr.getObs(HASH).getValue()];
+        const newNavAttr = newNavPoint.singleAttr;
+        const hash = obsValueOf(newNavAttr, HASH);
+        const navPointExists = valueOf(singleAttr)[hash];
         if(navPointExists !== undefined) return false;
-        singleAttr.valueOf()[newNavPoint.singleAttr.getObs(HASH).getValue()] = newNavPoint;
+        valueOf(singleAttr)[hash] = newNavPoint;
         return true;
     };
 

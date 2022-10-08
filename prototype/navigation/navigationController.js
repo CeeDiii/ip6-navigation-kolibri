@@ -1,4 +1,4 @@
-import {ACTIVE, Attribute, VALUE} from "../kolibri/presentationModel.js";
+import { ACTIVE, Attribute, VALUE, valueOf } from "../kolibri/presentationModel.js";
 
 export { NavigationController }
 
@@ -9,7 +9,7 @@ export { NavigationController }
  * @property { (newNavPoint:PageModelType) => void } addNavigationPoint - Delegates function to the model.
  *              Takes a string with the identifier for a new Navigation Point. Add the Navigation Point to the model, if it does not already exist. 
  *              Return true, if the operation was successful.
- * @property { (callback: onValueChangeCallback<AttributeType<PageModelType>>)  => void } onLocationChanged -
+ * @property { (callback: onValueChangeCallback<PageModelType>)  => void } onLocationChanged -
  */
 
 /**
@@ -25,11 +25,10 @@ const NavigationController = model => {
 
     // Use native browser functionality with hashes to reload content from model
     window.onhashchange = () => {
-        if(currentLocation.valueOf() !== {}) {
+        if(valueOf(currentLocation) !== {}) {
             currentLocation.getObs(ACTIVE).setValue(false);
         }
-        console.log(model.singleAttr.valueOf()[window.location.hash]);
-        currentLocation.getObs(VALUE).setValue(model.singleAttr.valueOf()[window.location.hash]);
+        currentLocation.getObs(VALUE).setValue(valueOf(model.singleAttr)[window.location.hash]);
         currentLocation.getObs(ACTIVE).setValue(true);
     };
 
