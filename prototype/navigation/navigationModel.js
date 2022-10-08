@@ -1,13 +1,6 @@
 import { Attribute, HASH } from "../kolibri/presentationModel.js";
-import { NavigationEvent } from "./NavigationEvent.js";
 
 export { NavigationModel }
-
-/**
- * @callback NavigationListenerType
- * @param { NavigationEvent } navEvent 
- * @return { void }
- */
 
 /**
  * Model containing the application navigation-data
