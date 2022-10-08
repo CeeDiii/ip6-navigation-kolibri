@@ -74,6 +74,8 @@
 ## Lifecycle
 ### Styles
 * stylesheets can be toggled or replaced
+## Out of Scope
+* allowing multiple simultaneous page projectors
 ## Sources
 Object Prototypes: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes, 24.09.2022<br> 
 Object Constructor: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor?retiredLocale=de, 24.09.2022<br>
