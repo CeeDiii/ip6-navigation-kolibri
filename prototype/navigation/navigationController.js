@@ -22,7 +22,7 @@ export { NavigationController }
  * @return  { NavigationControllerType }
  * @example
  */
-const NavigationController = model => {
+const NavigationController = model => { //TODO generate model within controller
     const navigationModel = model;
     const currentLocation = Attribute(null);
 
