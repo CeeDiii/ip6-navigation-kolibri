@@ -16,7 +16,7 @@ const PageProjector = content => {
     return {
         projectPage: () => {
             if (contentWrapper.firstChild === null) {
-                contentWrapper.appendChild(content)
+                contentWrapper.appendChild(content);
             } else {
                 contentWrapper.replaceChild(contentWrapper.firstChild, content);
             }
