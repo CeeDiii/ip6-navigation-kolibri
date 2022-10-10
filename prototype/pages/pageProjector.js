@@ -1,20 +1,19 @@
 export { PageProjector }
 /**
  * @typedef PageProjectorType
- * @property { () => void } projectPage
+ * @property { (content: HTMLDivElement) => void } projectPage
  */
 
 /**
  * @constructor
- * @param { !HTMLDivElement } content
  * @returns { PageProjectorType }
  */
 
-const PageProjector = content => {
+const PageProjector = () => {
     const contentWrapper = document.getElementById('content');
 
     return {
-        projectPage: () => {
+        projectPage: content => {
             if (contentWrapper.firstChild === null) {
                 contentWrapper.appendChild(content);
             } else {

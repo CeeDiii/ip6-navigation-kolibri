@@ -1,4 +1,6 @@
 import { ACTIVE, HASH, ICON, VALUE, VISITED } from "../kolibri/presentationModel.js";
+import {PageProjector} from "./pageProjector.js";
+import {PageModel} from "./pageModel.js";
 
 export { PageController }
 /**
@@ -20,20 +22,20 @@ export { PageController }
  * Constructor for a PageControllerType.
  *
  * @constructor
- * @param { !PageModelType } model
- * @param { !PageProjectorType } projector
+ * @param { !String } pageName
+ * @param { !(() => HTMLDivElement) } initialContent
  * @returns  PageControllerType
  *
  */
 
-const PageController = (model, projector) => {
-    const pageModel = model;
-    const pageProjector = projector;
+const PageController = (pageName, initialContent) => {
+    const pageModel = PageModel(pageName, initialContent);
+    const pageProjector = PageProjector();
 
     return {
         activate: () => {
             pageModel.getPageObs(ACTIVE).setValue(true);
-            pageProjector.projectPage();
+            pageProjector.projectPage(pageModel.getContent());
         },
         passivate:        () => pageModel.getPageObs(ACTIVE).setValue(false),
         getHash:          () => pageModel.getPageObs(HASH).getValue(),

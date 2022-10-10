@@ -1,30 +1,22 @@
-import { PageProjector } from "./pages/pageProjector.js";
-import { PageModel } from "./pages/pageModel.js";
 import { homePage } from "./pages/homePage.js";
+import { aboutPage } from "./pages/aboutPage.js";
+import { PageController } from "./pages/pageController.js";
 import { NavigationModel } from "./navigation/navigationModel.js";
 import { NavigationController } from "./navigation/navigationController.js";
-import { PageController } from "./pages/pageController.js";
-import { NavigationProjector } from "./navigation/navigationProjector.js";
-import { aboutPage } from "./pages/aboutPage.js";
+import { NavigationProjector } from "./navigation/basicNavigationProjector.js";
 
-const homePageModel = PageModel('home', homePage);
-const homePageProjector = PageProjector(homePage());
-const homePageController = PageController(homePageModel, homePageProjector);
-const navigationInitializer = /** [HTMLAnchorElement] */ anchors => {
-    const div = document.createElement("div");
-    anchors.forEach(anchor => div.appendChild(anchor));
-    return div;
-};
-const nav = document.getElementById("nav");
+const homePageController = PageController('home', homePage);
+const aboutPageController = PageController('about', aboutPage);
+
+const pinToNavElement = document.getElementById("nav");
+
 const navigationModel = NavigationModel();
 const navigationController = NavigationController(navigationModel);
-NavigationProjector(navigationController, nav, navigationInitializer);
-navigationController.addPageController(homePageController);
+NavigationProjector(navigationController, pinToNavElement);
 
-const aboutPageModel = PageModel('about', aboutPage);
-const aboutPageProjector = PageProjector(aboutPage());
-const aboutPageController = PageController(aboutPageModel, aboutPageProjector);
+navigationController.addPageController(homePageController);
 navigationController.addPageController(aboutPageController);
+
 
 
 
