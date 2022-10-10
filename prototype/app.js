@@ -18,6 +18,5 @@ const nav = document.getElementById("nav");
 const navigationModel = NavigationModel();
 const navigationController = NavigationController(navigationModel);
 const navigationProjector = NavigationProjector(navigationController, nav, navigationInitializer);
-console.log(navigationController.addPageController(pageController));
 navigationProjector.projectNavigation();
 

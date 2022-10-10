@@ -40,7 +40,10 @@ const NavigationController = model => { //TODO generate model within controller
                 e.preventDefault();
                 const newLocation = navigationModel.getPageController(hash);
                 newLocation.activate();
-                valueOf(currentLocation).passivate();
+                // on initialization the currentLocation can be null and therefore not passivated
+                if (valueOf(currentLocation) !== null) {
+                    valueOf(currentLocation).passivate();
+                }
                 currentLocation.getObs(VALUE).setValue(newLocation);
             };
         }
