@@ -22,11 +22,12 @@ const navigationProjector = NavigationProjector(navigationController, nav, navig
 navigationController.addPageController(homePageController);
 navigationProjector.projectNavigation();
 
-//
-// const aboutPageModel = PageModel('about', aboutPage);
-// const aboutPageProjector = PageProjector(aboutPage());
-// const aboutPageController = PageController(aboutPageModel, aboutPageProjector);
-//
+
+const aboutPageModel = PageModel('about', aboutPage);
+const aboutPageProjector = PageProjector(aboutPage());
+const aboutPageController = PageController(aboutPageModel, aboutPageProjector);
+navigationController.addPageController(aboutPageController);
+
 
 
 
