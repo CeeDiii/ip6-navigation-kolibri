@@ -7,11 +7,14 @@ const aboutPage = () => {
     const h1 = document.createElement('h1');
     const div = document.createElement('div');
     const wrapper = document.createElement('div');
-    const aboutDiv = document.createElement('div');
+    const aboutLabel = document.createElement('label');
+    const input = document.createElement('input');
 
     h1.innerText = 'about';
     wrapper.id = 'content-wrapper';
-    aboutDiv.innerText = "This page is work in progress.";
+    aboutLabel.innerText = 'Please enter your name: ';
+    aboutLabel.for = 'name';
+    input.id = 'name';
 
     // styling all elements inline
     h1.style.setProperty('margin-top', '35px');
@@ -20,8 +23,9 @@ const aboutPage = () => {
     // end styling
 
     wrapper.append(h1);
-    div.append(aboutDiv);
+    div.append(aboutLabel);
     wrapper.append(div);
+    aboutLabel.append(input);
     content.appendChild(wrapper);
 
     return content;
