@@ -38,7 +38,7 @@ const NavigationProjector = (controller, pinToElement,navigationInitializer) => 
             if (positionWrapper.firstChild === null) {
                 positionWrapper.appendChild(navigationInitializer(navigationAnchors))
             } else {
-                positionWrapper.replaceChild(positionWrapper.firstChild, navigationInitializer(navigationAnchors));
+                positionWrapper.replaceChild(navigationInitializer(navigationAnchors), positionWrapper.firstChild);
             }
         },
     }

@@ -18,7 +18,7 @@ const PageProjector = content => {
             if (contentWrapper.firstChild === null) {
                 contentWrapper.appendChild(content);
             } else {
-                contentWrapper.replaceChild(contentWrapper.firstChild, content);
+                contentWrapper.replaceChild(content, contentWrapper.firstChild);
             }
         }
     }

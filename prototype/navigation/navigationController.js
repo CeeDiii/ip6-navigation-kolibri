@@ -26,6 +26,17 @@ const NavigationController = model => { //TODO generate model within controller
     const navigationModel = model;
     const currentLocation = Attribute(null);
 
+    window.onhashchange = () => {
+        const hash = window.location.hash;
+        const newLocation = navigationModel.getPageController(hash);
+        newLocation.activate();
+        // on initialization the currentLocation can be null and therefore not passivated
+        if (valueOf(currentLocation) !== null) {
+            valueOf(currentLocation).passivate();
+        }
+        currentLocation.getObs(VALUE).setValue(newLocation);
+    };
+
     return {
         addPageController: pageController => navigationModel.addPageController(pageController),
         deletePageController: pageController => navigationModel.deletePageController(pageController),
