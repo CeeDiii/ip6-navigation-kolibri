@@ -1,30 +1,47 @@
-import { ACTIVE, VALUE } from "../kolibri/presentationModel.js";
+import {ACTIVE, ICON, VALUE, VISITED} from "../kolibri/presentationModel.js";
 
 export { PageController }
 /**
  * PageController is a controller for pages.
  *
  * @typedef PageController
- * @property { () => HTMLDivElement } activate -
- * @property { (latestContentState:HTMLDivElement) => void } passivate -
- * @property { (callback: onValueChangeCallback<Boolean>)  => void } onActiveChanged -
- * @property { (callback: onValueChangeCallback<HTMLDivElement>)  => void } onValueChanged -
  *
+ * @property { () => void } activate
+ * @property { () => void } passivate
+ * @property { (iconPath: String) => void } setIcon
+ * @property { (visitedState: Boolean) => void } setVisited
+ * @property { (callback: onValueChangeCallback<PageModelType>) => void } onContentChanged
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
+ * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged
  */
 
 /**
- * Constructor for a pageController.
+ * Constructor for a PageControllerType.
  *
- * @param { PageModelType } model
- * @returns  PageController
  * @constructor
+ * @param { PageModelType } model
+ * @param { PageProjectorType } projector
+ * @returns  PageControllerType
  *
  */
 
-const PageController = model => ({
-    activate: ()                  => model.activate(), // returns "projector", getter for content variable in model
-    passivate: latestContentState => model.passivate(latestContentState), // TODO remove parameter and store content from projector on passivate // setter for content variable in model
-    onActiveChanged:                 model.singleAttr.getObs(ACTIVE).onChange, // signals the status change of activate / passivate
-    onValueChanged:                  model.singleAttr.getObs(VALUE).onChange, // represents the content change
+const PageController = (model, projector) => {
+    const pageModel = model;
+    const pageProjector = projector;
 
-});
+    return {
+        activate: () => {
+            pageModel.getPageObs(ACTIVE).setValue(true);
+            pageProjector.projectPage();
+        },
+        passivate:        () => pageModel.getPageObs(ACTIVE).setValue(false),
+        setIcon:          iconPath => pageModel.getPageObs(ICON).setValue(iconPath),
+        setVisited:       visitedState => pageModel.getPageObs(VISITED).setValue(visitedState),
+        onContentChanged: model.getPageObs(VALUE).onChange,
+        onActiveChanged:  model.getPageObs(ACTIVE).onChange,
+        onIconChanged:    model.getPageObs(ICON).onChange,
+        onVisitedChanged: model.getPageObs(VISITED).onChange
+        // more to come...
+    }
+};

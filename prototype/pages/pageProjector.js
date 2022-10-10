@@ -1,10 +1,20 @@
 export { PageProjector }
+/**
+ * @typedef PageProjectorType
+ * @property { () => void } projectPage
+ */
 
-const PageProjector = controller => {
-    let content;
-    controller.onValueChanged (newContent => content = newContent);
+/**
+ * @constructor
+ * @param { HTMLDivElement } content
+ * @returns { PageProjectorType }
+ */
 
-    // TODO register callback on passivate where content gets stored
-    return content;
+const PageProjector = content => {
+    const contentWrapper = document.getElementById('content');
+
+    return {
+        projectPage: () => contentWrapper.replaceChild(contentWrapper.firstChild, content),
+    }
 };
 

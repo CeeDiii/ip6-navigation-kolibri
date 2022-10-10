@@ -1,45 +1,37 @@
-import { ACTIVE, Attribute, HASH, VALUE } from "../kolibri/presentationModel.js";
+import {ACTIVE, Attribute, HASH, ICON, VALUE, VISITED} from "../kolibri/presentationModel.js";
 
 export { PageModel }
 
 /**
- * IPage is an interface. The IPage interface is used to construct HTML pages
- * that can be integrated into the navigation model of Kolibri.
- * IPage declares the navigation lifecycle of an HTML page in Kolibri.
- *
  * @typedef PageModelType
- * @property { () => HTMLDivElement } activate - a function that returns this pages content.
- *              Only one page can be activated at a time. The activated page is displayed in the browser.
- *              The page has to be initialized for this function to work. Otherwise, a placeholder will be returned.
- * @property { (latestContentState: HTMLDivElement) => void } passivate - a function that takes the latestContentState as an input before passivating the page.
- *              The passivation of the page removes it from display in the browser. The latestContentState is stored in the page.
- * @property { AttributeType } singleAttr
+ * @template T
+ * @property { (obsType: ObservableTypeString) => IObservable<T> } getPageObs
+ * @property { (newContent: HTMLDivElement) => void } setContent
+ * @property { () => HTMLDivElement } getContent
  */
 
 /**
- * Constructor for an IPage<T>
+ * Constructor for an PageModelType
  *
- * @param { !String } pageName
- * @param { () => HTMLDivElement } pageContent
- * @returns PageModelType
  * @constructor
+ * @param { !String } pageName
+ * @param { () => HTMLDivElement } initialContent
+ * @returns PageModelType
  * @example
  * TODO
  */
 
-const PageModel = (pageName, pageContent) => {
-    const singleAttr = Attribute(pageContent());
-    singleAttr.getObs(ACTIVE).setValue(false);
-    singleAttr.getObs(HASH).setValue('#' + pageName);
+const PageModel = (pageName, initialContent) => {
+    const pageAttr = Attribute(initialContent());
+    pageAttr.getObs(ACTIVE).setValue(false);
+    pageAttr.getObs(HASH).setValue('#' + pageName);
+    pageAttr.getObs(VISITED).setValue(false);
+    //pageAttr.getObs(ICON)
 
     return {
-        activate: () => {
-            return singleAttr.getObs(VALUE).getValue();
-        },
-        passivate: latestContentState => {
-            singleAttr.getObs(VALUE).setValue(latestContentState); // TODO remove parameter see TODO in controller
-        },
-        singleAttr, // TODO remove direct access to attribute and implement onChanged methods for all required attributes
+        getPageObs: obsType => pageAttr.getObs(obsType),
+        setContent: newContent => pageAttr.getObs(VALUE).setValue(newContent),
+        getContent: () => pageAttr.getObs(VALUE).getValue(),
         //TODO add addCss and removeCss functions
     }
 };
