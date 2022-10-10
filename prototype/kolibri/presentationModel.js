@@ -8,10 +8,10 @@ import { id }         from "./stdlib.js";
 export { Attribute, QualifiedAttribute,
          presentationModelFromAttributeNames,
          valueOf, obsValueOf, readQualifierValue,
-         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED }
+         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE }
 
 /**
- * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'} ObservableTypeString
+ * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'} ObservableTypeString
  * Feel free to extend this type with new unique type strings as needed for your application.
  */
 
@@ -25,6 +25,8 @@ export { Attribute, QualifiedAttribute,
 /** @type ObservableTypeString */ const HASH        = "hash";
 /** @type ObservableTypeString */ const ICON        = "icon";
 /** @type ObservableTypeString */ const VISITED     = "visited";
+/** @type ObservableTypeString */ const LOGO        = "logo";
+/** @type ObservableTypeString */ const VISIBLE     = "visible";
 
 
 /**

@@ -1,4 +1,5 @@
-import {Attribute, HASH, valueOf, obsValueOf} from "../kolibri/presentationModel.js";
+import { Attribute, HASH, valueOf, obsValueOf, LOGO, VISIBLE } from "../kolibri/presentationModel.js";
+import { ObservableList } from "../kolibri/observable.js";
 
 export { NavigationModel }
 
@@ -6,31 +7,44 @@ export { NavigationModel }
  * Model containing the application navigation-data
  *
  * @typedef NavigationModelType
- * @property { (newNavPoint:PageModelType) => Boolean } addNavigationPoint
- * @property { AttributeType } singleAttr
+ * @property { (pageController: PageControllerType) => Boolean } addPageController
+ * @property { (pageHash: String) => PageControllerType } getPageController
+ * @property { (pageHash: String) => Boolean } deletePageController
+ * @property { (callback: observableListCallback) => Boolean } onAdd
+ * @property { (callback: observableListCallback) => Boolean } onDel
+ * @property { (callback: onValueChangeCallback<String>) => void } onWebsiteLogoChanged
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged
  */
 
 /** 
  * @constructor
- * @return  { NavigationModelType }
+ * @return { NavigationModelType }
  * @example
- * const navigationModel = NavigationModel("home");
  */
 
 const NavigationModel = () => {
-    const singleAttr = Attribute({}); // TODO find solution with attribute but without anonymous object / JS Map
-
-    const addNavigationPoint = newNavPoint => { // TODO
-        const newNavAttr = newNavPoint.singleAttr;
-        const hash = obsValueOf(newNavAttr, HASH);
-        const navPointExists = valueOf(singleAttr)[hash];
-        if(navPointExists !== undefined) return false;
-        valueOf(singleAttr)[hash] = newNavPoint;
-        return true;
-    };
+    const navigationHashes = Attribute(ObservableList([]));
+    const pageControllers = {};
 
     return {
-        addNavigationPoint,
-        singleAttr, // TODO remove direct access to singleAttr, provide onChanged methods
+        addPageController: pageController => {
+            const hash = pageController.getPageObs(HASH).getValue();
+            if(navigationHashes[hash] !== undefined) {
+                valueOf(navigationHashes).add(hash);
+                pageControllers.push(hash, pageController);
+                return true;
+            } else {
+                return false;
+            }
+        },
+        getPageController: pageHash => pageControllers[pageHash],
+        deletePageController: pageHash => {
+            valueOf(navigationHashes).del(pageHash);
+            return delete pageControllers[pageHash];
+        },
+        onAdd: valueOf(navigationHashes).onAdd,
+        onDel: valueOf(navigationHashes).onDel,
+        onWebsiteLogoChanged: navigationHashes.getObs(LOGO).onChange,
+        onVisibleChanged: navigationHashes.getObs(VISIBLE).onChange,
     }
 };
