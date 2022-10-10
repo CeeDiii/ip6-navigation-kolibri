@@ -7,6 +7,7 @@ export { NavigationController }
  *
  * @typedef NavigationControllerType
  * @property { (pageController: PageControllerType) => Boolean } addPageController
+ * @property { (pageHash: String) => PageControllerType } getPageController
  * @property { (pageHash: String) => Boolean } deletePageController
  * @property { (callback: observableListCallback) => Boolean } onNavigationHashAdd
  * @property { (callback: observableListCallback) => Boolean } onNavigationHashDel
@@ -26,8 +27,7 @@ const NavigationController = model => { //TODO generate model within controller
     const navigationModel = model;
     const currentLocation = Attribute(null);
 
-    window.onhashchange = () => {
-        const hash = window.location.hash;
+    const navigate = hash => {
         const newLocation = navigationModel.getPageController(hash);
         newLocation.activate();
         // on initialization the currentLocation can be null and therefore not passivated
@@ -37,8 +37,14 @@ const NavigationController = model => { //TODO generate model within controller
         currentLocation.getObs(VALUE).setValue(newLocation);
     };
 
+    window.onhashchange = () => {
+        const hash = window.location.hash;
+        navigate(hash);
+    };
+
     return {
         addPageController: pageController => navigationModel.addPageController(pageController),
+        getPageController: pageHash => navigationModel.getPageController(pageHash),
         deletePageController: pageController => navigationModel.deletePageController(pageController),
         onNavigationHashAdd: navigationModel.onAdd,
         onNavigationHashDel: navigationModel.onDel,
@@ -47,15 +53,9 @@ const NavigationController = model => { //TODO generate model within controller
         onVisibleChanged: navigationModel.onVisibleChanged,
         registerAnchorClickListener: anchor => {
             anchor.onclick = e => {
-                const hash = e.currentTarget.getAttribute('href');
                 e.preventDefault();
-                const newLocation = navigationModel.getPageController(hash);
-                newLocation.activate();
-                // on initialization the currentLocation can be null and therefore not passivated
-                if (valueOf(currentLocation) !== null) {
-                    valueOf(currentLocation).passivate();
-                }
-                currentLocation.getObs(VALUE).setValue(newLocation);
+                const hash = e.currentTarget.getAttribute('href');
+                navigate(hash);
             };
         }
     }

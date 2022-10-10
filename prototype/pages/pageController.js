@@ -35,6 +35,7 @@ const PageController = (pageName, initialContent) => {
     return {
         activate: () => {
             pageModel.getPageObs(ACTIVE).setValue(true);
+            pageModel.getPageObs(VISITED).setValue(true);
             pageProjector.projectPage(pageModel.getContent());
         },
         passivate:        () => pageModel.getPageObs(ACTIVE).setValue(false),

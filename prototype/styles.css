@@ -27,6 +27,11 @@ input[type=text]:focus {
 
 #nav a {
     padding: 6px;
+    color: var(--kolibri-color-accent);
+}
+
+#nav a.visited {
+    color: var(--kolibri-color-output);
 }
 
 
