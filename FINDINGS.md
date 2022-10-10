@@ -71,6 +71,7 @@
 ## JSDoc
 * JSDoc supports Typescript annotations such as @param, @returns, @callback etc.
 * Generics do not exist in plain Javascript
+* only anchor tags should be used for navigation with real urls
 ## Lifecycle
 ### Styles
 * stylesheets can be toggled or replaced
@@ -93,3 +94,4 @@ Pro JavaScript Design Patterns: Harmes, R. & Diaz, D. (2008). Pro JavaScript Des
 JSDoc Typescript annotations: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html, 01.10.2022<br>
 Toggle or replace stylesheets: https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-apply-the-new-style-to-the-page, 01.10.2022<br>
 Deep Cloning in JS: https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy, 08.10.2022
+Navigation Anchor Tags: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a?retiredLocale=de, 10.10.2022
