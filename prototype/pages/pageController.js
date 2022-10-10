@@ -4,13 +4,12 @@ export { PageController }
 /**
  * PageController is a controller for pages.
  *
- * @typedef PageController
- *
+ * @typedef PageControllerType
  * @property { () => void } activate
  * @property { () => void } passivate
  * @property { (iconPath: String) => void } setIcon
  * @property { (visitedState: Boolean) => void } setVisited
- * @property { (callback: onValueChangeCallback<PageModelType>) => void } onContentChanged
+ * @property { (callback: onValueChangeCallback<HTMLDivElement>) => void } onContentChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged
