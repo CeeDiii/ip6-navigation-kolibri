@@ -28,10 +28,10 @@ const NavigationModel = () => {
 
     return {
         addPageController: pageController => {
-            const hash = pageController.getPageObs(HASH).getValue();
-            if(navigationHashes[hash] !== undefined) {
+            const hash = pageController.getHash();
+            if(valueOf(navigationHashes)[hash] === undefined) {
                 valueOf(navigationHashes).add(hash);
-                pageControllers.push(hash, pageController);
+                pageControllers[hash] = pageController;
                 return true;
             } else {
                 return false;

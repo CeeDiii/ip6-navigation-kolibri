@@ -35,14 +35,14 @@ const NavigationController = model => { //TODO generate model within controller
         onWebsiteLogoChanged: navigationModel.onWebsiteLogoChanged,
         onVisibleChanged: navigationModel.onVisibleChanged,
         registerAnchorClickListener: anchor => {
-            anchor.onclick(e => {
+            anchor.onclick = e => {
                 const hash = e.currentTarget.getAttribute('href');
                 e.preventDefault();
                 const newLocation = navigationModel.getPageController(hash);
                 newLocation.activate();
                 valueOf(currentLocation).passivate();
                 currentLocation.getObs(VALUE).setValue(newLocation);
-            });
+            };
         }
     }
 };

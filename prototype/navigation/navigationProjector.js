@@ -29,10 +29,17 @@ const NavigationProjector = (controller, pinToElement,navigationInitializer) => 
     controller.onNavigationHashAdd(hash => {
         const newNavPoint = document.createElement('a');
         newNavPoint.setAttribute('href', hash);
+        newNavPoint.innerText = hash.substring(1);
         observableNavigationAnchors.add(newNavPoint);
     });
 
     return {
-        projectNavigation: () => positionWrapper.replaceChild(positionWrapper.firstChild, navigationInitializer(navigationAnchors)),
+        projectNavigation: () => {
+            if (positionWrapper.firstChild === null) {
+                positionWrapper.appendChild(navigationInitializer(navigationAnchors))
+            } else {
+                positionWrapper.replaceChild(positionWrapper.firstChild, navigationInitializer(navigationAnchors));
+            }
+        },
     }
 };
