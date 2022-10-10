@@ -1,4 +1,4 @@
-import { ACTIVE, Attribute, VALUE, valueOf } from "../kolibri/presentationModel.js";
+import { Attribute, VALUE, valueOf } from "../kolibri/presentationModel.js";
 
 export { NavigationController }
 

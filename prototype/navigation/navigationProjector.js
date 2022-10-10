@@ -1,11 +1,9 @@
-import { Attribute, HASH, obsValueOf, VALUE } from "../kolibri/presentationModel.js";
-import {ObservableList} from "../kolibri/observable.js";
+import { ObservableList } from "../kolibri/observable.js";
 
 export { NavigationProjector }
 
 /**
  * @typedef NavigationProjectorType
- * @property { () => void } projectNavigation
  */
 
 /**
@@ -31,15 +29,10 @@ const NavigationProjector = (controller, pinToElement,navigationInitializer) => 
         newNavPoint.setAttribute('href', hash);
         newNavPoint.innerText = hash.substring(1);
         observableNavigationAnchors.add(newNavPoint);
+        if (positionWrapper.firstChild === null) {
+            positionWrapper.appendChild(navigationInitializer(navigationAnchors))
+        } else {
+            positionWrapper.replaceChild(navigationInitializer(navigationAnchors), positionWrapper.firstChild);
+        }
     });
-
-    return {
-        projectNavigation: () => {
-            if (positionWrapper.firstChild === null) {
-                positionWrapper.appendChild(navigationInitializer(navigationAnchors))
-            } else {
-                positionWrapper.replaceChild(navigationInitializer(navigationAnchors), positionWrapper.firstChild);
-            }
-        },
-    }
 };

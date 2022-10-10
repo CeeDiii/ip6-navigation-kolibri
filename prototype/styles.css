@@ -25,4 +25,8 @@ input[type=text]:focus {
     transition:          background-size linear .5s;
 }
 
+#nav a {
+    padding: 6px;
+}
+
 

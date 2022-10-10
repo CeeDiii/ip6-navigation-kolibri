@@ -18,10 +18,8 @@ const navigationInitializer = /** [HTMLAnchorElement] */ anchors => {
 const nav = document.getElementById("nav");
 const navigationModel = NavigationModel();
 const navigationController = NavigationController(navigationModel);
-const navigationProjector = NavigationProjector(navigationController, nav, navigationInitializer);
+NavigationProjector(navigationController, nav, navigationInitializer);
 navigationController.addPageController(homePageController);
-navigationProjector.projectNavigation();
-
 
 const aboutPageModel = PageModel('about', aboutPage);
 const aboutPageProjector = PageProjector(aboutPage());

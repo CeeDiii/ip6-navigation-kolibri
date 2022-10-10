@@ -1,4 +1,4 @@
-import {ACTIVE, Attribute, HASH, ICON, VALUE, VISITED} from "../kolibri/presentationModel.js";
+import {ACTIVE, Attribute, HASH, VALUE, VISITED} from "../kolibri/presentationModel.js";
 
 export { PageModel }
 

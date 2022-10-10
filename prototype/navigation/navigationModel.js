@@ -1,4 +1,4 @@
-import { Attribute, HASH, valueOf, obsValueOf, LOGO, VISIBLE } from "../kolibri/presentationModel.js";
+import { Attribute, valueOf, LOGO, VISIBLE } from "../kolibri/presentationModel.js";
 import { ObservableList } from "../kolibri/observable.js";
 
 export { NavigationModel }
