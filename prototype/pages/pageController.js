@@ -19,8 +19,8 @@ export { PageController }
  * Constructor for a PageControllerType.
  *
  * @constructor
- * @param { PageModelType } model
- * @param { PageProjectorType } projector
+ * @param { !PageModelType } model
+ * @param { !PageProjectorType } projector
  * @returns  PageControllerType
  *
  */

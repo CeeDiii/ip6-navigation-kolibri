@@ -15,7 +15,7 @@ export { PageModel }
  *
  * @constructor
  * @param { !String } pageName
- * @param { () => HTMLDivElement } initialContent
+ * @param { !(() => HTMLDivElement) } initialContent
  * @returns PageModelType
  * @example
  * TODO

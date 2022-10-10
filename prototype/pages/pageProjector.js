@@ -6,7 +6,7 @@ export { PageProjector }
 
 /**
  * @constructor
- * @param { HTMLDivElement } content
+ * @param { !HTMLDivElement } content
  * @returns { PageProjectorType }
  */
 
