@@ -74,6 +74,11 @@
 ## Lifecycle
 ### Styles
 * stylesheets can be toggled or replaced
+## Methodology
+* Because we defined the structure in almost-UML we had 3 possibilities for collaboration:
+  * Test Driven Development
+  * Component-Based Development
+  * Pair Programming
 ## Out of Scope
 * allowing multiple simultaneous page projectors
 ## Sources
