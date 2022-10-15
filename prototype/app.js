@@ -10,7 +10,7 @@ import { PersonPageProjector } from "./pages/person/personPageProjector.js";
 import { Car,carSelectionMold } from "./pages/car/car.js";
 import { CarPageProjector } from "./pages/car/carPageProjector.js";
 import { WeekController } from "./pages/workweek/workweek/weekController.js";
-import { SimpleWorkWeekPageProjector } from "./pages/workweek/workweek/simpleWorkWeekPageProjector.js";
+import { SimpleWorkWeekPageProjector } from "./pages/workweek/simpleWorkWeekPageProjector.js";
 
 const homePageController = PageController("home", null);
 HomePageProjector(homePageController);

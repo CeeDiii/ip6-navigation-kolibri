@@ -55,6 +55,9 @@ const CarPageProjector = pageController => {
 
         // binding of the main view
         plusButton.onclick = _ => listController.addModel();
+
+        // add class for specific page styling
+        contentWrapper.classList.add("car");
     };
 
     const projectPage = () => {

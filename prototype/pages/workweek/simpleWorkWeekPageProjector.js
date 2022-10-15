@@ -1,5 +1,5 @@
-import { dom } from "../../../kolibri/util/dom.js";
-import { projectWeek } from "./simpleWeekProjector.js";
+import { dom } from "../../kolibri/util/dom.js";
+import { projectWeek } from "./workweek/simpleWeekProjector.js";
 
 export { SimpleWorkWeekPageProjector }
 /**
@@ -29,6 +29,9 @@ const SimpleWorkWeekPageProjector = pageController => {
         contentWrapper.append(...fieldset);
         const workingHoursInput = contentWrapper.children["workingHoursInput"];
         workingHoursInput.append(...projectWeek(weekController));
+
+        // add class for specific page styling
+        contentWrapper.classList.add("workweek");
     };
 
     const projectPage = () => {

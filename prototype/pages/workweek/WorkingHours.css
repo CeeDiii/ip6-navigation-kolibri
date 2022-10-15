@@ -1,0 +1,70 @@
+
+.workweek {
+    background-color: white; /*only needed for chrome :-(*/
+    max-width: 42em;
+    margin:    3em auto 3em auto;
+}
+
+.workweek h2 {
+    margin-bottom: 0;
+}
+
+.workweek div {
+    line-height: 1.2em;
+    padding: 0.5em 0 0 0;
+}
+
+.workweek fieldset {
+    opacity: 1;
+    border-style: solid;
+    border-width: 0 0 0 2px;
+    border-color: transparent;
+}
+
+.workweek fieldset:disabled {
+    opacity: 0.5;
+}
+
+.workweek output {
+    color: var(--kolibri-color-output);
+}
+
+.workweek .darkTheme {
+    filter: invert(85%) hue-rotate(180deg);
+}
+
+.workweek em {
+    color: var(--kolibri-color-accent);
+}
+
+.workweek .rules *:nth-child(even) {
+    color: var(--kolibri-color-accent);
+}
+
+.workweek .rules {
+    display: grid;
+    grid-column-gap: 2em;
+    grid-template-columns: auto max-content;
+}
+
+.workweek label ~ span {
+    margin-left: 1em;
+}
+
+.workweek #workingHoursInput div {
+    display:            flex;
+    justify-content:    flex-start;
+    align-items:        center;
+    gap:                1em;
+}
+.workweek #workingHoursInput label {
+    display:            none;
+}
+.workweek #workingHoursInput {
+    display:            grid;
+    grid-column-gap:    2em;
+    grid-template-columns: repeat(4, max-content);
+}
+.workweek .until {
+    display: none;
+}

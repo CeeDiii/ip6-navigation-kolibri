@@ -54,6 +54,9 @@ const PersonPageProjector = pageController => {
 
         // binding of the main view
         plusButton.onclick = _ => listController.addModel();
+
+        // add class for specific page styling
+        contentWrapper.classList.add("person");
     };
 
     const projectPage =  () => {
