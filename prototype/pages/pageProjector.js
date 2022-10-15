@@ -8,15 +8,17 @@ export { PageProjector }
  * @template T
  * @constructor
  * @param { PageControllerType } pageController
- * @param { T } contentController
  * @returns { PageProjectorType }
  */
 
-const PageProjector = (pageController, contentController) => {
+const PageProjector = pageController => {
     const pageWrapper = document.getElementById('content');
+
+    // const contentControllers = pageController.getPageContentControllers();
 
     const projectPage = () => {
         // generate content
+        // projectContent(...contentControllers);
         // ...
         if (pageWrapper.firstChild === null) {
             // replace with generated content

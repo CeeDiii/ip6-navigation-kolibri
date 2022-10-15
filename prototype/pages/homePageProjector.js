@@ -1,6 +1,16 @@
 export { HomePageProjector }
 
-const HomePageProjector = (pageController, contentController) => {
+/**
+ * @typedef PageProjectorType
+ * @property { () => void } projectPage
+ */
+
+/**
+ * @constructor
+ * @param { PageControllerType } pageController
+ * @returns { PageProjectorType }
+ */
+const HomePageProjector = pageController => {
     const pageWrapper = document.getElementById('content');
 
     const projectPage = () => {

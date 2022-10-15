@@ -7,13 +7,13 @@ import { Person, selectionMold } from "./examples/person/person.js";
 import { PersonPageProjector } from "./pages/person/personPageProjector.js";
 import { HomePageProjector } from "./pages/homePageProjector.js";
 
-const homePageController = PageController("home");
+const homePageController = PageController("home", null);
 HomePageProjector(homePageController);
 
 const listController      = ListController(Person);
 const selectionController = SelectionController(selectionMold);
-const personPageController = PageController("person");
-PersonPageProjector(personPageController, [listController, selectionController]);
+const personPageController = PageController("person", [listController, selectionController]);
+PersonPageProjector(personPageController);
 
 
 const pinToNavElement = document.getElementById("nav");

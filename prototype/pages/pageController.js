@@ -4,10 +4,11 @@ import { PageModel } from "./pageModel.js";
 export { PageController }
 /**
  * PageController is a controller for pages.
- *
+ * @template T
  * @typedef PageControllerType
  * @property { () => void } activate
  * @property { () => void } passivate
+ * @property { () => [T] } getPageContentControllers
  * @property { () => String } getHash
  * @property { (iconPath: String) => void } setIcon
  * @property { (visitedState: Boolean) => void } setVisited
@@ -19,14 +20,17 @@ export { PageController }
 /**
  * Constructor for a PageControllerType.
  *
+ * @template T
  * @constructor
  * @param { !String } pageName
+ * @param { [T] } contentControllers
  * @returns  PageControllerType
  *
  */
 
-const PageController = pageName => {
+const PageController = (pageName, contentControllers) => {
     const pageModel = PageModel(pageName);
+    const pageContentControllers = contentControllers;
 
     return {
         activate: () => {
@@ -34,6 +38,7 @@ const PageController = pageName => {
             pageModel.getPageObs(VISITED).setValue(true);
         },
         passivate:        () => pageModel.getPageObs(ACTIVE).setValue(false),
+        getPageContentControllers: () => pageContentControllers,
         getHash:          () => pageModel.getPageObs(HASH).getValue(),
         setIcon:          iconPath => pageModel.getPageObs(ICON).setValue(iconPath),
         setVisited:       visitedState => pageModel.getPageObs(VISITED).setValue(visitedState),
@@ -41,5 +46,6 @@ const PageController = pageName => {
         onIconChanged:    pageModel.getPageObs(ICON).onChange,
         onVisitedChanged: pageModel.getPageObs(VISITED).onChange
         // more to come...
+
     }
 };
