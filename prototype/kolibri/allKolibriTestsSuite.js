@@ -4,3 +4,4 @@ import "./versionTest.js";
 import "./observableTest.js";
 import "./presentationModelTest.js";
 import "../navigation/navigationControllerTest.js"
+import "../../prototype/pages/pageTest.js"

@@ -7,20 +7,27 @@ import { id }         from "./stdlib.js";
 
 export { Attribute, QualifiedAttribute,
          presentationModelFromAttributeNames,
-         valueOf, readQualifierValue,
-         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE }
+         valueOf, obsValueOf, readQualifierValue,
+         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE }
 
 /**
- * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'} ObservableTypeString
+ * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'} ObservableTypeString
  * Feel free to extend this type with new unique type strings as needed for your application.
  */
 
-/** @type ObservableTypeString */ const VALUE    = "value";
-/** @type ObservableTypeString */ const VALID    = "valid";
-/** @type ObservableTypeString */ const EDITABLE = "editable";
-/** @type ObservableTypeString */ const LABEL    = "label";
-/** @type ObservableTypeString */ const NAME     = "name";
-/** @type ObservableTypeString */ const TYPE     = "type"; // HTML input types: text, number, checkbox, etc.
+/** @type ObservableTypeString */ const VALUE       = "value";
+/** @type ObservableTypeString */ const VALID       = "valid";
+/** @type ObservableTypeString */ const EDITABLE    = "editable";
+/** @type ObservableTypeString */ const LABEL       = "label";
+/** @type ObservableTypeString */ const NAME        = "name";
+/** @type ObservableTypeString */ const TYPE        = "type"; // HTML input types: text, number, checkbox, etc.
+/** @type ObservableTypeString */ const ACTIVE      = "active";
+/** @type ObservableTypeString */ const HASH        = "hash";
+/** @type ObservableTypeString */ const ICON        = "icon";
+/** @type ObservableTypeString */ const VISITED     = "visited";
+/** @type ObservableTypeString */ const LOGO        = "logo";
+/** @type ObservableTypeString */ const VISIBLE     = "visible";
+
 
 /**
  * Convenience function to read the current state of the attribute's VALUE observable for the given attribute.
@@ -29,6 +36,15 @@ export { Attribute, QualifiedAttribute,
  * @return T
  */
 const valueOf = attribute => attribute.getObs(VALUE).getValue();
+
+/**
+ * Convenience function to read the current state of the attribute's VALUE observable for the given attribute.
+ * @template T
+ * @param {AttributeType<String>} attribute
+ * @param {!ObservableTypeString} obsType
+ * @return T
+ */
+const obsValueOf = (attribute, obsType) => attribute.getObs(obsType).getValue();
 
 /**
  * @typedef { Object<String, AttributeType> } PresentationModel

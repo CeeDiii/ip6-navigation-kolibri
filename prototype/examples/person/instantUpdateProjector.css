@@ -1,11 +1,20 @@
+@import "../../css/Kolibri-Base.css";
 body {
     perspective: 100vw;
 }
-
+.card {
+    transition: all ease-in-out .5s;
+    max-width:  40em;
+    margin:     1em auto 2em auto;
+    padding:    2em;
+    box-shadow: var(--kolibri-box-shadow);
+}
 h1 {
     text-align: center;
 }
-
+.holder {
+    margin: 0 3em 0 3em;
+}
 input[type=text] {
     font-size:      1.1em;
     color:          var(--kolibri-color-output);
@@ -25,13 +34,8 @@ input[type=text]:focus {
     transition:          background-size linear .5s;
 }
 
-#nav a {
-    padding: 6px;
-    color: var(--kolibri-color-accent);
+#plus {
+    position: relative;
+    top: -1em;
 }
-
-#nav a.visited {
-    color: var(--kolibri-color-output);
-}
-
 
