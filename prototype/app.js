@@ -8,8 +8,9 @@ import { PersonPageProjector } from "./pages/person/personPageProjector.js";
 
 const listController      = ListController(Person);
 const selectionController = SelectionController(selectionMold);
-const personPageProjector = PersonPageProjector([listController, selectionController]);
-const personPageController = PageController("person", personPageProjector);
+const personPageController = PageController("person");
+PersonPageProjector(personPageController, [listController, selectionController]);
+
 
 const pinToNavElement = document.getElementById("nav");
 

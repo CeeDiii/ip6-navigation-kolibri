@@ -28,13 +28,17 @@ const NavigationController = model => { //TODO generate model within controller
     const currentLocation = Attribute(null);
 
     const navigate = hash => {
-        const newLocation = navigationModel.getPageController(hash);
-        newLocation.activate();
-        // on initialization the currentLocation can be null and therefore not passivated
-        if (valueOf(currentLocation) !== null) {
-            valueOf(currentLocation).passivate();
+        if (window.location.hash !== hash) {
+            window.location.hash = hash;
+            const newLocation = navigationModel.getPageController(hash);
+            newLocation.activate();
+            // on initialization the currentLocation can be null and therefore not passivated
+            if (valueOf(currentLocation) !== null) {
+                valueOf(currentLocation).passivate();
+            }
+            currentLocation.getObs(VALUE).setValue(newLocation);
         }
-        currentLocation.getObs(VALUE).setValue(newLocation);
+
     };
 
     window.onhashchange = () => {

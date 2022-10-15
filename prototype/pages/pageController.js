@@ -21,20 +21,17 @@ export { PageController }
  *
  * @constructor
  * @param { !String } pageName
- * @param { !PageProjectorType } pageProj
  * @returns  PageControllerType
  *
  */
 
-const PageController = (pageName, pageProj) => {
+const PageController = pageName => {
     const pageModel = PageModel(pageName);
-    const pageProjector = pageProj;
 
     return {
         activate: () => {
             pageModel.getPageObs(ACTIVE).setValue(true);
             pageModel.getPageObs(VISITED).setValue(true);
-            pageProjector.projectPage();
         },
         passivate:        () => pageModel.getPageObs(ACTIVE).setValue(false),
         getHash:          () => pageModel.getPageObs(HASH).getValue(),

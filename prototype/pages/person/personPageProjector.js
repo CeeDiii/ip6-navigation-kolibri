@@ -11,16 +11,16 @@ export { PersonPageProjector }
 /**
  * @template T
  * @constructor
+ * @param { PageControllerType } pageController
  * @param { [ListControllerType<T>, SelectionControllerType<T>] } controllers
  * @returns { PageProjectorType }
  */
 
-const PersonPageProjector = controllers => {
+const PersonPageProjector = (pageController, controllers) => {
     const pageWrapper = document.getElementById('content');
 
-    return {
-        projectPage: () => {
-            const [contentWrapper] = dom(`
+    const projectPage =  () => {
+        const [contentWrapper] = dom(`
                 <div id="contentWrapper">
                     <div class="card">
                         <h1>Person List</h1>
@@ -39,28 +39,35 @@ const PersonPageProjector = controllers => {
                 </div>
             `);
 
-            if (pageWrapper.firstChild === null) {
-                // replace with generated content
-                pageWrapper.append(contentWrapper);
-            } else {
-                // replace with generated content
-                pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
-            }
-
-            const listController = controllers[0];
-            const selectionController = controllers[1];
-
-            const master = projectMasterView(listController, selectionController, );
-            document.getElementById('masterContainer').append(...master);
-
-            const detailForm = projectDetailView(selectionController, document.getElementById('detailCard'));
-            document.getElementById('detailContainer').append(...detailForm);
-
-            document.querySelector("head style").textContent += pageCss;
-
-            // binding of the main view
-            document.getElementById('plus').onclick    = _ => listController.addModel();
+        if (pageWrapper.firstChild === null) {
+            // replace with generated content
+            pageWrapper.append(contentWrapper);
+        } else {
+            // replace with generated content
+            pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
         }
+
+        const listController = controllers[0];
+        const selectionController = controllers[1];
+
+        const master = projectMasterView(listController, selectionController, );
+        document.getElementById('masterContainer').append(...master);
+
+        const detailForm = projectDetailView(selectionController, document.getElementById('detailCard'));
+        document.getElementById('detailContainer').append(...detailForm);
+
+        document.querySelector("head style").textContent += pageCss;
+
+        // binding of the main view
+        document.getElementById('plus').onclick    = _ => listController.addModel();
+    };
+
+    pageController.onActiveChanged(() => {
+        projectPage();
+    });
+
+    return {
+        projectPage
     }
 };
 
