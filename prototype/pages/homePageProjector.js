@@ -1,22 +1,21 @@
 export { HomePageProjector }
-
 /**
  * @typedef PageProjectorType
  * @property { () => void } projectPage
  */
 
 /**
+ * @template T
  * @constructor
  * @param { PageControllerType } pageController
  * @returns { PageProjectorType }
  */
+
 const HomePageProjector = pageController => {
     const pageWrapper = document.getElementById('content');
+    const contentWrapper = document.createElement("div");
 
-    const projectPage = () => {
-
-        const content = document.createElement('div');
-
+    const initialize = () => {
         const h1 = document.createElement('h1');
         const div = document.createElement('div');
         const wrapper = document.createElement('div');
@@ -35,12 +34,25 @@ const HomePageProjector = pageController => {
         wrapper.append(h1);
         div.append(welcomeDiv);
         wrapper.append(div);
-        content.appendChild(wrapper);
+        contentWrapper.appendChild(wrapper);
 
         if (pageWrapper.firstChild === null) {
-            pageWrapper.append(content);
+            pageWrapper.append(contentWrapper);
         } else {
-            pageWrapper.replaceChild(content, pageWrapper.firstChild);
+            pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
+        }
+    };
+
+    const projectPage = () => {
+        // initialize content on first call
+        if (contentWrapper.firstChild === null) {
+            initialize();
+        }
+        // bind content to document
+        if (pageWrapper.firstChild === null) {
+            pageWrapper.append(contentWrapper);
+        } else {
+            pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
         }
     };
 

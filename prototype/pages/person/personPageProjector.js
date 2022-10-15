@@ -16,12 +16,12 @@ export { PersonPageProjector }
  */
 const PersonPageProjector = pageController => {
     const pageWrapper = document.getElementById('content');
+    const contentWrapper = document.createElement("div");
     const [listController, selectionController] = pageController.getPageContentControllers();
 
-    const projectPage =  () => {
-        const [contentWrapper] = dom(`
-                <div id="contentWrapper">
-                    <div class="card">
+    const initialize = () => {
+        const contentDomCollection = dom(`
+                    <div class="card" id="masterCard">
                         <h1>Person List</h1>
                     
                         <div class="holder" id="masterContainer">
@@ -35,8 +35,31 @@ const PersonPageProjector = pageController => {
                         <div class="holder" id="detailContainer">
                         </div>
                     </div>
-                </div>
             `);
+
+        contentWrapper.append(...contentDomCollection);
+        const masterContainer = contentWrapper.children["masterCard"]
+            .children["masterContainer"];
+        const plusButton = masterContainer.children["plus"];
+        const detailCard = contentWrapper.children["detailCard"];
+        const detailContainer = detailCard.children["detailContainer"];
+
+        const master = projectMasterView(listController, selectionController, );
+        masterContainer.append(...master);
+
+        const detailForm = projectDetailView(selectionController, detailCard);
+        detailContainer.append(...detailForm);
+
+        document.querySelector("head style").textContent += pageCss;
+
+        // binding of the main view
+        plusButton.onclick = _ => listController.addModel();
+    };
+
+    const projectPage =  () => {
+        if (contentWrapper.firstChild === null) {
+            initialize();
+        }
 
         if (pageWrapper.firstChild === null) {
             pageWrapper.append(contentWrapper);
@@ -44,16 +67,6 @@ const PersonPageProjector = pageController => {
             pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
         }
 
-        const master = projectMasterView(listController, selectionController, );
-        document.getElementById('masterContainer').append(...master);
-
-        const detailForm = projectDetailView(selectionController, document.getElementById('detailCard'));
-        document.getElementById('detailContainer').append(...detailForm);
-
-        document.querySelector("head style").textContent += pageCss;
-
-        // binding of the main view
-        document.getElementById('plus').onclick    = _ => listController.addModel();
     };
 
     pageController.onActiveChanged(active => {

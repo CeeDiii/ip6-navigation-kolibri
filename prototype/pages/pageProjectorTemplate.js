@@ -13,24 +13,33 @@ export { PageProjector }
 
 const PageProjector = pageController => {
     const pageWrapper = document.getElementById('content');
+    const contentWrapper = document.createElement("div");
 
     // const contentControllers = pageController.getPageContentControllers();
 
-    const projectPage = () => {
+    const initialize = () => {
         // generate content
         // projectContent(...contentControllers);
         // ...
+    };
+
+    const projectPage = () => {
+        // initialize content on first call
+        if (contentWrapper.firstChild === null) {
+            initialize();
+        }
+        // bind content to document
         if (pageWrapper.firstChild === null) {
-            // replace with generated content
-            pageWrapper.append(null);
+            pageWrapper.append(contentWrapper);
         } else {
-            // replace with generated content
-            pageWrapper.replaceChild(null, pageWrapper.firstChild);
+            pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
         }
     };
 
-    pageController.onActiveChanged(() => {
-        projectPage();
+    pageController.onActiveChanged(active => {
+        if (active) {
+            projectPage();
+        }
     });
 
     return {
