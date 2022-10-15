@@ -1,4 +1,3 @@
-
 import {
     projectForm,
     projectListItem,
@@ -26,7 +25,7 @@ const projectMasterView = (listController, selectionController) => {
         const rowElements = projectListItem(listController, selectionController, car, ALL_ATTRIBUTE_NAMES);
         rootElement.append(...rowElements);
         selectionController.setSelectedModel(car);
-    }
+    };
 
     rootElement.classList.add(masterClassName);
     rootElement.style['grid-template-columns'] = '2em repeat(' + ALL_ATTRIBUTE_NAMES.length + ', auto);';
