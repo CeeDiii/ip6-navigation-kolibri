@@ -62,8 +62,10 @@ const PersonPageProjector = (pageController, controllers) => {
         document.getElementById('plus').onclick    = _ => listController.addModel();
     };
 
-    pageController.onActiveChanged(() => {
-        projectPage();
+    pageController.onActiveChanged(active => {
+        if (active) {
+            projectPage();
+        }
     });
 
     return {
