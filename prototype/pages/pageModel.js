@@ -1,4 +1,4 @@
-import {ACTIVE, Attribute, HASH, VALUE, VISITED} from "../kolibri/presentationModel.js";
+import {ACTIVE, Attribute, HASH, VISITED} from "../kolibri/presentationModel.js";
 
 export { PageModel }
 
@@ -6,8 +6,6 @@ export { PageModel }
  * @typedef PageModelType
  * @template T
  * @property { (obsType: ObservableTypeString) => IObservable<T> } getPageObs
- * @property { (newContent: HTMLDivElement) => void } setContent
- * @property { () => HTMLDivElement } getContent
  */
 
 /**
@@ -15,14 +13,13 @@ export { PageModel }
  *
  * @constructor
  * @param { !String } pageName
- * @param { !(() => HTMLDivElement) } initialContent
  * @returns PageModelType
  * @example
  * TODO
  */
 
-const PageModel = (pageName, initialContent) => {
-    const pageAttr = Attribute(initialContent());
+const PageModel = pageName => {
+    const pageAttr = Attribute(pageName);
     pageAttr.getObs(ACTIVE).setValue(false);
     pageAttr.getObs(HASH).setValue('#' + pageName);
     pageAttr.getObs(VISITED).setValue(false);
@@ -30,9 +27,6 @@ const PageModel = (pageName, initialContent) => {
 
     return {
         getPageObs: obsType => pageAttr.getObs(obsType),
-        setContent: newContent => pageAttr.getObs(VALUE).setValue(newContent),
-        getContent: () => pageAttr.getObs(VALUE).getValue(),
-        //TODO add addCss and removeCss functions
     }
 };
 
