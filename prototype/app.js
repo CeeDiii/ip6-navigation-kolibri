@@ -1,4 +1,3 @@
-import { NavigationModel } from "./navigation/navigationModel.js";
 import { NavigationController } from "./navigation/navigationController.js";
 import { NavigationProjector } from "./navigation/basicNavigationProjector.js";
 import { PageController } from "./pages/pageController.js";
@@ -31,8 +30,7 @@ SimpleWorkWeekPageProjector(simpleWorkWeekPageController);
 
 const pinToNavElement = document.getElementById("nav");
 
-const navigationModel = NavigationModel();
-const navigationController = NavigationController(navigationModel);
+const navigationController = NavigationController();
 NavigationProjector(navigationController, pinToNavElement);
 
 navigationController.addPageController(homePageController);

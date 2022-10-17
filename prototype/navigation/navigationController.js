@@ -1,4 +1,5 @@
 import { Attribute, VALUE, valueOf } from "../kolibri/presentationModel.js";
+import { NavigationModel } from "./navigationModel.js";
 
 export { NavigationController }
 
@@ -19,18 +20,18 @@ export { NavigationController }
 
 /**
  * @constructor
- * @param   { !NavigationModelType } model - the navigation model this controller coordinates
  * @return  { NavigationControllerType }
  * @example
  */
-const NavigationController = model => { //TODO generate model within controller
-    const navigationModel = model;
+const NavigationController = () => {
+    const navigationModel = NavigationModel();
     const currentLocation = Attribute(null);
+    const pageControllers = {};
 
     const navigate = hash => {
         if (window.location.hash !== hash) {
             window.location.hash = hash;
-            const newLocation = navigationModel.getPageController(hash);
+            const newLocation = pageControllers[hash];
             newLocation.activate();
             // on initialization the currentLocation can be null and therefore not passivated
             if (valueOf(currentLocation) !== null) {
@@ -47,9 +48,21 @@ const NavigationController = model => { //TODO generate model within controller
     };
 
     return {
-        addPageController: pageController => navigationModel.addPageController(pageController),
-        getPageController: pageHash => navigationModel.getPageController(pageHash),
-        deletePageController: pageController => navigationModel.deletePageController(pageController),
+        addPageController: pageController => {
+            const hash = pageController.getHash();
+            if(pageControllers[hash] === undefined) {
+                pageControllers[hash] = pageController;
+                navigationModel.addPageController(hash);
+                return true;
+            } else {
+                return false;
+            }
+        },
+        getPageController: pageHash => pageControllers[pageHash],
+        deletePageController: pageHash => {
+            navigationModel.deletePageController(pageHash);
+            return delete pageControllers[pageHash];
+        },
         onNavigationHashAdd: navigationModel.onAdd,
         onNavigationHashDel: navigationModel.onDel,
         onLocationChanged: currentLocation.getObs(VALUE).onChange,

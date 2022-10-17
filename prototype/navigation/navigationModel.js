@@ -7,9 +7,8 @@ export { NavigationModel }
  * Model containing the application navigation-data
  *
  * @typedef NavigationModelType
- * @property { (pageController: PageControllerType) => Boolean } addPageController
- * @property { (pageHash: String) => PageControllerType } getPageController
- * @property { (pageHash: String) => Boolean } deletePageController
+ * @property { (pageHash: String) => void } addPageController
+ * @property { (pageHash: String) => void } deletePageController
  * @property { (callback: observableListCallback) => Boolean } onAdd
  * @property { (callback: observableListCallback) => Boolean } onDel
  * @property { (callback: onValueChangeCallback<String>) => void } onWebsiteLogoChanged
@@ -24,23 +23,13 @@ export { NavigationModel }
 
 const NavigationModel = () => {
     const navigationHashes = Attribute(ObservableList([]));
-    const pageControllers = {};
 
     return {
-        addPageController: pageController => {
-            const hash = pageController.getHash();
-            if(valueOf(navigationHashes)[hash] === undefined) {
-                pageControllers[hash] = pageController;
-                valueOf(navigationHashes).add(hash);
-                return true;
-            } else {
-                return false;
-            }
+        addPageController: pageHash => {
+            valueOf(navigationHashes).add(pageHash);
         },
-        getPageController: pageHash => pageControllers[pageHash],
         deletePageController: pageHash => {
             valueOf(navigationHashes).del(pageHash);
-            return delete pageControllers[pageHash];
         },
         onAdd: valueOf(navigationHashes).onAdd,
         onDel: valueOf(navigationHashes).onDel,
