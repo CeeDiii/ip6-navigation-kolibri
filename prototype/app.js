@@ -43,6 +43,8 @@ navigationController.addPageController(personPageController);
 navigationController.addPageController(carPageController);
 navigationController.addPageController(simpleWorkWeekPageController);
 
+navigationController.setHomePage('home');
+
 
 
 
