@@ -1,4 +1,6 @@
-export { HomePageProjector }
+import {dom} from "../../kolibri/util/dom.js";
+
+export { PageNotFoundProjector }
 /**
  * @typedef PageProjectorType
  * @property { () => void } projectPage
@@ -10,30 +12,24 @@ export { HomePageProjector }
  * @returns { PageProjectorType }
  */
 
-const HomePageProjector = pageController => {
+const PageNotFoundProjector = pageController => {
     const pageWrapper = document.getElementById('content');
-    const contentWrapper = document.createElement("div");
+    const contentWrapper = document.createElement('div');
 
     const initialize = () => {
-        const h1 = document.createElement('h1');
-        const div = document.createElement('div');
-        const wrapper = document.createElement('div');
-        const welcomeDiv = document.createElement('div');
+        const page = dom(`
+            <div id="content-wrapper">
+                <h1>404</h1>
+                <div class="message-wrapper">
+                    <div>
+                        <p>Page not found</p>
+                        <p>Please contact your local admin!</p>
+                    </div>
+                </div>
+            </div>
+        `);
 
-        h1.innerText = 'home';
-        wrapper.id = 'content-wrapper';
-        welcomeDiv.innerText = "Welcome to Navigation with Kolibri 2.0!";
-
-        // styling all elements inline
-        h1.style.setProperty('margin-top', '35px');
-        div.style.setProperty('display', 'flex');
-        div.style.setProperty('justify-content', 'center');
-        // end styling
-
-        wrapper.append(h1);
-        div.append(welcomeDiv);
-        wrapper.append(div);
-        contentWrapper.appendChild(wrapper);
+        contentWrapper.appendChild(...page);
 
         if (pageWrapper.firstChild === null) {
             pageWrapper.append(contentWrapper);

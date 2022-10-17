@@ -1,5 +1,15 @@
+:root {
+    --background: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    perspective: 100vw;
+    min-height: 100vh;
 }
 
 h1 {
@@ -23,15 +33,6 @@ input[type=text]:focus {
 
     background-size:     100% 1px;
     transition:          background-size linear .5s;
-}
-
-#nav a {
-    padding: 6px;
-    color: var(--kolibri-color-accent);
-}
-
-#nav a.visited {
-    color: var(--kolibri-color-output);
 }
 
 

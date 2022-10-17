@@ -5,10 +5,13 @@ export { PageProjector }
  */
 
 /**
- * @template T
  * @constructor
  * @param { PageControllerType } pageController
  * @returns { PageProjectorType }
+ * @example
+ * const homePageController = PageController("home", null);
+ * homePageController.setIcon('house');
+ * HomePageProjector(homePageController);
  */
 
 const PageProjector = pageController => {
@@ -35,6 +38,11 @@ const PageProjector = pageController => {
             pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
         }
     };
+
+    pageController.onValueChanged(newValue => {
+        // add class for specific page styling
+        contentWrapper.classList.add(newValue);
+    });
 
     pageController.onActiveChanged(active => {
         if (active) {

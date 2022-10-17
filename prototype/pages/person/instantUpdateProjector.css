@@ -37,3 +37,17 @@
     top: -1em;
 }
 
+.person h2 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.person {
+    margin-bottom: 100px;
+}
+
+.person p{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
