@@ -37,3 +37,17 @@
     top: -1em;
 }
 
+.car h2 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.car {
+    margin-bottom: 100px;
+}
+
+.car p{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
