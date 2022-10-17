@@ -1,4 +1,5 @@
 import { ObservableList } from "../../kolibri/observable.js";
+import {dom} from "../../kolibri/util/dom.js";
 
 export { NavigationProjector }
 
@@ -23,43 +24,36 @@ const NavigationProjector = (controller, pinToElement) => {
     const anchorListWrappers = {};
 
     const projectNavigation = () => {
-        const ul        = document.createElement('ul');
-        const div       = document.createElement('div');
-        const indicator = document.createElement('div');
-
-        pinToElement.innerHTML = '';
-
-        div.classList.add('navigation');
-        indicator.classList.add('indicator');
+        const navigation = dom(`
+            <div id="bubbleStateWrapper" class="navigation">
+                <ul id="bubbleStateNavPointWrapper">
+                    <!-- Placeholder for navigation li elements and indicator -->
+                </ul>
+            </div>
+        `);
 
         navigationAnchors.forEach(anchor => {
-            const li   = document.createElement('li');
-            const icon = document.createElement('span');
-            const img  = document.createElement('img');
-            const text = document.createElement('span');
-
             const navigationPointName = anchor.href.substring(anchor.href.indexOf("#") + 1);
 
-            li.classList.add('list');
-            li.id = navigationPointName;
-            icon.classList.add('icon');
-            img.classList.add('icon');
-            text.classList.add('text');
-            text.innerText = navigationPointName;
+            anchor.innerHTML = `
+                <span class="icon">
+                    <img class="icon">
+                </span>
+                <span class="text">${navigationPointName}</span>
+            `;
 
-            anchorListWrappers[navigationPointName] = li;
+            const navPoint = dom(`
+                <li class="list" id="${navigationPointName}">
+                </li>
+        `   );
 
-            icon.append(img);
-            anchor.innerHTML = '';
-            anchor.append(icon);
-            anchor.append(text);
-            li.append(anchor);
-            ul.appendChild(li);
+            navPoint[navigationPointName].append(anchor);
+            anchorListWrappers[navigationPointName] = navPoint[0];
+            navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(...navPoint);
         });
-
-        ul.append(indicator);
-        div.append(ul);
-        pinToElement.append(div);
+        const indicator = dom(`<div class="indicator"></div>`);
+        navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(...indicator);
+        pinToElement.replaceChildren(...navigation);
     };
 
     observableNavigationAnchors.onAdd(anchor => {
