@@ -27,6 +27,7 @@ const NavigationModel = () => {
     const navigationHashes = Attribute(ObservableList([]));
     let homepage = '';
 
+
     return {
         addPageController: pageHash => {
             valueOf(navigationHashes).add(pageHash);

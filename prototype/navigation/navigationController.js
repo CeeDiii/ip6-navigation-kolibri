@@ -1,5 +1,7 @@
 import { Attribute, VALUE, valueOf } from "../kolibri/presentationModel.js";
 import { NavigationModel } from "./navigationModel.js";
+import {PageController} from "../pages/pageController.js";
+import {PageNotFoundProjector} from "../pages/404/pageNotFoundProjector.js";
 
 export { NavigationController }
 
@@ -34,19 +36,28 @@ const NavigationController = () => {
             hash = '#' + navigationModel.getHomepage();
             if(hash === '') return;
         }
+
         window.location.hash = hash;
         const newLocation = pageControllers[hash];
-        newLocation.activate();
+
         // on initialization the currentLocation can be null and therefore not passivated
+
         if (valueOf(currentLocation) !== null) {
             valueOf(currentLocation).passivate();
         }
-        currentLocation.getObs(VALUE).setValue(newLocation);
+
+        if(newLocation === undefined) {
+            const errorController = PageController("pagenotfound", null);
+            PageNotFoundProjector(errorController).projectPage();
+        } else {
+            newLocation.activate();
+            currentLocation.getObs(VALUE).setValue(newLocation);
+        }
     };
 
     window.onhashchange = () => {
         const hash = window.location.hash;
-        if (window.location.hash !== hash) {
+        if (hash !== valueOf(currentLocation).getHash()) {
             navigate(hash);
         }
     };
