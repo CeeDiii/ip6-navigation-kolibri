@@ -11,8 +11,9 @@ export { NavigationController }
  * @typedef NavigationControllerType
  * @property { (pageController: PageControllerType) => Boolean } addPageController
  * @property { (pageHash: String) => PageControllerType } getPageController
- * @property { (pageHash: String) => Boolean } deletePageController
+ * @property { (pageHash: String) => void } deletePageController
  * @property { (newHomepage: String) => void } setHomePage
+ * @property { () => String} getHomePage
  * @property { (callback: observableListCallback) => Boolean } onNavigationHashAdd
  * @property { (callback: observableListCallback) => Boolean } onNavigationHashDel
  * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onLocationChanged
@@ -87,9 +88,9 @@ const NavigationController = () => {
 
     return {
         addPageController: pageController => {
-            const hash = pageController.getHash();
-            if(pageControllers[hash] === undefined) {
+            if (pageController && pageControllers[pageController.getHash()] === undefined) {
                 bindPage(pageController);
+                const hash = pageController.getHash();
                 pageControllers[hash] = pageController;
                 navigationModel.addPageController(hash);
                 return true;
@@ -100,9 +101,10 @@ const NavigationController = () => {
         getPageController: pageHash => pageControllers[pageHash],
         deletePageController: pageHash => {
             navigationModel.deletePageController(pageHash);
-            return delete pageControllers[pageHash];
+            delete pageControllers[pageHash];
         },
         setHomePage: newHomepage => navigationModel.setHomepage(newHomepage),
+        getHomePage: () => navigationModel.getHomepage(),
         onNavigationHashAdd:  navigationModel.onAdd,
         onNavigationHashDel:  navigationModel.onDel,
         onLocationChanged:    currentLocation.getObs(VALUE).onChange,
