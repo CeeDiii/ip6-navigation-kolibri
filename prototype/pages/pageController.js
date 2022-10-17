@@ -28,7 +28,9 @@ export { PageController }
  * @param { !String } pageName
  * @param { [T] } contentControllers
  * @returns  PageControllerType
- *
+ * @example
+ * const homePageController = PageController("home", null);
+ * homePageController.setIcon('house');
  */
 
 const PageController = (pageName, contentControllers) => {

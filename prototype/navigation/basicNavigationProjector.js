@@ -12,7 +12,8 @@ export { NavigationProjector }
  * @param { !HTMLDivElement } pinToElement
  * @return { NavigationProjectorType }
  * @example
- * TODO
+ * const navigationController = NavigationController();
+ * NavigationProjector(navigationController, pinToNavElement);
  */
 
 const NavigationProjector = (controller, pinToElement) => {

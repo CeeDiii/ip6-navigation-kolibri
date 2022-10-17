@@ -25,6 +25,7 @@ export { NavigationController }
  * @constructor
  * @return  { NavigationControllerType }
  * @example
+ * const navigationController = NavigationController();
  */
 const NavigationController = () => {
     const navigationModel = NavigationModel();
@@ -32,29 +33,32 @@ const NavigationController = () => {
     const pageControllers = {};
 
     const navigate = hash => {
+        // check if hash is empty to redirect to fallback homepage
         if(hash === '' || hash === '#') {
             hash = '#' + navigationModel.getHomepage();
-            if(hash === '') return;
+            if(hash === '#') return; // return if fallback homepage is not defined
         }
 
         window.location.hash = hash;
         const newLocation = pageControllers[hash];
 
         // on initialization the currentLocation can be null and therefore not passivated
-
         if (valueOf(currentLocation) !== null) {
             valueOf(currentLocation).passivate();
         }
 
+        // if newLocation is undefined, navigate to an error page
         if(newLocation === undefined) {
             const errorController = PageController("pagenotfound", null);
             PageNotFoundProjector(errorController).projectPage();
         } else {
+            // otherwise activate newLocation and display the page
             newLocation.activate();
             currentLocation.getObs(VALUE).setValue(newLocation);
         }
     };
 
+    // handles navigation through the browser URL field
     window.onhashchange = () => {
         const hash = window.location.hash;
         if (hash !== valueOf(currentLocation).getHash()) {
@@ -62,11 +66,19 @@ const NavigationController = () => {
         }
     };
 
+    // handles initial page load and page reload
     window.onload = () => {
         const hash = window.location.hash;
         navigate(hash);
     };
 
+    /**
+     * This function handles all bindings to the pageController
+     *
+     * @function
+     * @param { PageControllerType } pageController
+     * @return { void }
+     **/
     const bindPage = pageController => {
         pageController.onIsHomepageChanged(isHomepage => {
             if(isHomepage) navigationModel.setHomepage(pageController.getHash());

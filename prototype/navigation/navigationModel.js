@@ -20,7 +20,6 @@ export { NavigationModel }
 /** 
  * @constructor
  * @return { NavigationModelType }
- * @example
  */
 
 const NavigationModel = () => {

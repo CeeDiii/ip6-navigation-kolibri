@@ -8,7 +8,6 @@ export { SimpleWorkWeekPageProjector }
  */
 
 /**
- * @template T
  * @constructor
  * @param { PageControllerType } pageController
  * @returns { PageProjectorType }

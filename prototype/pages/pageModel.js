@@ -14,8 +14,6 @@ export { PageModel }
  * @constructor
  * @param { !String } pageName
  * @returns PageModelType
- * @example
- * TODO
  */
 
 const PageModel = pageName => {

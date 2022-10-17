@@ -5,10 +5,13 @@ export { PageProjector }
  */
 
 /**
- * @template T
  * @constructor
  * @param { PageControllerType } pageController
  * @returns { PageProjectorType }
+ * @example
+ * const homePageController = PageController("home", null);
+ * homePageController.setIcon('house');
+ * HomePageProjector(homePageController);
  */
 
 const PageProjector = pageController => {

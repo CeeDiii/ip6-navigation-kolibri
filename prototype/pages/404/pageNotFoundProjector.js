@@ -7,7 +7,6 @@ export { PageNotFoundProjector }
  */
 
 /**
- * @template T
  * @constructor
  * @param { PageControllerType } pageController
  * @returns { PageProjectorType }
