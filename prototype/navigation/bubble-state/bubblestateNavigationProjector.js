@@ -36,8 +36,8 @@ const NavigationProjector = (controller, pinToElement) => {
             const navigationPointName = anchor.href.substring(anchor.href.indexOf("#") + 1);
 
             anchor.innerHTML = `
-                <span class="icon">
-                    <img class="icon">
+                <span class="icon" id="${navigationPointName}-icon-wrapper">
+                    <img class="icon" id="${navigationPointName}-icon">
                 </span>
                 <span class="text">${navigationPointName}</span>
             `;
@@ -89,6 +89,19 @@ const NavigationProjector = (controller, pinToElement) => {
                 if (anchorListWrappers[pageName] !== undefined) {
                     anchorListWrappers[pageName].classList.remove("active");
                 }
+            }
+        });
+
+        controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
+            const pageName = hash.substring(1);
+            /** HTMLAnchorElement */
+            const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {
+                const urlHash = a.href.substring(a.href.indexOf("#"));
+                return urlHash === hash;
+            });
+            if (anchor !== undefined) {
+                anchor.classList.remove(oldIcon);
+                anchor.classList.add(newIcon);
             }
         });
         // END

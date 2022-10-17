@@ -122,18 +122,30 @@
     transform: translateX(calc(70px * 3));
 }
 
-.list#home img.icon{
-    content: url("icons/home.svg");
+.list .visited img.icon {
+    filter: invert(5%) sepia(78%) saturate(99999%) hue-rotate(280deg) brightness(97%) contrast(101%);
 }
 
-.list#person img.icon{
+.list .house img.icon{
+    content: url("icons/house.svg");
+}
+
+.list .person img.icon{
     content: url("icons/person.svg");
 }
 
-.list#car img.icon{
+.list .car img.icon{
     content: url("icons/car.svg");
 }
 
-.list#workweek img.icon{
-    content: url("icons/demo.svg");
+.list .plus img.icon.plus{
+    content: url("icons/plus.svg");
+}
+
+.list .placeholder img.icon{
+    content: url("icons/placeholder.svg");
+}
+
+.list .calendar img.icon{
+    content: url("icons/calendar.svg");
 }

@@ -28,7 +28,6 @@ export { Attribute, QualifiedAttribute,
 /** @type ObservableTypeString */ const LOGO        = "logo";
 /** @type ObservableTypeString */ const VISIBLE     = "visible";
 
-
 /**
  * Convenience function to read the current state of the attribute's VALUE observable for the given attribute.
  * @template T

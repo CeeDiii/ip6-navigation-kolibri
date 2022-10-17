@@ -55,9 +55,6 @@ const CarPageProjector = pageController => {
 
         // binding of the main view
         plusButton.onclick = _ => listController.addModel();
-
-        // add class for specific page styling
-        contentWrapper.classList.add("car");
     };
 
     const projectPage = () => {
@@ -72,6 +69,11 @@ const CarPageProjector = pageController => {
             pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
         }
     };
+
+    pageController.onValueChanged(newValue => {
+        // add class for specific page styling
+        contentWrapper.classList.add(newValue);
+    });
 
     pageController.onActiveChanged(active => {
         if (active) {

@@ -54,9 +54,6 @@ const PersonPageProjector = pageController => {
 
         // binding of the main view
         plusButton.onclick = _ => listController.addModel();
-
-        // add class for specific page styling
-        contentWrapper.classList.add("person");
     };
 
     const projectPage =  () => {
@@ -71,6 +68,11 @@ const PersonPageProjector = pageController => {
         }
 
     };
+
+    pageController.onValueChanged(newValue => {
+        // add class for specific page styling
+        contentWrapper.classList.add(newValue);
+    });
 
     pageController.onActiveChanged(active => {
         if (active) {

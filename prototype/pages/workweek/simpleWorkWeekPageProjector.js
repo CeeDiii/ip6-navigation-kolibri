@@ -29,9 +29,6 @@ const SimpleWorkWeekPageProjector = pageController => {
         contentWrapper.append(...fieldset);
         const workingHoursInput = contentWrapper.children["workingHoursInput"];
         workingHoursInput.append(...projectWeek(weekController));
-
-        // add class for specific page styling
-        contentWrapper.classList.add("workweek");
     };
 
     const projectPage = () => {
@@ -46,6 +43,11 @@ const SimpleWorkWeekPageProjector = pageController => {
             pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
         }
     };
+
+    pageController.onValueChanged(newValue => {
+        // add class for specific page styling
+        contentWrapper.classList.add(newValue);
+    });
 
     pageController.onActiveChanged(active => {
         if (active) {

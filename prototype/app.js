@@ -13,20 +13,24 @@ import { WeekController } from "./pages/workweek/workweek/weekController.js";
 import { SimpleWorkWeekPageProjector } from "./pages/workweek/simpleWorkWeekPageProjector.js";
 
 const homePageController = PageController("home", null);
+homePageController.setIcon('house');
 HomePageProjector(homePageController);
 
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
+personPageController.setIcon('person');
 PersonPageProjector(personPageController);
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
+carPageController.setIcon('car');
 CarPageProjector(carPageController);
 
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
+simpleWorkWeekPageController.setIcon('calendar');
 SimpleWorkWeekPageProjector(simpleWorkWeekPageController);
 
 const pinToNavElement = document.getElementById("nav");

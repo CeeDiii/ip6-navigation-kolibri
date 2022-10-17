@@ -56,6 +56,11 @@ const HomePageProjector = pageController => {
         }
     };
 
+    pageController.onValueChanged(newValue => {
+        // add class for specific page styling
+        contentWrapper.classList.add(newValue);
+    });
+
     pageController.onActiveChanged(active => {
         if (active) {
             projectPage();
