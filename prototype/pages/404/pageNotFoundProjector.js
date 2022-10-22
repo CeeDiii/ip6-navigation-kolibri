@@ -21,10 +21,8 @@ const PageNotFoundProjector = pageController => {
             <div id="content-wrapper">
                 <h1>404</h1>
                 <div class="message-wrapper">
-                    <div>
-                        <p>Page not found</p>
-                        <p>Please contact your local admin!</p>
-                    </div>
+                    <p>Page not found</p>
+                    <p>Please contact your local admin!</p>
                 </div>
             </div>
         `);
