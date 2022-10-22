@@ -66,6 +66,12 @@ const BreadCrumbProjector = (controller, pinToElement) => {
         breadCrumbs.reverse();
 
         breadCrumbs.forEach((breadCrumb, index) => {
+            breadCrumb.onclick = () => {
+                // cut index at last index of current bread crumb, if user navigates via bread crumb
+                navigationAnchors.length = navigationAnchors.lastIndexOf(breadCrumb);
+
+            };
+
             navigationDiv.append(breadCrumb);
 
             // do not add ">" on last bread crumb
