@@ -7,8 +7,8 @@ export { NavigationModel }
  * Model containing the application navigation-data
  *
  * @typedef NavigationModelType
- * @property { (pageHash: String) => void } addPageController
- * @property { (pageHash: String) => void } deletePageController
+ * @property { (pageHash: String) => void } addNavigationHash
+ * @property { (pageHash: String) => void } deleteNavigationHash
  * @property { () => String } getHomepage
  * @property { (newHomepage: String) => void } setHomepage
  * @property { (callback: observableListCallback) => Boolean } onAdd
@@ -28,10 +28,10 @@ const NavigationModel = () => {
 
 
     return {
-        addPageController: pageHash => {
+        addNavigationHash: pageHash => {
             valueOf(navigationHashes).add(pageHash);
         },
-        deletePageController: pageHash => {
+        deleteNavigationHash: pageHash => {
             valueOf(navigationHashes).del(pageHash);
         },
         getHomepage: () => homepage,

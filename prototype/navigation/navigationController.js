@@ -92,7 +92,7 @@ const NavigationController = () => {
                 bindPage(pageController);
                 const hash = pageController.getHash();
                 pageControllers[hash] = pageController;
-                navigationModel.addPageController(hash);
+                navigationModel.addNavigationHash(hash);
                 return true;
             } else {
                 return false;
@@ -100,7 +100,7 @@ const NavigationController = () => {
         },
         getPageController: pageHash => pageControllers[pageHash],
         deletePageController: pageHash => {
-            navigationModel.deletePageController(pageHash);
+            navigationModel.deleteNavigationHash(pageHash);
             delete pageControllers[pageHash];
         },
         setHomePage: newHomepage => navigationModel.setHomepage(newHomepage),
