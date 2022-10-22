@@ -1,7 +1,7 @@
 import { NavigationController } from "./navigation/navigationController.js";
 /** import { NavigationProjector } from "./navigation/basicNavigationProjector.js"; **/
 import { NavigationProjector } from "./navigation/bubble-state/bubblestateNavigationProjector.js";
-import { BreadCrumbProjector } from "./navigation/breadCrumb/breadCrumbProjector.js";
+import { BreadCrumbProjector } from "./navigation/bread-crumbs/breadCrumbProjector.js";
 import { PageController } from "./pages/pageController.js";
 import { HomePageProjector } from "./pages/home/homePageProjector.js";
 import { Person, personSelectionMold } from "./pages/person/person.js";

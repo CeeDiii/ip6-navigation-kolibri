@@ -52,6 +52,7 @@ const BreadCrumbProjector = (controller, pinToElement) => {
      */
     const projectNavigation = () => {
         const navigationDiv = document.createElement("div");
+        navigationDiv.classList.add("bread-crumbs");
         const breadCrumbs = [];
 
         // iterate through history in reverse and add breadcrumbs until DEPTH is reached if they do not exist already
@@ -64,9 +65,14 @@ const BreadCrumbProjector = (controller, pinToElement) => {
         // reverse breadCrumbs because of reversing loop above
         breadCrumbs.reverse();
 
-        breadCrumbs.forEach(breadCrumb => {
+        breadCrumbs.forEach((breadCrumb, index) => {
             navigationDiv.append(breadCrumb);
-            navigationDiv.append(">");
+
+            // do not add ">" on last bread crumb
+            if (index < breadCrumbs.length - 1) {
+                navigationDiv.append(">");
+            }
+
         });
 
         if (positionWrapper.firstChild === null) {

@@ -1,0 +1,22 @@
+.bread-crumbs {
+    text-align: center;
+    margin: 32px;
+}
+
+.bread-crumbs a {
+    text-decoration: none;
+    background-color: #eeeeee;
+    margin: 0 6px;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px #dbd7db;
+}
+
+.bread-crumbs a:hover {
+    background-color: #dda9fe;
+    box-shadow: 4px 4px 6px #cecbce;
+}
+
+.bread-crumbs a:visited {
+    color: black;
+}
