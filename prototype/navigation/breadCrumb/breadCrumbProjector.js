@@ -1,7 +1,7 @@
-import { ObservableList } from "../kolibri/observable.js";
-import {dom} from "../kolibri/util/dom";
+import { ObservableList } from "../../kolibri/observable.js";
+import { dom } from "../../kolibri/util/dom.js";
 
-export { NavigationProjector }
+export { BreadCrumbProjector }
 
 /**
  * @typedef NavigationProjectorType
@@ -16,10 +16,12 @@ export { NavigationProjector }
  * const navigationController = NavigationController();
  * NavigationProjector(navigationController, pinToNavElement);
  */
-const NavigationProjector = (controller, pinToElement) => {
+const BreadCrumbProjector = (controller, pinToElement) => {
     const positionWrapper = pinToElement;
     const observableNavigationAnchors = ObservableList([]);
+    const anchorMap = {};
     const navigationAnchors = [];
+    const DEPTH = 3;
 
     /**
      * Initializes a navigation anchor
@@ -30,15 +32,13 @@ const NavigationProjector = (controller, pinToElement) => {
      *
      */
     const initializeNavigationPoint = hash => {
-        // Initialize your navigation anchors here...
         const navigationPointName = hash.substring(1);
-
         // initialize anchor
         const anchorDom = dom(`
             <a href="${hash}">${navigationPointName}</a>
         `);
 
-        // get anchor from collection
+        // get anchor from collection, directly returning anchorDom[0] does not work because of reasons unknown to the author
         const anchor = anchorDom[0];
 
         return anchor;
@@ -52,7 +52,22 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const projectNavigation = () => {
         const navigationDiv = document.createElement("div");
-        // insert your projector code here...
+        const breadCrumbs = [];
+
+        // iterate through history in reverse and add breadcrumbs until DEPTH is reached if they do not exist already
+        for(let i = navigationAnchors.length-1; i >= 0 && breadCrumbs.length < DEPTH; i--) {
+            if (!breadCrumbs.includes(navigationAnchors[i])) {
+                breadCrumbs.push(navigationAnchors[i]);
+            }
+        }
+
+        // reverse breadCrumbs because of reversing loop above
+        breadCrumbs.reverse();
+
+        breadCrumbs.forEach(breadCrumb => {
+            navigationDiv.append(breadCrumb);
+            navigationDiv.append(">");
+        });
 
         if (positionWrapper.firstChild === null) {
             positionWrapper.appendChild(navigationDiv)
@@ -61,21 +76,20 @@ const NavigationProjector = (controller, pinToElement) => {
         }
     };
 
-    observableNavigationAnchors.onAdd(anchor => {
-        controller.registerAnchorClickListener(anchor);
-        navigationAnchors.push(anchor);
-    });
+    observableNavigationAnchors.onAdd(anchor => controller.registerAnchorClickListener(anchor));
 
     controller.onNavigationHashAdd(hash => {
         const newNavPoint = initializeNavigationPoint(hash);
+        anchorMap[hash] = newNavPoint;
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS
-        // controller.getPageController(hash).onValueChanged((newValue, oldValue) => {
-        //      do something with binding
-        //}
+        controller.getPageController(hash).onActiveChanged(active => {
+            if (active) {
+                navigationAnchors.push(anchorMap[hash]);
+                projectNavigation();
+            }
+        });
         // END
-
-        projectNavigation();
     });
 };

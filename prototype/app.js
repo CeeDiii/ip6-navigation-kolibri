@@ -1,6 +1,7 @@
 import { NavigationController } from "./navigation/navigationController.js";
 /** import { NavigationProjector } from "./navigation/basicNavigationProjector.js"; **/
 import { NavigationProjector } from "./navigation/bubble-state/bubblestateNavigationProjector.js";
+import { BreadCrumbProjector } from "./navigation/breadCrumb/breadCrumbProjector.js";
 import { PageController } from "./pages/pageController.js";
 import { HomePageProjector } from "./pages/home/homePageProjector.js";
 import { Person, personSelectionMold } from "./pages/person/person.js";
@@ -32,10 +33,12 @@ const simpleWorkWeekPageController = PageController("workweek", [WeekController(
 simpleWorkWeekPageController.setIcon('calendar');
 SimpleWorkWeekPageProjector(simpleWorkWeekPageController);
 
-const pinToNavElement = document.getElementById("nav");
-
 const navigationController = NavigationController();
+
+const pinToNavElement = document.getElementById("nav");
 NavigationProjector(navigationController, pinToNavElement);
+const pinToBreadCrumbElement = document.getElementById("bread-crumbs");
+BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
 navigationController.addPageController(homePageController);
 navigationController.addPageController(personPageController);
