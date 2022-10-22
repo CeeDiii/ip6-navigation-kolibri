@@ -15,12 +15,30 @@ export { NavigationProjector }
  * const navigationController = NavigationController();
  * NavigationProjector(navigationController, pinToNavElement);
  */
-
 const NavigationProjector = (controller, pinToElement) => {
     const positionWrapper = pinToElement;
     const observableNavigationAnchors = ObservableList([]);
     const navigationAnchors = [];
 
+    /**
+     * Initializes a navigation anchor
+     *
+     * @function
+     * @param hash - the hash that represents the identifier of a page
+     * @return { HTMLAnchorElement }
+     *
+     */
+    const initializeNavigationPoint = hash => {
+        // Initialize your navigation anchors here...
+
+    };
+
+    /**
+     * Binds the navigation anchors to the DOM.
+     *
+     * @function
+     * @return void
+     */
     const projectNavigation = () => {
         const navigationDiv = document.createElement("nav");
         // insert your projector code here...

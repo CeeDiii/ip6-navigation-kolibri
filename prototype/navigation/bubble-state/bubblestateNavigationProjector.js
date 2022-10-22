@@ -24,7 +24,53 @@ const NavigationProjector = (controller, pinToElement) => {
     const navigationAnchors = [];
     const anchorListWrappers = {};
 
+    /**
+     * Initializes a navigation anchor
+     *
+     * @function
+     * @param hash - the hash that represents the identifier of a page
+     * @return { HTMLAnchorElement }
+     *
+     */
+    const initializeNavigationPoint = hash => {
+        const navigationPointName = hash.substring(1);
+
+        // initialize anchor
+        const anchorDom = dom(`
+            <a href="${hash}">
+                <span class="icon" id="${navigationPointName}-icon-wrapper">
+                    <img class="icon" id="${navigationPointName}-icon" alt="${navigationPointName}-icon">
+                </span>
+                <span class="text">${navigationPointName}</span>
+            </a>
+        `);
+
+        // initialize li wrapper for styling purposes
+        const navPointDom = dom(`
+                <li class="list" id="${navigationPointName}">
+                    <!-- Placeholder for anchor tag -->
+                </li>
+        `);
+
+
+        // get anchor from collection
+        const anchor = anchorDom[0];
+
+        // append anchor to li tag
+        navPointDom[navigationPointName].append(anchor);
+        anchorListWrappers[navigationPointName] = navPointDom[0];
+
+        return anchor;
+    };
+
+    /**
+     * Binds the navigation anchors to the DOM.
+     *
+     * @function
+     * @return void
+     */
     const projectNavigation = () => {
+
         const navigation = dom(`
             <div id="bubbleStateWrapper" class="navigation">
                 <ul id="bubbleStateNavPointWrapper">
@@ -34,27 +80,14 @@ const NavigationProjector = (controller, pinToElement) => {
         `);
 
         navigationAnchors.forEach(anchor => {
-            const navigationPointName = anchor.href.substring(anchor.href.indexOf("#") + 1);
-
-            anchor.innerHTML = `
-                <span class="icon" id="${navigationPointName}-icon-wrapper">
-                    <img class="icon" id="${navigationPointName}-icon">
-                </span>
-                <span class="text">${navigationPointName}</span>
-            `;
-
-            const navPoint = dom(`
-                <li class="list" id="${navigationPointName}">
-                </li>
-        `   );
-
-            navPoint[navigationPointName].append(anchor);
-            anchorListWrappers[navigationPointName] = navPoint[0];
-            navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(...navPoint);
+            const navigationPointName = anchor.hash.substring(1);
+            const navPoint = anchorListWrappers[navigationPointName];
+            navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(navPoint);
         });
+
         const indicator = dom(`<div class="indicator"></div>`);
         navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(...indicator);
-        pinToElement.replaceChildren(...navigation);
+        positionWrapper.replaceChildren(...navigation);
     };
 
     observableNavigationAnchors.onAdd(anchor => {
@@ -63,15 +96,14 @@ const NavigationProjector = (controller, pinToElement) => {
     });
 
     controller.onNavigationHashAdd(hash => {
-        const newNavPoint = document.createElement('a');
-        newNavPoint.setAttribute('href', hash);
+        const newNavPoint = initializeNavigationPoint(hash);
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS TO MODEL
         controller.getPageController(hash).onVisitedChanged(visited => {
             if (visited) {
                 const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {
-                    const urlHash = a.href.substring(a.href.indexOf("#"));
+                    const urlHash = a.hash;
                     return urlHash === hash;
                 });
                 if (anchor !== undefined) {
@@ -94,7 +126,6 @@ const NavigationProjector = (controller, pinToElement) => {
         });
 
         controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
-            const pageName = hash.substring(1);
             /** HTMLAnchorElement */
             const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {
                 const urlHash = a.href.substring(a.href.indexOf("#"));
