@@ -52,7 +52,6 @@ const NavigationProjector = (controller, pinToElement) => {
                 </li>
         `);
 
-
         // get anchor from collection
         const anchor = anchorDom[0];
 
