@@ -28,7 +28,6 @@ const carPageController = PageController("car", [carListController, carSelection
 carPageController.setIcon('car');
 CarPageProjector(carPageController);
 
-
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
 simpleWorkWeekPageController.setIcon('calendar');
 SimpleWorkWeekPageProjector(simpleWorkWeekPageController);
@@ -40,10 +39,14 @@ NavigationProjector(navigationController, pinToNavElement);
 
 navigationController.addPageController(homePageController);
 navigationController.addPageController(personPageController);
-navigationController.addPageController(carPageController);
 navigationController.addPageController(simpleWorkWeekPageController);
 
 navigationController.setHomePage('home');
+
+// only used to show dynamic extension of navigation bar
+window.addNavigationPointAtRuntime = () => {
+    navigationController.addPageController(carPageController);
+};
 
 
 

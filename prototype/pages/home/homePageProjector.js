@@ -17,15 +17,15 @@ const HomePageProjector = pageController => {
     const contentWrapper = document.createElement("div");
 
     const initialize = () => {
-
         const page = dom(`
             <div id="content-wrapper">
                 <h1>Home</h1>
                 <div class="message-wrapper">
                     <p>Welcome to Navigation with Kolibri 2.0!</p>
+                    <button onclick="addNavigationPointAtRuntime()" >Add navigation point</button>
                 </div>
             </div>
-        `)
+        `);
 
         contentWrapper.appendChild(...page);
 
