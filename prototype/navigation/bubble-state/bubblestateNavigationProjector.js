@@ -124,6 +124,14 @@ const NavigationProjector = (controller, pinToElement) => {
             }
         });
 
+        controller.getPageController(hash).onActiveChanged(active => {
+            const pageName = hash.substring(1);
+            if (active) {
+                const title = document.getElementsByTagName("title")[0];
+                title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+            }
+        });
+
         controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
             /** HTMLAnchorElement */
             const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {
