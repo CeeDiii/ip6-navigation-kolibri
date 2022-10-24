@@ -149,3 +149,7 @@
 .list .calendar img.icon{
     content: url("icons/calendar.svg");
 }
+
+.invisiblePage .indicator {
+    display: none;
+}

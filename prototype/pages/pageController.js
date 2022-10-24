@@ -1,4 +1,4 @@
-import {ACTIVE, HASH, ICON, ISHOMEPAGE, VALUE, VISITED} from "../kolibri/presentationModel.js";
+import {ACTIVE, HASH, ICON, ISHOMEPAGE, VALUE, VISIBLE, VISITED} from "../kolibri/presentationModel.js";
 import { PageModel } from "./pageModel.js";
 
 export { PageController }
@@ -13,11 +13,14 @@ export { PageController }
  * @property { (iconName: String) => void } setIcon
  * @property { (visitedState: Boolean) => void } setVisited
  * @property { (isHomepage: Boolean) => void } setIsHomepage
+ * @property { (isVisible: Boolean) => void } setIsVisible
+ * @property { () => Boolean } getIsVisible
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsHomepageChanged
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsVisibleChanged
  */
 
 /**
@@ -42,18 +45,20 @@ const PageController = (pageName, contentControllers) => {
             pageModel.getPageObs(ACTIVE).setValue(true);
             pageModel.getPageObs(VISITED).setValue(true);
         },
-        passivate:          () => pageModel.getPageObs(ACTIVE).setValue(false),
+        passivate:           () => pageModel.getPageObs(ACTIVE).setValue(false),
         getPageContentControllers: () => pageContentControllers,
-        getHash:            () => pageModel.getPageObs(HASH).getValue(),
-        setIcon:            iconName => pageModel.getPageObs(ICON).setValue(iconName),
-        setVisited:         visitedState => pageModel.getPageObs(VISITED).setValue(visitedState),
-        setIsHomepage:      isHomepage => pageModel.getPageObs(ISHOMEPAGE).setValue(isHomepage),
-        onActiveChanged:    pageModel.getPageObs(ACTIVE).onChange,
-        onIconChanged:      pageModel.getPageObs(ICON).onChange,
-        onVisitedChanged:   pageModel.getPageObs(VISITED).onChange,
-        onValueChanged:     pageModel.getPageObs(VALUE).onChange,
+        getHash:             () => pageModel.getPageObs(HASH).getValue(),
+        setIcon:             iconName => pageModel.getPageObs(ICON).setValue(iconName),
+        setVisited:          visitedState => pageModel.getPageObs(VISITED).setValue(visitedState),
+        setIsHomepage:       isHomepage => pageModel.getPageObs(ISHOMEPAGE).setValue(isHomepage),
+        setIsVisible:        isVisible => pageModel.getPageObs(VISIBLE).setValue(isVisible),
+        getIsVisible:        () => pageModel.getPageObs(VISIBLE).getValue(),
+        onActiveChanged:     pageModel.getPageObs(ACTIVE).onChange,
+        onIconChanged:       pageModel.getPageObs(ICON).onChange,
+        onVisitedChanged:    pageModel.getPageObs(VISITED).onChange,
+        onValueChanged:      pageModel.getPageObs(VALUE).onChange,
         onIsHomepageChanged: pageModel.getPageObs(ISHOMEPAGE).onChange,
+        onIsVisibleChanged:  pageModel.getPageObs(VISIBLE).onChange,
         // more to come...
-
     }
 };

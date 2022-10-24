@@ -132,6 +132,33 @@ const NavigationProjector = (controller, pinToElement) => {
             }
         });
 
+        controller.getPageController(hash).onIsVisibleChanged(visible => {
+            const pageIndex = navigationAnchors.findIndex(anchor => anchor.hash === hash);
+            if(visible) {
+                //Check if anchor is already there, so it doesn't get initialized a second time
+                if(pageIndex === -1) {
+                    const newNavPoint = initializeNavigationPoint(hash);
+                    observableNavigationAnchors.add(newNavPoint);
+                }
+            } else {
+                //Check if anchor exists.
+                if(pageIndex !== -1) {
+                    const anchor = navigationAnchors.splice(pageIndex, 1);
+                    delete anchorListWrappers[hash];
+                    observableNavigationAnchors.del(anchor[0]);
+                }
+            }
+        });
+
+        controller.getPageController(hash).onActiveChanged(active => {
+            const pageController = controller.getPageController(hash);
+            if (active && pageController.getIsVisible() === false) {
+                positionWrapper.classList.add('invisiblePage');
+            } else {
+                positionWrapper.removeAttribute('class');
+            }
+        });
+
         controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
             /** HTMLAnchorElement */
             const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {

@@ -1,4 +1,4 @@
-import {ACTIVE, Attribute, HASH, ICON, ISHOMEPAGE, VALUE, VISITED} from "../kolibri/presentationModel.js";
+import { ACTIVE, Attribute, HASH, ICON, ISHOMEPAGE, VISIBLE, VISITED } from "../kolibri/presentationModel.js";
 
 export { PageModel }
 
@@ -23,6 +23,7 @@ const PageModel = pageName => {
     pageAttr.getObs(VISITED).setValue(false);
     pageAttr.getObs(ICON).setValue('placeholder');
     pageAttr.getObs(ISHOMEPAGE).setValue(false);
+    pageAttr.getObs(VISIBLE).setValue(true);
 
     return {
         getPageObs: obsType => pageAttr.getObs(obsType),

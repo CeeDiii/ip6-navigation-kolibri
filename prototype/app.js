@@ -12,6 +12,12 @@ import { Car,carSelectionMold } from "./pages/car/car.js";
 import { CarPageProjector } from "./pages/car/carPageProjector.js";
 import { WeekController } from "./pages/workweek/workweek/weekController.js";
 import { SimpleWorkWeekPageProjector } from "./pages/workweek/simpleWorkWeekPageProjector.js";
+import { PageNotFoundProjector } from "./pages/404/pageNotFoundProjector.js";
+
+// Assembling 404 error page as example. Can be modified
+const errorController = PageController("pagenotfound", null);
+errorController.setIsVisible(false);
+PageNotFoundProjector(errorController);
 
 const homePageController = PageController("home", null);
 homePageController.setIcon('house');
@@ -40,6 +46,7 @@ NavigationProjector(navigationController, pinToNavElement);
 const pinToBreadCrumbElement = document.getElementById("bread-crumbs");
 BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
+navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);
 navigationController.addPageController(personPageController);
 navigationController.addPageController(simpleWorkWeekPageController);

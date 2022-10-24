@@ -1,7 +1,5 @@
 import { Attribute, VALUE, valueOf } from "../kolibri/presentationModel.js";
 import { NavigationModel } from "./navigationModel.js";
-import {PageController} from "../pages/pageController.js";
-import {PageNotFoundProjector} from "../pages/404/pageNotFoundProjector.js";
 
 export { NavigationController }
 
@@ -10,6 +8,7 @@ export { NavigationController }
  *
  * @typedef NavigationControllerType
  * @property { (pageController: PageControllerType) => Boolean } addPageController
+ * @property { (errorKey: String, pageController: PageControllerType) => Boolean } addErrorPageController
  * @property { (pageHash: String) => PageControllerType } getPageController
  * @property { (pageHash: String) => void } deletePageController
  * @property { (newHomepage: String) => void } setHomePage
@@ -29,9 +28,10 @@ export { NavigationController }
  * const navigationController = NavigationController();
  */
 const NavigationController = () => {
-    const navigationModel = NavigationModel();
-    const currentLocation = Attribute(null);
-    const pageControllers = {};
+    const navigationModel  = NavigationModel();
+    const currentLocation  = Attribute(null);
+    const pageControllers  = {};
+    const errorControllers = {};
 
     const navigate = hash => {
         // check if hash is empty to redirect to fallback homepage
@@ -50,8 +50,8 @@ const NavigationController = () => {
 
         // if newLocation is undefined, navigate to an error page
         if(newLocation === undefined) {
-            const errorController = PageController("pagenotfound", null);
-            PageNotFoundProjector(errorController).projectPage();
+            pageControllers['#E404'].activate();
+            currentLocation.getObs(VALUE).setValue(pageControllers['#E404']);
         } else {
             // otherwise activate newLocation and display the page
             newLocation.activate();
@@ -93,6 +93,16 @@ const NavigationController = () => {
                 const hash = pageController.getHash();
                 pageControllers[hash] = pageController;
                 navigationModel.addNavigationHash(hash);
+                return true;
+            } else {
+                return false;
+            }
+        },
+        addErrorPageController: (errorKey, pageController) => {
+            if (pageController && pageControllers[pageController.getHash()] === undefined) {
+                bindPage(pageController);
+                pageControllers['#' + errorKey] = pageController;
+                navigationModel.addNavigationHash('#' + errorKey);
                 return true;
             } else {
                 return false;
