@@ -2,7 +2,7 @@ import { dom } from "../../kolibri/util/dom.js";
 import { projectForm, }  from "../../kolibri/projector/simpleForm/simpleFormProjector.js"
 
 
-export { InputPageProjector }
+export { SimpleFormPageProjector }
 /**
  * @typedef PageProjectorType
  * @property { () => void } projectPage
@@ -19,7 +19,7 @@ export { InputPageProjector }
  * HomePageProjector(homePageController);
  */
 
-const InputPageProjector = (pageController, pinToElement) => {
+const SimpleFormPageProjector = (pageController, pinToElement) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
 
@@ -82,7 +82,6 @@ const InputPageProjector = (pageController, pinToElement) => {
                 </p>
             </section>
         `);
-
 
         const formHolder = content["form-holder"];
         const form = projectForm(pageController.getPageContentControllers()[0]);
