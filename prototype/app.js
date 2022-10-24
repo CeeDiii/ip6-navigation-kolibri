@@ -13,6 +13,9 @@ import { CarPageProjector } from "./pages/car/carPageProjector.js";
 import { WeekController } from "./pages/workweek/workweek/weekController.js";
 import { SimpleWorkWeekPageProjector } from "./pages/workweek/simpleWorkWeekPageProjector.js";
 import { PageNotFoundProjector } from "./pages/404/pageNotFoundProjector.js";
+import {CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME} from "./kolibri/util/dom.js";
+import {SimpleFormController} from "./kolibri/projector/simpleForm/simpleFormController.js";
+import {InputPageProjector} from "./pages/input/inputPageProjector.js";
 
 const pinToContentElement = document.getElementById("content");
 
@@ -59,3 +62,17 @@ navigationController.setHomePage('home');
 window.addNavigationPointAtRuntime = () => {
     navigationController.addPageController(carPageController);
 };
+
+const formStructure = [
+    {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
+    {value: 0,            label: "Number", name: "number", type: NUMBER   },
+    {value: "1968-04-19", label: "Date",   name: "date",   type: DATE     },
+    {value: 12 * 60 + 15, label: "Time",   name: "time",   type: TIME     },
+    {value: false,        label: "Check",  name: "check",  type: CHECKBOX },
+    {value: "",           label: "Color",  name: "color",  type: COLOR    }
+];
+const controller = SimpleFormController(formStructure);
+
+const inputPageController = PageController("input", [controller]);
+InputPageProjector(inputPageController, pinToContentElement);
+navigationController.addPageController(inputPageController);
