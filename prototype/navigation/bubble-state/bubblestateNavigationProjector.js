@@ -79,9 +79,14 @@ const NavigationProjector = (controller, pinToElement) => {
         `);
 
         navigationAnchors.forEach(anchor => {
-            const navigationPointName = anchor.hash.substring(1);
-            const navPoint = anchorListWrappers[navigationPointName];
-            navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(navPoint);
+            const pageController = controller.getPageController(anchor.hash);
+            const isVisible = pageController.getIsVisible();
+
+            if(isVisible) {
+                const navigationPointName = anchor.hash.substring(1);
+                const navPoint = anchorListWrappers[navigationPointName];
+                navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(navPoint);
+            }
         });
 
         const indicator = dom(`<div class="indicator"></div>`);
@@ -132,23 +137,7 @@ const NavigationProjector = (controller, pinToElement) => {
             }
         });
 
-        controller.getPageController(hash).onIsVisibleChanged(visible => {
-            const pageIndex = navigationAnchors.findIndex(anchor => anchor.hash === hash);
-            if(visible) {
-                //Check if anchor is already there, so it doesn't get initialized a second time
-                if(pageIndex === -1) {
-                    const newNavPoint = initializeNavigationPoint(hash);
-                    observableNavigationAnchors.add(newNavPoint);
-                }
-            } else {
-                //Check if anchor exists.
-                if(pageIndex !== -1) {
-                    const anchor = navigationAnchors.splice(pageIndex, 1);
-                    delete anchorListWrappers[hash];
-                    observableNavigationAnchors.del(anchor[0]);
-                }
-            }
-        });
+        controller.getPageController(hash).onIsVisibleChanged(() => projectNavigation());
 
         controller.getPageController(hash).onActiveChanged(active => {
             const pageController = controller.getPageController(hash);

@@ -57,8 +57,3 @@ navigationController.setHomePage('home');
 window.addNavigationPointAtRuntime = () => {
     navigationController.addPageController(carPageController);
 };
-
-
-
-
-
