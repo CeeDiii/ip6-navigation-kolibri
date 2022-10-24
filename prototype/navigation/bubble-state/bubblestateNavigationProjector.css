@@ -8,6 +8,7 @@
     border-radius: 10px;
     position: fixed;
     bottom: 5px;
+    outline: 6px solid var(--background);
 }
 
 #nav {
@@ -91,7 +92,7 @@
     height: 20px;
     background: transparent;
     border-top-right-radius: 20px;
-    box-shadow: 1px -10px 0 0 var(--background);
+    box-shadow: 1px -5px 0 0 var(--background);
 }
 
 .indicator::after {
@@ -103,7 +104,7 @@
     height: 20px;
     background: transparent;
     border-top-left-radius: 20px;
-    box-shadow: -1px -10px 0 0 var(--background);
+    box-shadow: -1px -5px 0 0 var(--background);
 }
 
 .navigation ul li:nth-child(1).active ~.indicator {
