@@ -11,11 +11,12 @@ export { CarPageProjector }
 /**
  * @constructor
  * @param { PageControllerType } pageController
+ * @param { !HTMLDivElement } pinToElement
  * @returns { PageProjectorType }
  */
 
-const CarPageProjector = pageController => {
-    const pageWrapper = document.getElementById('content');
+const CarPageProjector = (pageController, pinToElement) => {
+    const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
     const [listController, selectionController] = pageController.getPageContentControllers();
 

@@ -7,6 +7,7 @@ export { PageProjector }
 /**
  * @constructor
  * @param { PageControllerType } pageController
+ * @param { !HTMLDivElement } pinToElement
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
@@ -14,8 +15,8 @@ export { PageProjector }
  * HomePageProjector(homePageController);
  */
 
-const PageProjector = pageController => {
-    const pageWrapper = document.getElementById('content');
+const PageProjector = (pageController, pinToElement) => {
+    const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
 
     // const contentControllers = pageController.getPageContentControllers();

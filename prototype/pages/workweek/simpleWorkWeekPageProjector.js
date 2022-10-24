@@ -10,11 +10,12 @@ export { SimpleWorkWeekPageProjector }
 /**
  * @constructor
  * @param { PageControllerType } pageController
+ * @param { !HTMLDivElement } pinToElement
  * @returns { PageProjectorType }
  */
 
-const SimpleWorkWeekPageProjector = pageController => {
-    const pageWrapper = document.getElementById('content');
+const SimpleWorkWeekPageProjector = (pageController, pinToElement) => {
+    const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
     const [weekController] = pageController.getPageContentControllers();
 

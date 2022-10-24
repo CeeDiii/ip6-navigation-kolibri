@@ -9,11 +9,12 @@ export { HomePageProjector }
 /**
  * @constructor
  * @param { PageControllerType } pageController
+ * @param { !HTMLDivElement } pinToElement
  * @returns { PageProjectorType }
  */
 
-const HomePageProjector = pageController => {
-    const pageWrapper = document.getElementById('content');
+const HomePageProjector = (pageController, pinToElement) => {
+    const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
 
     const initialize = () => {

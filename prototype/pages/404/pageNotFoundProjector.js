@@ -9,11 +9,12 @@ export { PageNotFoundProjector }
 /**
  * @constructor
  * @param { PageControllerType } pageController
+ * @param { !HTMLDivElement } pinToElement
  * @returns { PageProjectorType }
  */
 
-const PageNotFoundProjector = pageController => {
-    const pageWrapper = document.getElementById('content');
+const PageNotFoundProjector = (pageController, pinToElement) => {
+    const pageWrapper = pinToElement;
     const contentWrapper = document.createElement('div');
 
     const initialize = () => {

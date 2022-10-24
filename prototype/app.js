@@ -14,30 +14,32 @@ import { WeekController } from "./pages/workweek/workweek/weekController.js";
 import { SimpleWorkWeekPageProjector } from "./pages/workweek/simpleWorkWeekPageProjector.js";
 import { PageNotFoundProjector } from "./pages/404/pageNotFoundProjector.js";
 
+const pinToContentElement = document.getElementById("content");
+
 // Assembling 404 error page as example. Can be modified
 const errorController = PageController("pagenotfound", null);
 errorController.setIsVisible(false);
-PageNotFoundProjector(errorController);
+PageNotFoundProjector(errorController, pinToContentElement);
 
 const homePageController = PageController("home", null);
 homePageController.setIcon('house');
-HomePageProjector(homePageController);
+HomePageProjector(homePageController, pinToContentElement);
 
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
 personPageController.setIcon('person');
-PersonPageProjector(personPageController);
+PersonPageProjector(personPageController, pinToContentElement);
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
 carPageController.setIcon('car');
-CarPageProjector(carPageController);
+CarPageProjector(carPageController, pinToContentElement);
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
 simpleWorkWeekPageController.setIcon('calendar');
-SimpleWorkWeekPageProjector(simpleWorkWeekPageController);
+SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement);
 
 const navigationController = NavigationController();
 

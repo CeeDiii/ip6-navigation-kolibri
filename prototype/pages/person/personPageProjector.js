@@ -12,10 +12,11 @@ export { PersonPageProjector }
 /**
  * @constructor
  * @param { PageControllerType } pageController
+ * @param { !HTMLDivElement } pinToElement
  * @returns { PageProjectorType }
  */
-const PersonPageProjector = pageController => {
-    const pageWrapper = document.getElementById('content');
+const PersonPageProjector = (pageController, pinToElement) => {
+    const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
     const [listController, selectionController] = pageController.getPageContentControllers();
 
