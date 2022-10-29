@@ -75,6 +75,10 @@
 ## Lifecycle
 ### Styles
 * stylesheets can be toggled or replaced
+* Delay on exchange of HTML content and CSS import on the same time.
+  * Create css link tad for each page and append / remove CSS accordingly onActiveChanged.
+  * replace href derectly in one global link tag in the index page.
+  * wait with onloade on the CSS link element befor calling projectPage.
 ## Methodology
 * Because we defined the structure in almost-UML we had 3 possibilities for collaboration:
   * Test Driven Development
