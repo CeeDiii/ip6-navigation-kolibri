@@ -32,7 +32,7 @@ const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
 personPageController.setIcon('person');
-PersonPageProjector(personPageController, pinToContentElement);
+PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html');
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
