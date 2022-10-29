@@ -10,31 +10,25 @@ export { PageNotFoundProjector }
  * @constructor
  * @param { PageControllerType } pageController
  * @param { !HTMLDivElement } pinToElement
+ * @param { !String } contentFilePath - relative to index.html!
  * @returns { PageProjectorType }
  */
 
-const PageNotFoundProjector = (pageController, pinToElement) => {
+const PageNotFoundProjector = (pageController, pinToElement, contentFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement('div');
 
     const initialize = () => {
-        const page = dom(`
-            <div id="content-wrapper">
-                <h1>404</h1>
-                <div class="message-wrapper">
-                    <p>Page not found</p>
-                    <p>Please contact your local admin!</p>
-                </div>
-            </div>
-        `);
+        const contentPromise = fetchPageContent(contentFilePath);
+        contentPromise.then(contentHtml => {
+            contentWrapper.innerHTML = contentHtml;
 
-        contentWrapper.appendChild(...page);
-
-        if (pageWrapper.firstChild === null) {
-            pageWrapper.append(contentWrapper);
-        } else {
-            pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
-        }
+            if (pageWrapper.firstChild === null) {
+                pageWrapper.append(contentWrapper);
+            } else {
+                pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
+            }
+        });
     };
 
     const projectPage = () => {
@@ -47,6 +41,26 @@ const PageNotFoundProjector = (pageController, pinToElement) => {
             pageWrapper.append(contentWrapper);
         } else {
             pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
+        }
+    };
+
+    const fetchPageContent = async (filePath) => {
+        try {
+            const response = await fetch(filePath, {
+                    headers: {
+                        'Content-Type': 'application/html',
+                        'Accept': 'application/html'
+                    }
+                }
+            );
+            if (response.ok) {
+                const content = await response.text();
+                return content;
+            } else {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+        } catch (e) {
+            console.error(e);
         }
     };
 
