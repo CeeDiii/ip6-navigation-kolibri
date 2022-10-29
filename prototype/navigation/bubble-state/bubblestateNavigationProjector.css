@@ -123,6 +123,10 @@
     transform: translateX(calc(70px * 3));
 }
 
+.navigation ul li:nth-child(5).active ~.indicator {
+    transform: translateX(calc(70px * 4));
+}
+
 .list .visited img.icon {
     filter: invert(5%) sepia(78%) saturate(99999%) hue-rotate(280deg) brightness(97%) contrast(101%);
 }
