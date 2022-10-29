@@ -80,6 +80,8 @@
   * Test Driven Development
   * Component-Based Development
   * Pair Programming
+## Fetch HTML File
+* Fetch an HTML-file and use it as the content of another HTML-file during runtime
 ## Out of Scope
 * allowing multiple simultaneous page projectors
 ## Sources
@@ -95,3 +97,5 @@ JSDoc Typescript annotations: https://www.typescriptlang.org/docs/handbook/jsdoc
 Toggle or replace stylesheets: https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-apply-the-new-style-to-the-page, 01.10.2022<br>
 Deep Cloning in JS: https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy, 08.10.2022
 Navigation Anchor Tags: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a?retiredLocale=de, 10.10.2022
+Fetch File: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#processing_a_text_file_line_by_line, 29.10.2022
+Fetch File: https://developer.mozilla.org/en-US/docs/Web/API/Response/text, 29.10.2022
