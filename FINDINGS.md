@@ -82,6 +82,7 @@
   * Pair Programming
 ## Fetch HTML File
 * Fetch an HTML-file and use it as the content of another HTML-file during runtime
+* Linked HTML file path needs to be called from index.html perspective
 ## Out of Scope
 * allowing multiple simultaneous page projectors
 ## Sources
@@ -99,3 +100,4 @@ Deep Cloning in JS: https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy,
 Navigation Anchor Tags: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a?retiredLocale=de, 10.10.2022
 Fetch File: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#processing_a_text_file_line_by_line, 29.10.2022
 Fetch File: https://developer.mozilla.org/en-US/docs/Web/API/Response/text, 29.10.2022
+Fetch File: https://stackoverflow.com/questions/70964787/fetching-local-json-file-from-js-module, 29.10.2022

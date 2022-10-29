@@ -22,27 +22,27 @@ const pinToContentElement = document.getElementById("content");
 // Assembling 404 error page as example. Can be modified
 const errorController = PageController("pagenotfound", null);
 errorController.setIsVisible(false);
-PageNotFoundProjector(errorController, pinToContentElement);
+PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNotFound.html');
 
 const homePageController = PageController("home", null);
 homePageController.setIcon('house');
-HomePageProjector(homePageController, pinToContentElement);
+HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
 personPageController.setIcon('person');
-PersonPageProjector(personPageController, pinToContentElement);
+PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html');
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
 carPageController.setIcon('car');
-CarPageProjector(carPageController, pinToContentElement);
+CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
 simpleWorkWeekPageController.setIcon('calendar');
-SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement);
+SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
 
 const formStructure = [
     {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
@@ -54,7 +54,7 @@ const formStructure = [
 ];
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleForm", [simpleFormController]);
-SimpleFormPageProjector(simpleFormPageController, pinToContentElement);
+SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
 const navigationController = NavigationController();
 
