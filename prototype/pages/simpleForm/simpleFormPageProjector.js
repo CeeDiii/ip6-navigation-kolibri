@@ -24,8 +24,6 @@ const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) 
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
 
-    // const contentControllers = pageController.getPageContentControllers();
-
     const initialize = () => {
         const contentPromise = fetchPageContent(contentFilePath);
         contentPromise.then(contentHtml => {
