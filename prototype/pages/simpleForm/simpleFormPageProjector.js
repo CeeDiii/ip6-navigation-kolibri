@@ -13,6 +13,7 @@ export { SimpleFormPageProjector }
  * @param { PageControllerType } pageController
  * @param { !HTMLDivElement } pinToElement
  * @param { !String } contentFilePath - relative to index.html!
+ * @param { String } stylesheetFilePath - relative to index.html!
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
@@ -20,7 +21,7 @@ export { SimpleFormPageProjector }
  * HomePageProjector(homePageController);
  */
 
-const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) => {
+const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath, stylesheetFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
 
@@ -75,7 +76,18 @@ const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) 
 
     pageController.onActiveChanged(active => {
         if (active) {
-            projectPage();
+            const stylesheet = document.createElement("link");
+            stylesheet.rel = 'stylesheet';
+            stylesheet.href = stylesheetFilePath;
+            stylesheet.id = pageController.getHash().substring(1) + '-style';
+
+            document.getElementsByTagName('head')[0].append(stylesheet);
+            stylesheet.onload = () => projectPage();
+        } else {
+            const pageStylesheet = document.getElementById(pageController.getHash().substring(1) + '-style');
+            if(pageStylesheet != null) {
+                document.getElementById(pageController.getHash().substring(1) + '-style').remove();
+            }
         }
     });
 

@@ -11,12 +11,14 @@ export { HomePageProjector }
  * @param { PageControllerType } pageController
  * @param { !HTMLDivElement } pinToElement
  * @param { !String } contentFilePath - relative to index.html!
+ * @param { String } stylesheetFilePath - relative to index.html!
  * @returns { PageProjectorType }
  */
 
-const HomePageProjector = (pageController, pinToElement, contentFilePath) => {
+const HomePageProjector = (pageController, pinToElement, contentFilePath, stylesheetFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
+    const pageStyling = document.getElementById('page-style');
 
     const initialize = () => {
         const contentPromise = fetchPageContent(contentFilePath);
@@ -71,6 +73,7 @@ const HomePageProjector = (pageController, pinToElement, contentFilePath) => {
 
     pageController.onActiveChanged(active => {
         if (active) {
+            pageStyling.href = stylesheetFilePath;
             projectPage();
         }
     });

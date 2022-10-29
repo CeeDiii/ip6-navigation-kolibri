@@ -11,10 +11,11 @@ export { PageNotFoundProjector }
  * @param { PageControllerType } pageController
  * @param { !HTMLDivElement } pinToElement
  * @param { !String } contentFilePath - relative to index.html!
+ * @param { String } stylesheetFilePath - relative to index.html!
  * @returns { PageProjectorType }
  */
 
-const PageNotFoundProjector = (pageController, pinToElement, contentFilePath) => {
+const PageNotFoundProjector = (pageController, pinToElement, contentFilePath, stylesheetFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement('div');
 
@@ -71,7 +72,18 @@ const PageNotFoundProjector = (pageController, pinToElement, contentFilePath) =>
 
     pageController.onActiveChanged(active => {
         if (active) {
-            projectPage();
+            const stylesheet = document.createElement("link");
+            stylesheet.rel = 'stylesheet';
+            stylesheet.href = stylesheetFilePath;
+            stylesheet.id = pageController.getHash().substring(1) + '-style';
+
+            document.getElementsByTagName('head')[0].append(stylesheet);
+            stylesheet.onload = () => projectPage();
+        } else {
+            const pageStylesheet = document.getElementById(pageController.getHash().substring(1) + '-style');
+            if(pageStylesheet != null) {
+                document.getElementById(pageController.getHash().substring(1) + '-style').remove();
+            }
         }
     });
 

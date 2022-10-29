@@ -22,27 +22,27 @@ const pinToContentElement = document.getElementById("content");
 // Assembling 404 error page as example. Can be modified
 const errorController = PageController("pagenotfound", null);
 errorController.setIsVisible(false);
-PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNotFound.html');
+PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNotFound.html', './pages/404/pageNotFound.css');
 
 const homePageController = PageController("home", null);
 homePageController.setIcon('house');
-HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
+HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html', './pages/home/homePageProjector.css');
 
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
 personPageController.setIcon('person');
-PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html');
+PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html', './pages/person/instantUpdateProjector.css');
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
 carPageController.setIcon('car');
-CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
+CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html', './pages/person/instantUpdateProjector.css');
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
 simpleWorkWeekPageController.setIcon('calendar');
-SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
+SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html', './pages/workweek/workingHours.css');
 
 const formStructure = [
     {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
@@ -54,7 +54,7 @@ const formStructure = [
 ];
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleForm", [simpleFormController]);
-SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
+SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', './pages/simpleForm/simpleFormPageProjector.css');
 
 const navigationController = NavigationController();
 

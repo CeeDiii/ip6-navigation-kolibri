@@ -14,11 +14,14 @@ export { PersonPageProjector }
  * @param { PageControllerType } pageController
  * @param { !HTMLDivElement } pinToElement
  * @param { !String } contentFilePath - relative to index.html!
+ * @param { String } stylesheetFilePath - relative to index.html!
  * @returns { PageProjectorType }
  */
-const PersonPageProjector = (pageController, pinToElement, contentFilePath) => {
+const PersonPageProjector = (pageController, pinToElement, contentFilePath, stylesheetFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
+    const pageStyling = document.getElementById('page-style');
+
     const [listController, selectionController] = pageController.getPageContentControllers();
 
     const initialize = () => {
@@ -84,6 +87,7 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath) => {
 
     pageController.onActiveChanged(active => {
         if (active) {
+            pageStyling.href = stylesheetFilePath;
             projectPage();
         }
     });
