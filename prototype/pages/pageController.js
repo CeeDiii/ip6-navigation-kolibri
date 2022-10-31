@@ -16,7 +16,7 @@ export { PageController }
  * @property { (isHomepage: Boolean) => void } setIsHomepage
  * @property { (isVisible: Boolean) => void } setIsVisible
  * @property { () => Boolean } getIsVisible
- * @property { (newParent: PageControllerType) => void } setParent
+ * @property { (newParent: PageControllerType|null) => void } setParent - the newParent you want to set for the page, if null is set, the parent is root
  * @property { () => PageControllerType } getParent
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
@@ -24,7 +24,7 @@ export { PageController }
  * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsHomepageChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsVisibleChanged
- * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onParentChanged
+ * @property { (callback: onValueChangeCallback<PageControllerType|null>) => void } onParentChanged
  */
 
 /**

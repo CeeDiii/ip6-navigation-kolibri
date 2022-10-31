@@ -1,5 +1,5 @@
 import { NavigationController } from "./navigation/navigationController.js";
-import { NavigationProjector } from "./navigation/tree/treeNavigationProjector.js";
+import { TreeNavigationProjector} from "./navigation/tree/treeNavigationProjector.js";
 import { PageController } from "./pages/pageController.js";
 import { HomePageProjector } from "./pages/home/homePageProjector.js";
 import { Person, personSelectionMold } from "./pages/person/person.js";
@@ -57,13 +57,14 @@ SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/
 const navigationController = NavigationController();
 
 personPageController.setParent(homePageController);
-carPageController.setParent(homePageController);
 simpleWorkWeekPageController.setParent(personPageController);
 simpleFormPageController.setParent(personPageController);
-
+simpleWorkWeekPageController.setParent(null);
+simpleWorkWeekPageController.setParent(personPageController);
+carPageController.setParent(simpleWorkWeekPageController);
 
 const pinToNavElement = document.getElementById("nav");
-NavigationProjector(navigationController, pinToNavElement);
+TreeNavigationProjector(navigationController, pinToNavElement);
 
 navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);

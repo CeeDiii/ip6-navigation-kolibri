@@ -1,7 +1,7 @@
 import { ObservableList } from "../../kolibri/observable.js";
 import { dom } from "../../kolibri/util/dom.js";
 
-export { NavigationProjector }
+export { NavigationProjector as TreeNavigationProjector }
 
 /**
  * @typedef NavigationProjectorType
@@ -50,6 +50,8 @@ const NavigationProjector = (controller, pinToElement) => {
         // get anchor from collection
         const anchor = anchorDom[0];
 
+        anchor.innerHTML = '|--- ' + pageName;
+
         navPointDom[pageName + '-li'].append(anchor);
 
         // check if node is root element or if parentNode already exists
@@ -57,21 +59,7 @@ const NavigationProjector = (controller, pinToElement) => {
             tree.append(...navPointDom);
         } else {
             const parentName = parentNode.getValue();
-            const parentLi = findElementById(tree, parentName + '-li');
-
-            pageName = '|---> ' + pageName;
-            anchor.innerHTML = pageName;
-
-            // check if parent needs a new sublist for its children
-            let childrenNodeList = parentLi.children.namedItem(parentName + '-children');
-            if (childrenNodeList === null) {
-                // create sublist for children and append child
-                childrenNodeList = document.createElement('ol');
-                childrenNodeList.id = parentName + '-children';
-                parentLi.append(childrenNodeList);
-            }
-
-            childrenNodeList.append(...navPointDom);
+            appendNode(...navPointDom, parentName);
         }
 
         return anchor;
@@ -88,6 +76,8 @@ const NavigationProjector = (controller, pinToElement) => {
         navigationDiv.classList.add('tree-nav');
         navigationDiv.append(tree);
 
+
+
         if (positionWrapper.firstChild === null) {
             positionWrapper.appendChild(navigationDiv)
         } else {
@@ -103,7 +93,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { String } searchId
      * @return { HTMLLIElement|null }
      */
-    function findElementById(tree, searchId){
+    const findElementById = (tree, searchId) =>{
         if(tree.id === searchId){
             return tree;
         } else if (tree.children != null){
@@ -114,7 +104,20 @@ const NavigationProjector = (controller, pinToElement) => {
             return result;
         }
         return null;
-    }
+    };
+
+    const appendNode = (node, parentName) => {
+        const parentLi = findElementById(tree, parentName + '-li');
+        let childrenNodeList = parentLi.children.namedItem(parentName + '-children');
+        if (childrenNodeList === null) {
+            // create sublist for children and append child
+            childrenNodeList = document.createElement('ol');
+            childrenNodeList.id = parentName + '-children';
+            parentLi.append(childrenNodeList);
+        }
+        childrenNodeList.append(node);
+    };
+
 
     observableNavigationAnchors.onAdd(anchor => {
         controller.registerAnchorClickListener(anchor);
@@ -123,10 +126,33 @@ const NavigationProjector = (controller, pinToElement) => {
     controller.onNavigationHashAdd(hash => {
 
         // CREATE BINDINGS
-        controller.getPageController(hash).onParentChanged(newParent => {
+        controller.getPageController(hash).onParentChanged((newParent, oldParent) => {
             const pageName = controller.getPageController(hash).getValue();
-            const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
-            observableNavigationAnchors.add(newNavPoint);
+            const thisNode = findElementById(tree, pageName + '-li');
+            if (thisNode === null) { // check if this node has not been initialized yet
+                const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
+                observableNavigationAnchors.add(newNavPoint);
+            } else {
+                // check if old parent is root and remove node from root
+                if (oldParent === null) {
+                    tree.removeChild(thisNode);
+                    const parentName = newParent.getValue();
+                    appendNode(thisNode, parentName);
+                } else if (newParent !== null) { // check if new parent and old parent are not root and remove old node from old parent
+                    const oldParentName = oldParent.getValue();
+                    const oldParentChildrenNodeList = findElementById(tree, oldParentName + '-children');
+                    oldParentChildrenNodeList.removeChild(thisNode);
+                    // check if list of children has no more elements and if so remove it
+                    if (oldParentChildrenNodeList.children.length < 1) {
+                        const oldParentNode = findElementById(tree, oldParentName + '-li');
+                        oldParentNode.removeChild(oldParentChildrenNodeList);
+                    }
+                    const parentName = newParent.getValue();
+                    appendNode(thisNode, parentName);
+                } else { // append node to root if new parent is null
+                    tree.append(thisNode);
+                }
+            }
             projectNavigation();
         });
 
