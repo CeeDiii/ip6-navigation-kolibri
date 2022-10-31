@@ -28,14 +28,14 @@ const BreadCrumbProjector = (controller, pinToElement) => {
      *
      * @function
      * @param hash - the hash that represents the identifier of a page
+     * @param pageName - the pageName that is displayed for this hash
      * @return { HTMLAnchorElement }
      *
      */
-    const initializeNavigationPoint = hash => {
-        const navigationPointName = hash.substring(1);
+    const initializeNavigationPoint = (hash, pageName) => {
         // initialize anchor
         const anchorDom = dom(`
-            <a href="${hash}">${navigationPointName}</a>
+            <a href="${hash}">${pageName}</a>
         `);
 
         // get anchor from collection, directly returning anchorDom[0] does not work because of reasons unknown to the author
@@ -91,7 +91,8 @@ const BreadCrumbProjector = (controller, pinToElement) => {
     observableNavigationAnchors.onAdd(anchor => controller.registerAnchorClickListener(anchor));
 
     controller.onNavigationHashAdd(hash => {
-        const newNavPoint = initializeNavigationPoint(hash);
+        const pageName = controller.getPageController(hash).getValue();
+        const newNavPoint = initializeNavigationPoint(hash, pageName);
         anchorMap[hash] = newNavPoint;
         observableNavigationAnchors.add(newNavPoint);
 

@@ -117,7 +117,7 @@ const NavigationProjector = (controller, pinToElement) => {
         });
 
         controller.getPageController(hash).onActiveChanged(active => {
-            const pageName = hash.substring(1);
+            const pageName = controller.getPageController(hash).getValue();
             if (active) {
                 if (anchorListWrappers[pageName] !== undefined) {
                     anchorListWrappers[pageName].classList.add("active");
@@ -130,7 +130,7 @@ const NavigationProjector = (controller, pinToElement) => {
         });
 
         controller.getPageController(hash).onActiveChanged(active => {
-            const pageName = hash.substring(1);
+            const pageName = controller.getPageController(hash).getValue();
             if (active) {
                 const title = document.getElementsByTagName("title")[0];
                 title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);

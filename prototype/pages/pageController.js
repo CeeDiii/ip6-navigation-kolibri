@@ -1,4 +1,4 @@
-import {ACTIVE, HASH, ICON, ISHOMEPAGE, VALUE, VISIBLE, VISITED} from "../kolibri/presentationModel.js";
+import {ACTIVE, HASH, ICON, IS_HOMEPAGE, VALUE, VISIBLE, VISITED} from "../kolibri/presentationModel.js";
 import { PageModel } from "./pageModel.js";
 
 export { PageController }
@@ -9,6 +9,7 @@ export { PageController }
  * @property { () => void } activate
  * @property { () => void } passivate
  * @property { () => [T] } getPageContentControllers
+ * @property { () => String } getValue
  * @property { () => String } getHash
  * @property { (iconName: String) => void } setIcon
  * @property { (visitedState: Boolean) => void } setVisited
@@ -47,17 +48,18 @@ const PageController = (pageName, contentControllers) => {
             pageModel.getPageObs(VISITED).setValue(true);
         },
         passivate:           () => pageModel.getPageObs(ACTIVE).setValue(false),
+        getValue:            pageModel.getPageObs(VALUE).getValue,
         getHash:             pageModel.getPageObs(HASH).getValue,
         setIcon:             pageModel.getPageObs(ICON).setValue,
         setVisited:          pageModel.getPageObs(VISITED).setValue,
-        setIsHomepage:       pageModel.getPageObs(ISHOMEPAGE).setValue,
+        setIsHomepage:       pageModel.getPageObs(IS_HOMEPAGE).setValue,
         setIsVisible:        pageModel.getPageObs(VISIBLE).setValue,
         getIsVisible:        pageModel.getPageObs(VISIBLE).getValue,
         onActiveChanged:     pageModel.getPageObs(ACTIVE).onChange,
         onIconChanged:       pageModel.getPageObs(ICON).onChange,
         onVisitedChanged:    pageModel.getPageObs(VISITED).onChange,
         onValueChanged:      pageModel.getPageObs(VALUE).onChange,
-        onIsHomepageChanged: pageModel.getPageObs(ISHOMEPAGE).onChange,
+        onIsHomepageChanged: pageModel.getPageObs(IS_HOMEPAGE).onChange,
         onIsVisibleChanged:  pageModel.getPageObs(VISIBLE).onChange,
         // more to come...
     }
