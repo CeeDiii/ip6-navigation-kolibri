@@ -8,10 +8,10 @@ import { id }         from "./stdlib.js";
 export { Attribute, QualifiedAttribute,
          presentationModelFromAttributeNames,
          valueOf, obsValueOf, readQualifierValue,
-         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, ISHOMEPAGE }
+         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, IS_HOMEPAGE, PARENT }
 
 /**
- * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'ishomepage'} ObservableTypeString
+ * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'is_homepage'|'parent'} ObservableTypeString
  * Feel free to extend this type with new unique type strings as needed for your application.
  */
 
@@ -27,7 +27,8 @@ export { Attribute, QualifiedAttribute,
 /** @type ObservableTypeString */ const VISITED     = "visited";
 /** @type ObservableTypeString */ const LOGO        = "logo";
 /** @type ObservableTypeString */ const VISIBLE     = "visible";
-/** @type ObservableTypeString */ const ISHOMEPAGE  = "ishomepage";
+/** @type ObservableTypeString */ const IS_HOMEPAGE = "is_homepage";
+/** @type ObservableTypeString */ const PARENT      = "parent";
 
 /**
  * Convenience function to read the current state of the attribute's VALUE observable for the given attribute.
