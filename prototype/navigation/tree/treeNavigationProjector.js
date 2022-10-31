@@ -18,8 +18,7 @@ export { NavigationProjector }
  */
 const NavigationProjector = (controller, pinToElement) => {
     const positionWrapper = pinToElement;
-    positionWrapper.classList.add('tree-nav');
-    const observableNavigationAnchors = ObservableList([]);
+        const observableNavigationAnchors = ObservableList([]);
 
     const tree = document.createElement('ol');
     tree.id = 'tree';
@@ -59,7 +58,9 @@ const NavigationProjector = (controller, pinToElement) => {
         } else {
             const parentName = parentNode.getValue();
             const parentLi = findElementById(tree, parentName);
-            parentLi.classList.add('caret');
+
+            pageName = '|---> ' + pageName;
+            anchor.innerHTML = pageName;
 
             // check if parent needs a new sublist for its children
             let childrenNodeList = parentLi.children.namedItem(parentName + '-children');
@@ -71,8 +72,6 @@ const NavigationProjector = (controller, pinToElement) => {
             }
 
             childrenNodeList.append(...navPointDom);
-
-            childrenNodeList.classList.add('nested');
         }
 
         return anchor;
@@ -86,6 +85,7 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const projectNavigation = () => {
         const navigationDiv = document.createElement("div");
+        navigationDiv.classList.add('tree-nav');
         navigationDiv.append(tree);
 
         if (positionWrapper.firstChild === null) {

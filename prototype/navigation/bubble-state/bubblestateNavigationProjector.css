@@ -1,5 +1,11 @@
-.navigation {
-    position: relative;
+#bubble-state-nav-wrapper {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bubble-state-nav {
     height: 70px;
     background: #eeeeee;
     display: flex;
@@ -11,19 +17,12 @@
     outline: 6px solid var(--background);
 }
 
-#nav {
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.navigation ul {
+.bubble-state-nav ul {
     display: flex;
     padding: 0 30px;
 }
 
-.navigation ul li {
+.bubble-state-nav ul li {
     position: relative;
     list-style: none;
     width: 70px;
@@ -31,7 +30,7 @@
     z-index: 1;
 }
 
-.navigation ul li a {
+.bubble-state-nav ul li a {
     position: relative;
     display: flex;
     justify-content: center;
@@ -43,7 +42,7 @@
     font-weight: 500;
 }
 
-.navigation ul li a .icon {
+.bubble-state-nav ul li a .icon {
     position: relative;
     display: block;
     line-height: 75px;
@@ -52,11 +51,11 @@
     width: 24px;
 }
 
-.navigation ul li.active a .icon {
+.bubble-state-nav ul li.active a .icon {
     transform: translateY(-18px);
 }
 
-.navigation ul li a .text {
+.bubble-state-nav ul li a .text {
     position: absolute;
     color: #000000;
     font-weight: 400;
@@ -67,12 +66,12 @@
     transform: translateY(20px);
 }
 
-.navigation ul li.active a .text {
+.bubble-state-nav ul li.active a .text {
     opacity: 1;
     transform: translateY(10px);
 }
 
-.indicator {
+.bubble-state-nav .indicator {
     position: absolute;
     width: 70px;
     height:70px;
@@ -83,7 +82,7 @@
     transition: 0.5s;
 }
 
-.indicator::before {
+.bubble-state-nav .indicator::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -95,7 +94,7 @@
     box-shadow: 1px -5px 0 0 var(--background);
 }
 
-.indicator::after {
+.bubble-state-nav .indicator::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -107,54 +106,54 @@
     box-shadow: -1px -5px 0 0 var(--background);
 }
 
-.navigation ul li:nth-child(1).active ~.indicator {
+.bubble-state-nav ul li:nth-child(1).active ~.indicator {
     transform: translateX(calc(70px * 0));
 }
 
-.navigation ul li:nth-child(2).active ~.indicator {
+.bubble-state-nav ul li:nth-child(2).active ~.indicator {
     transform: translateX(calc(70px * 1));
 }
 
-.navigation ul li:nth-child(3).active ~.indicator {
+.bubble-state-nav ul li:nth-child(3).active ~.indicator {
     transform: translateX(calc(70px * 2));
 }
 
-.navigation ul li:nth-child(4).active ~.indicator {
+.bubble-state-nav ul li:nth-child(4).active ~.indicator {
     transform: translateX(calc(70px * 3));
 }
 
-.navigation ul li:nth-child(5).active ~.indicator {
+.bubble-state-nav ul li:nth-child(5).active ~.indicator {
     transform: translateX(calc(70px * 4));
 }
 
-.list .visited img.icon {
+.bubble-state-nav .list .visited img.icon {
     filter: invert(5%) sepia(78%) saturate(99999%) hue-rotate(280deg) brightness(97%) contrast(101%);
 }
 
-.list .house img.icon{
+.bubble-state-nav .list .house img.icon{
     content: url("icons/house.svg");
 }
 
-.list .person img.icon{
+.bubble-state-nav .list .person img.icon{
     content: url("icons/person.svg");
 }
 
-.list .car img.icon{
+.bubble-state-nav .list .car img.icon{
     content: url("icons/car.svg");
 }
 
-.list .plus img.icon.plus{
+.bubble-state-nav .list .plus img.icon.plus{
     content: url("icons/plus.svg");
 }
 
-.list .placeholder img.icon{
+.bubble-state-nav .list .placeholder img.icon{
     content: url("icons/placeholder.svg");
 }
 
-.list .calendar img.icon{
+.bubble-state-nav .list .calendar img.icon{
     content: url("icons/calendar.svg");
 }
 
-.invisiblePage .indicator {
+.bubble-state-nav .invisiblePage .indicator {
     display: none;
 }

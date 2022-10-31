@@ -71,10 +71,12 @@ const NavigationProjector = (controller, pinToElement) => {
     const projectNavigation = () => {
 
         const navigation = dom(`
-            <div id="bubbleStateWrapper" class="navigation">
-                <ul id="bubbleStateNavPointWrapper">
-                    <!-- Placeholder for navigation li elements and indicator -->
-                </ul>
+            <div id="bubble-state-nav-wrapper">
+                <div id="bubbleStateWrapper" class="bubble-state-nav">
+                    <ul id="bubbleStateNavPointWrapper">
+                        <!-- Placeholder for navigation li elements and indicator -->
+                    </ul>
+                </div>
             </div>
         `);
 
@@ -85,12 +87,12 @@ const NavigationProjector = (controller, pinToElement) => {
             if(isVisible) {
                 const navigationPointName = anchor.hash.substring(1);
                 const navPoint = anchorListWrappers[navigationPointName];
-                navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(navPoint);
+                navigation['bubble-state-nav-wrapper'].children['bubbleStateWrapper'].children['bubbleStateNavPointWrapper'].append(navPoint);
             }
         });
 
         const indicator = dom(`<div class="indicator"></div>`);
-        navigation["bubbleStateWrapper"].children["bubbleStateNavPointWrapper"].append(...indicator);
+        navigation['bubble-state-nav-wrapper'].children['bubbleStateWrapper'].children['bubbleStateNavPointWrapper'].append(...indicator);
         positionWrapper.replaceChildren(...navigation);
     };
 

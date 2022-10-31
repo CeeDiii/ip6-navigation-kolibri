@@ -52,6 +52,7 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const projectNavigation = () => {
         const navigationDiv = document.createElement("div");
+        navigationDiv.classList.add("your-navigation-class");
         // insert your projector code here...
 
         if (positionWrapper.firstChild === null) {
