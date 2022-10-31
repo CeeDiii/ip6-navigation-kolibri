@@ -37,12 +37,12 @@ const NavigationProjector = (controller, pinToElement) => {
 
         // initialize anchor
         const anchorDom = dom(`
-            <a href="${hash}">${pageName}</a>
+            <a href="${hash}" id="${pageName}-a">${pageName}</a>
         `);
 
         // initialize li wrapper for styling purposes
         const navPointDom = dom(`
-                <li class="list" id="${pageName}">
+                <li class="list" id="${pageName}-li">
                     <!-- Placeholder for anchor tag -->
                 </li>
         `);
@@ -50,14 +50,14 @@ const NavigationProjector = (controller, pinToElement) => {
         // get anchor from collection
         const anchor = anchorDom[0];
 
-        navPointDom[pageName].append(anchor);
+        navPointDom[pageName + '-li'].append(anchor);
 
         // check if node is root element or if parentNode already exists
         if (parentNode === null) {
             tree.append(...navPointDom);
         } else {
             const parentName = parentNode.getValue();
-            const parentLi = findElementById(tree, parentName);
+            const parentLi = findElementById(tree, parentName + '-li');
 
             pageName = '|---> ' + pageName;
             anchor.innerHTML = pageName;
@@ -132,11 +132,22 @@ const NavigationProjector = (controller, pinToElement) => {
 
         controller.getPageController(hash).onIsVisibleChanged(visible => {
             const pageName = controller.getPageController(hash).getValue();
-            const pageLi = findElementById(tree, pageName);
+            const pageLi = findElementById(tree, pageName + '-li');
             if (visible) {
                 pageLi.classList.remove('invisible');
             } else {
                 pageLi.classList.add('invisible');
+            }
+            projectNavigation();
+        });
+
+        controller.getPageController(hash).onActiveChanged((newActive, oldActive) => {
+            const pageName = controller.getPageController(hash).getValue();
+            const pageAnchor = findElementById(tree, pageName + '-a');
+            if (newActive) {
+                pageAnchor.append(' ☚');
+            } else if (newActive !== oldActive) {
+                pageAnchor.innerText = pageAnchor.innerText.substring(0, pageAnchor.innerText.indexOf(' ☚'));
             }
             projectNavigation();
         });
