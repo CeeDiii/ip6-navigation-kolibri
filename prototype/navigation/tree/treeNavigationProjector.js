@@ -18,8 +18,8 @@ export { NavigationProjector }
  */
 const NavigationProjector = (controller, pinToElement) => {
     const positionWrapper = pinToElement;
+    positionWrapper.classList.add('tree-nav');
     const observableNavigationAnchors = ObservableList([]);
-    const navigationAnchors = [];
 
     // const tree = dom(`
     //     <ol id="tree"></ol>
@@ -60,7 +60,15 @@ const NavigationProjector = (controller, pinToElement) => {
 
         if (parentNode !== null && parentNode !== undefined) {
             const parentName = parentNode.getValue();
-            const parentLi = findElementById(tree, parentName);
+            /** @type { HTMLElement } */ const parentLi = findElementById(tree, parentName);
+
+
+            if (parentLi.firstChild !== null && parentLi)
+            console.log(parentLi.firstChild);
+
+            parentLi.classList.add('caret');
+
+
             let childList = parentLi.children[parentName + '-children'];
             if (childList !== null && childList !== undefined) {
                 childList.append(...navPointDom);
@@ -70,6 +78,7 @@ const NavigationProjector = (controller, pinToElement) => {
                 childList.append(...navPointDom);
                 parentLi.append(childList);
             }
+            childList.classList.add('nested');
         } else {
             tree.append(...navPointDom);
         }
@@ -85,8 +94,17 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const projectNavigation = () => {
         const navigationDiv = document.createElement("div");
-        // insert your projector code here...
         navigationDiv.append(tree);
+
+        const carets = document.getElementsByClassName("caret");
+
+        for (const caret of carets) {
+            caret.onclick = e => {
+                console.log(e.target);
+                e.target.parentElement.querySelector(".nested").classList.toggle("active");
+                e.target.classList.toggle("caret-down");
+            };
+        }
 
         if (positionWrapper.firstChild === null) {
             positionWrapper.appendChild(navigationDiv)
@@ -94,23 +112,22 @@ const NavigationProjector = (controller, pinToElement) => {
             positionWrapper.replaceChild(navigationDiv, positionWrapper.firstChild);
         }
     };
-
-    const findElementById = (tree, searchId) => {
-        let result = null;
-        for (let i = 0; i < tree.childElementCount; i++) {
-            if (tree.children[i].id === searchId) {
-                result = tree.children[i];
-                break;
-            } else {
-                result = findElementById(tree.children[i].children, searchId);
+    
+    function findElementById(tree, searchId){
+        if(tree.id === searchId){
+            return tree;
+        } else if (tree.children != null){
+            let result = null;
+            for(let i=0; result == null && i < tree.children.length; i++){
+                result = findElementById(tree.children[i], searchId);
             }
+            return result;
         }
-        return result;
-    };
+        return null;
+    }
 
     observableNavigationAnchors.onAdd(anchor => {
         controller.registerAnchorClickListener(anchor);
-        navigationAnchors.push(anchor);
     });
 
     controller.onNavigationHashAdd(hash => {
@@ -121,6 +138,19 @@ const NavigationProjector = (controller, pinToElement) => {
             const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
             observableNavigationAnchors.add(newNavPoint);
             projectNavigation();
+        });
+
+        controller.getPageController(hash).onIsVisibleChanged(visible => {
+            const pageName = controller.getPageController(hash).getValue();
+            /** @type { HTMLElement } */ const pageLi = findElementById(tree, pageName);
+            if (pageLi !== null) {
+                if (visible) {
+                    pageLi.classList.remove('invisible');
+                } else {
+                    pageLi.classList.add('invisible');
+                }
+                projectNavigation();
+            }
         });
         // END
     });

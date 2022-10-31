@@ -1,39 +1,51 @@
 /* Remove default bullets */
-ul, #tree {
+.tree-nav ol, #tree {
     list-style-type: none;
 }
 
 /* Remove margins and padding from the parent ul */
-#tree {
+.tree-nav #tree {
     margin: 0;
     padding: 0;
 }
 
 /* Style the caret/arrow */
-.caret {
+.tree-nav .caret {
     cursor: pointer;
     user-select: none; /* Prevent text selection */
 }
 
 /* Create the caret/arrow with a unicode, and style it */
-.caret::before {
+.tree-nav .caret::before {
     content: "\25B6";
     color: black;
     display: inline-block;
-    margin-right: 6px;
 }
 
 /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
-.caret-down::before {
+.tree-nav li:hover::before {
     transform: rotate(90deg);
 }
 
 /* Hide the nested list */
-.nested {
+.tree-nav .nested {
     display: none;
 }
 
 /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
-.active {
+.tree-nav li:hover > ol {
     display: block;
 }
+
+.tree-nav li.invisible {
+    display: none;
+}
+
+.tree-nav ol > li {
+    margin-left: 32px;
+}
+
+.tree-nav ol > li.caret {
+    margin-left: 20px;
+}
+
