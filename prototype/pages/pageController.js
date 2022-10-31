@@ -41,18 +41,18 @@ const PageController = (pageName, contentControllers) => {
     const pageContentControllers = contentControllers;
 
     return {
+        getPageContentControllers: () => pageContentControllers,
         activate: () => {
             pageModel.getPageObs(ACTIVE).setValue(true);
             pageModel.getPageObs(VISITED).setValue(true);
         },
         passivate:           () => pageModel.getPageObs(ACTIVE).setValue(false),
-        getPageContentControllers: () => pageContentControllers,
-        getHash:             () => pageModel.getPageObs(HASH).getValue(),
-        setIcon:             iconName => pageModel.getPageObs(ICON).setValue(iconName),
-        setVisited:          visitedState => pageModel.getPageObs(VISITED).setValue(visitedState),
-        setIsHomepage:       isHomepage => pageModel.getPageObs(ISHOMEPAGE).setValue(isHomepage),
-        setIsVisible:        isVisible => pageModel.getPageObs(VISIBLE).setValue(isVisible),
-        getIsVisible:        () => pageModel.getPageObs(VISIBLE).getValue(),
+        getHash:             pageModel.getPageObs(HASH).getValue,
+        setIcon:             pageModel.getPageObs(ICON).setValue,
+        setVisited:          pageModel.getPageObs(VISITED).setValue,
+        setIsHomepage:       pageModel.getPageObs(ISHOMEPAGE).setValue,
+        setIsVisible:        pageModel.getPageObs(VISIBLE).setValue,
+        getIsVisible:        pageModel.getPageObs(VISIBLE).getValue,
         onActiveChanged:     pageModel.getPageObs(ACTIVE).onChange,
         onIconChanged:       pageModel.getPageObs(ICON).onChange,
         onVisitedChanged:    pageModel.getPageObs(VISITED).onChange,

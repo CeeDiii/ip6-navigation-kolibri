@@ -31,7 +31,6 @@ const NavigationController = () => {
     const navigationModel  = NavigationModel();
     const currentLocation  = Attribute(null);
     const pageControllers  = {};
-    const errorControllers = {};
 
     const navigate = hash => {
         // check if hash is empty to redirect to fallback homepage
@@ -113,19 +112,19 @@ const NavigationController = () => {
             navigationModel.deleteNavigationHash(pageHash);
             delete pageControllers[pageHash];
         },
-        setHomePage: newHomepage => navigationModel.setHomepage(newHomepage),
-        getHomePage: () => navigationModel.getHomepage(),
-        onNavigationHashAdd:  navigationModel.onAdd,
-        onNavigationHashDel:  navigationModel.onDel,
-        onLocationChanged:    currentLocation.getObs(VALUE).onChange,
-        onWebsiteLogoChanged: navigationModel.onWebsiteLogoChanged,
-        onVisibleChanged:     navigationModel.onVisibleChanged,
         registerAnchorClickListener: anchor => {
             anchor.onclick = e => {
                 e.preventDefault();
                 const hash = e.currentTarget.getAttribute('href');
                 navigate(hash);
             };
-        }
+        },
+        setHomePage:            navigationModel.setHomepage,
+        getHomePage:            navigationModel.getHomepage,
+        onNavigationHashAdd:    navigationModel.onAdd,
+        onNavigationHashDel:    navigationModel.onDel,
+        onLocationChanged:      currentLocation.getObs(VALUE).onChange,
+        onWebsiteLogoChanged:   navigationModel.onWebsiteLogoChanged,
+        onVisibleChanged:       navigationModel.onVisibleChanged,
     }
 };
