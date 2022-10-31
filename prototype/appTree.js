@@ -59,6 +59,7 @@ const navigationController = NavigationController();
 personPageController.setParent(homePageController);
 carPageController.setParent(homePageController);
 simpleWorkWeekPageController.setParent(personPageController);
+simpleFormPageController.setParent(personPageController);
 
 
 const pinToNavElement = document.getElementById("nav");
