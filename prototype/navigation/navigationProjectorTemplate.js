@@ -25,17 +25,17 @@ const NavigationProjector = (controller, pinToElement) => {
      * Initializes a navigation anchor
      *
      * @function
-     * @param hash - the hash that represents the identifier of a page
+     * @param { !String } hash - the hash that represents the identifier of a page
+     * @param { !String } pageName - the pageName that is displayed for this hash
      * @return { HTMLAnchorElement }
      *
      */
-    const initializeNavigationPoint = hash => {
+    const initializeNavigationPoint = (hash, pageName) => {
         // Initialize your navigation anchors here...
-        const navigationPointName = hash.substring(1);
 
         // initialize anchor
         const anchorDom = dom(`
-            <a href="${hash}">${navigationPointName}</a>
+            <a href="${hash}">${pageName}</a>
         `);
 
         // get anchor from collection
@@ -67,13 +67,14 @@ const NavigationProjector = (controller, pinToElement) => {
     });
 
     controller.onNavigationHashAdd(hash => {
-        const newNavPoint = initializeNavigationPoint(hash);
+        const pageName = controller.getPageController(hash).getValue();
+        const newNavPoint = initializeNavigationPoint(hash, pageName);
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS
         // controller.getPageController(hash).onValueChanged((newValue, oldValue) => {
         //      do something with binding
-        //}
+        //});
         // END
 
         projectNavigation();

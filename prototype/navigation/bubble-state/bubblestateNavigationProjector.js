@@ -28,26 +28,26 @@ const NavigationProjector = (controller, pinToElement) => {
      * Initializes a navigation anchor
      *
      * @function
-     * @param hash - the hash that represents the identifier of a page
+     * @param { !String } hash - the hash that represents the identifier of a page
+     * @param { !String } pageName - the pageName that is displayed for this hash
      * @return { HTMLAnchorElement }
      *
      */
-    const initializeNavigationPoint = hash => {
-        const navigationPointName = hash.substring(1);
+    const initializeNavigationPoint = (hash, pageName) => {
 
         // initialize anchor
         const anchorDom = dom(`
             <a href="${hash}">
-                <span class="icon" id="${navigationPointName}-icon-wrapper">
-                    <img class="icon" id="${navigationPointName}-icon" alt="${navigationPointName}-icon">
+                <span class="icon" id="${pageName}-icon-wrapper">
+                    <img class="icon" id="${pageName}-icon" alt="${pageName}-icon">
                 </span>
-                <span class="text">${navigationPointName}</span>
+                <span class="text">${pageName}</span>
             </a>
         `);
 
         // initialize li wrapper for styling purposes
         const navPointDom = dom(`
-                <li class="list" id="${navigationPointName}">
+                <li class="list" id="${pageName}">
                     <!-- Placeholder for anchor tag -->
                 </li>
         `);
@@ -56,8 +56,8 @@ const NavigationProjector = (controller, pinToElement) => {
         const anchor = anchorDom[0];
 
         // append anchor to li tag
-        navPointDom[navigationPointName].append(anchor);
-        anchorListWrappers[navigationPointName] = navPointDom[0];
+        navPointDom[pageName].append(anchor);
+        anchorListWrappers[pageName] = navPointDom[0];
 
         return anchor;
     };
@@ -100,7 +100,8 @@ const NavigationProjector = (controller, pinToElement) => {
     });
 
     controller.onNavigationHashAdd(hash => {
-        const newNavPoint = initializeNavigationPoint(hash);
+        const pageName = controller.getPageController(hash).getValue();
+        const newNavPoint = initializeNavigationPoint(hash, pageName);
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS TO MODEL
