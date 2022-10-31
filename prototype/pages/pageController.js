@@ -1,4 +1,4 @@
-import {ACTIVE, HASH, ICON, IS_HOMEPAGE, VALUE, VISIBLE, VISITED} from "../kolibri/presentationModel.js";
+import { ACTIVE, HASH, ICON, IS_HOMEPAGE, PARENT, VALUE, VISIBLE, VISITED } from "../kolibri/presentationModel.js";
 import { PageModel } from "./pageModel.js";
 
 export { PageController }
@@ -16,12 +16,15 @@ export { PageController }
  * @property { (isHomepage: Boolean) => void } setIsHomepage
  * @property { (isVisible: Boolean) => void } setIsVisible
  * @property { () => Boolean } getIsVisible
+ * @property { (newParent: PageControllerType) => void } setParent
+ * @property { () => PageControllerType } getParent
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsHomepageChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsVisibleChanged
+ * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onParentChanged
  */
 
 /**
@@ -55,12 +58,15 @@ const PageController = (pageName, contentControllers) => {
         setIsHomepage:       pageModel.getPageObs(IS_HOMEPAGE).setValue,
         setIsVisible:        pageModel.getPageObs(VISIBLE).setValue,
         getIsVisible:        pageModel.getPageObs(VISIBLE).getValue,
+        setParent:           pageModel.getPageObs(PARENT).setValue,
+        getParent:           pageModel.getPageObs(PARENT).getValue,
         onActiveChanged:     pageModel.getPageObs(ACTIVE).onChange,
         onIconChanged:       pageModel.getPageObs(ICON).onChange,
         onVisitedChanged:    pageModel.getPageObs(VISITED).onChange,
         onValueChanged:      pageModel.getPageObs(VALUE).onChange,
         onIsHomepageChanged: pageModel.getPageObs(IS_HOMEPAGE).onChange,
         onIsVisibleChanged:  pageModel.getPageObs(VISIBLE).onChange,
+        onParentChanged:     pageModel.getPageObs(PARENT).onChange,
         // more to come...
     }
 };
