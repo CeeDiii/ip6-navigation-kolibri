@@ -14,6 +14,8 @@ import { PageNotFoundProjector } from "./pages/404/pageNotFoundProjector.js";
 import {CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME} from "./kolibri/util/dom.js";
 import { SimpleFormController } from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector } from "./pages/simpleForm/simpleFormPageProjector.js";
+import { MasterDetailViewsPageProjector } from "./pages/masterDetailViews/masterDetailViewsPageProjector.js";
+import { FormsPageProjector } from "./pages/forms/formsPageProjector.js";
 
 const pinToContentElement = document.getElementById("content");
 
@@ -26,9 +28,18 @@ const homePageController = PageController("home", null);
 homePageController.setIcon('house');
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
+const masterDetailViewsPageController = PageController("masterdetailviews", null);
+masterDetailViewsPageController.setIcon('placeholder');
+MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
+
+const formsPageController = PageController("forms", null);
+formsPageController.setIcon('placeholder');
+FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
+
+
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
-const personPageController = PageController("person", [personListController, personSelectionController]);
+const personPageController      = PageController("person", [personListController, personSelectionController]);
 personPageController.setIcon('person');
 PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html');
 
@@ -56,21 +67,21 @@ SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/
 
 const navigationController = NavigationController();
 
-personPageController.setParent(homePageController);
-simpleWorkWeekPageController.setParent(personPageController);
-simpleFormPageController.setParent(personPageController);
-simpleWorkWeekPageController.setParent(null);
-simpleWorkWeekPageController.setParent(personPageController);
-carPageController.setParent(simpleWorkWeekPageController);
+personPageController.setParent(masterDetailViewsPageController);
+carPageController.setParent(masterDetailViewsPageController);
+simpleFormPageController.setParent(formsPageController);
+simpleWorkWeekPageController.setParent(formsPageController);
 
 const pinToNavElement = document.getElementById("nav");
 TreeNavigationProjector(navigationController, pinToNavElement);
 
 navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);
-navigationController.addPageController(personPageController);
+navigationController.addPageController(masterDetailViewsPageController);
+navigationController.addPageController(formsPageController);
 navigationController.addPageController(simpleWorkWeekPageController);
 navigationController.addPageController(simpleFormPageController);
+navigationController.addPageController(personPageController);
 
 navigationController.setHomePage('home');
 
