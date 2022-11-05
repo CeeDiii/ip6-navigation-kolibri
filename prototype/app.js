@@ -1,5 +1,5 @@
 import { NavigationController } from "./navigation/navigationController.js";
-/** import { NavigationProjector } from "./navigation/basicNavigationProjector.js"; **/
+/** import { DashboardNavigationProjector } from "./navigation/basicNavigationProjector.js"; **/
 import { NavigationProjector } from "./navigation/bubble-state/bubblestateNavigationProjector.js";
 import { BreadCrumbProjector } from "./navigation/bread-crumbs/breadCrumbProjector.js";
 import { PageController } from "./pages/pageController.js";

@@ -1,8 +1,8 @@
-.masterdetailviews h1 {
+#content .masterdetailviews h1 {
     margin-top: 35px;
 }
 
-.masterdetailviews .message-wrapper {
+#content  .masterdetailviews .message-wrapper {
     text-align: center;
     padding: 16px;
 }

@@ -14,7 +14,7 @@ export { BreadCrumbProjector }
  * @return { NavigationProjectorType }
  * @example
  * const navigationController = NavigationController();
- * NavigationProjector(navigationController, pinToNavElement);
+ * DashboardNavigationProjector(navigationController, pinToNavElement);
  */
 const BreadCrumbProjector = (controller, pinToElement) => {
     const positionWrapper = pinToElement;

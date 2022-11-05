@@ -14,7 +14,7 @@ export { NavigationProjector }
  * @return { NavigationProjectorType }
  * @example
  * const navigationController = NavigationController();
- * NavigationProjector(navigationController, pinToNavElement);
+ * DashboardNavigationProjector(navigationController, pinToNavElement);
  */
 
 

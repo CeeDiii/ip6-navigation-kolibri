@@ -1,7 +1,7 @@
 import { ObservableList } from "../../kolibri/observable.js";
 import { dom } from "../../kolibri/util/dom.js";
 
-export { NavigationProjector as TreeNavigationProjector }
+export { DashboardNavigationProjector as DashboardNavigationProjector }
 
 /**
  * @typedef NavigationProjectorType
@@ -14,11 +14,13 @@ export { NavigationProjector as TreeNavigationProjector }
  * @return { NavigationProjectorType }
  * @example
  * const navigationController = NavigationController();
- * NavigationProjector(navigationController, pinToNavElement);
+ * DashboardNavigationProjector(navigationController, pinToNavElement);
  */
-const NavigationProjector = (controller, pinToElement) => {
+const DashboardNavigationProjector = (controller, pinToElement) => {
     const positionWrapper = pinToElement;
-        const observableNavigationAnchors = ObservableList([]);
+    const observableNavigationAnchors = ObservableList([]);
+    const navigationAnchors = [];
+    let openState = false;
 
     const tree = document.createElement('ol');
     tree.id = 'tree';
@@ -37,7 +39,12 @@ const NavigationProjector = (controller, pinToElement) => {
 
         // initialize anchor
         const anchorDom = dom(`
-            <a href="${hash}" id="${pageName}-a">${pageName}</a>
+            <a href="${hash}" id="${pageName}-a">
+                <span class="icon" id="${pageName}-icon-wrapper">
+                    <img class="icon" id="${pageName}-icon" alt="${pageName}-icon">
+                </span>
+                <span class="text">${pageName}</span>
+            </a>
         `);
 
         // initialize li wrapper for styling purposes
@@ -49,8 +56,6 @@ const NavigationProjector = (controller, pinToElement) => {
 
         // get anchor from collection
         const anchor = anchorDom[0];
-
-        anchor.innerHTML = '|--- ' + pageName;
 
         navPointDom[pageName + '-li'].append(anchor);
 
@@ -73,16 +78,23 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const projectNavigation = () => {
         const navigationDiv = document.createElement("div");
-        navigationDiv.classList.add('tree-nav');
+        navigationDiv.classList.add('dashboard-nav');
         navigationDiv.append(tree);
-
-
 
         if (positionWrapper.firstChild === null) {
             positionWrapper.appendChild(navigationDiv)
         } else {
             positionWrapper.replaceChild(navigationDiv, positionWrapper.firstChild);
         }
+
+        const toggle = dom(`
+            <div id="toggle">
+                <img class="icon">
+            </div>
+        `);
+
+        toggle["toggle"].onclick = () => navigationDiv.classList.toggle('open');
+        navigationDiv.append(...toggle);
     };
 
     /**
@@ -141,6 +153,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
     observableNavigationAnchors.onAdd(anchor => {
         controller.registerAnchorClickListener(anchor);
+        navigationAnchors.push(anchor);
     });
 
     controller.onNavigationHashAdd(hash => {
@@ -156,7 +169,38 @@ const NavigationProjector = (controller, pinToElement) => {
                 // relocate node
                 moveChildNode(oldParent, newParent, thisNode);
             }
+
+            // TODO create functions for bindings to call
+            let newParentPage = null;
+            let oldParentPage = null;
+            let oldParentHasNoChildren = true;
+            if(newParent !== null) {
+                const pageNameNewParent = controller.getPageController(newParent.getHash()).getValue();
+                newParentPage = findElementById(tree, pageNameNewParent + '-li');
+            }
+            if(oldParent !== null) {
+                const pageNameOldParent = controller.getPageController(oldParent.getHash()).getValue();
+                oldParentPage = findElementById(tree, pageNameOldParent + '-li');
+            }
+            if(oldParentPage !== null) {
+                for (const child of oldParentPage.children) {
+                    if (child.tagName === 'ol') {
+                        oldParentHasNoChildren = false;
+                    }
+                }
+                if (oldParentHasNoChildren) {
+                    oldParentPage.classList.remove('parent');
+                }
+            }
+            if(newParentPage !== null && !newParentPage.classList.contains('parent')) {
+                newParentPage.classList.add('parent');
+            }
+
             projectNavigation();
+        });
+
+        controller.getPageController(hash).onParentChanged((newParent, oldParent) => {
+
         });
 
         controller.getPageController(hash).onIsVisibleChanged(visible => {
@@ -174,11 +218,22 @@ const NavigationProjector = (controller, pinToElement) => {
             const pageName = controller.getPageController(hash).getValue();
             const pageAnchor = findElementById(tree, pageName + '-a');
             if (newActive) {
-                pageAnchor.append(' ☚');
+                pageAnchor.classList.add('active');
             } else if (newActive !== oldActive) {
-                pageAnchor.innerText = pageAnchor.innerText.substring(0, pageAnchor.innerText.indexOf(' ☚'));
+                pageAnchor.classList.remove('active');
             }
-            projectNavigation();
+        });
+
+        controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
+            /** HTMLAnchorElement */
+            const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {
+                const urlHash = a.href.substring(a.href.indexOf("#"));
+                return urlHash === hash;
+            });
+            if (anchor !== undefined) {
+                anchor.classList.remove(oldIcon);
+                anchor.classList.add(newIcon);
+            }
         });
 
         controller.getPageController(hash).onActiveChanged(active => {

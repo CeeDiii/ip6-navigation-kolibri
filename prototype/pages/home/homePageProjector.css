@@ -1,13 +1,13 @@
-.home h1 {
+#content .home h1 {
     margin-top: 35px;
 }
 
-.home .message-wrapper {
+#content .home .message-wrapper {
     text-align: center;
     padding: 16px;
 }
 
-.home button {
+#content .home button {
     padding: 5px;
     margin-top: 32px;
 }

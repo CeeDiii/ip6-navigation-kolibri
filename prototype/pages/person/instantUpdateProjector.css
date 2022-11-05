@@ -1,17 +1,17 @@
-.person .card {
+#content .person .card {
     transition: all ease-in-out .5s;
     max-width:  40em;
     margin:     1em auto 2em auto;
     padding:    2em;
     box-shadow: var(--kolibri-box-shadow);
 }
-.person h1 {
+#content .person h1 {
     text-align: center;
 }
-.person .holder {
+#content .person .holder {
     margin: 0 3em 0 3em;
 }
-.person input[type=text] {
+#content .person input[type=text] {
     font-size:      1.1em;
     color:          var(--kolibri-color-output);
     border-width:   0 0 1px 0;
@@ -22,7 +22,7 @@
     background-size:     0 1px; /* default:  do not show */
 }
 
-.person input[type=text]:focus {
+#content .person input[type=text]:focus {
     outline:             transparent none 0;
     border-bottom-color: transparent;
 
@@ -30,23 +30,23 @@
     transition:          background-size linear .5s;
 }
 
-.person #plus {
+#content .person #plus {
     padding: 5px;
     width: 30px;
     position: relative;
     top: -1em;
 }
 
-.person h2 {
+#content .person h2 {
     margin-top: 25px;
     margin-bottom: 15px;
 }
 
-.person {
+#content .person {
     margin-bottom: 100px;
 }
 
-.person p{
+#content .person p{
     padding-top: 8px;
     padding-bottom: 8px;
 }

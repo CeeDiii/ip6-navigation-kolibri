@@ -1,5 +1,5 @@
 import { NavigationController } from "./navigation/navigationController.js";
-import { TreeNavigationProjector} from "./navigation/tree/treeNavigationProjector.js";
+import { DashboardNavigationProjector } from "./navigation/dashboard/dashboardNavigationProjector.js";
 import { PageController } from "./pages/pageController.js";
 import { HomePageProjector } from "./pages/home/homePageProjector.js";
 import { Person, personSelectionMold } from "./pages/person/person.js";
@@ -29,11 +29,11 @@ homePageController.setIcon('house');
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
-masterDetailViewsPageController.setIcon('placeholder');
+masterDetailViewsPageController.setIcon('masterdetail');
 MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
 
 const formsPageController = PageController("forms", null);
-formsPageController.setIcon('placeholder');
+formsPageController.setIcon('forms');
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
 
@@ -63,17 +63,18 @@ const formStructure = [
 ];
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleForm", [simpleFormController]);
+simpleFormPageController.setIcon('simpleform');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
 const navigationController = NavigationController();
 
 personPageController.setParent(masterDetailViewsPageController);
-carPageController.setParent(masterDetailViewsPageController);
+carPageController.setParent(personPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
 
 const pinToNavElement = document.getElementById("nav");
-TreeNavigationProjector(navigationController, pinToNavElement);
+DashboardNavigationProjector(navigationController, pinToNavElement);
 
 navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);
