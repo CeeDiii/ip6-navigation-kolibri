@@ -118,6 +118,26 @@ const NavigationProjector = (controller, pinToElement) => {
         childrenNodeList.append(node);
     };
 
+    const moveChildNode = (oldParent, newParent, childNode) => {
+        if (newParent === null) { // append node to root if newParent is null
+            tree.append(childNode);
+        } else if (oldParent === null) { // check if old parent is root and move node from root to newParent
+            tree.removeChild(childNode);
+            const parentName = newParent.getValue();
+            appendNode(childNode, parentName);
+        } else { // if new parent and old parent are not root, move node from oldParent to newParent
+            const oldParentName = oldParent.getValue();
+            const oldParentChildrenNodeList = findElementById(tree, oldParentName + '-children');
+            oldParentChildrenNodeList.removeChild(childNode);
+            // check if list of children has no more elements and if so remove it
+            if (oldParentChildrenNodeList.children.length < 1) {
+                const oldParentNode = findElementById(tree, oldParentName + '-li');
+                oldParentNode.removeChild(oldParentChildrenNodeList);
+            }
+            const parentName = newParent.getValue();
+            appendNode(childNode, parentName);
+        }
+    };
 
     observableNavigationAnchors.onAdd(anchor => {
         controller.registerAnchorClickListener(anchor);
@@ -133,25 +153,8 @@ const NavigationProjector = (controller, pinToElement) => {
                 const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
                 observableNavigationAnchors.add(newNavPoint);
             } else {
-                // check if old parent is root and remove node from root
-                if (oldParent === null) {
-                    tree.removeChild(thisNode);
-                    const parentName = newParent.getValue();
-                    appendNode(thisNode, parentName);
-                } else if (newParent !== null) { // check if new parent and old parent are not root and remove old node from old parent
-                    const oldParentName = oldParent.getValue();
-                    const oldParentChildrenNodeList = findElementById(tree, oldParentName + '-children');
-                    oldParentChildrenNodeList.removeChild(thisNode);
-                    // check if list of children has no more elements and if so remove it
-                    if (oldParentChildrenNodeList.children.length < 1) {
-                        const oldParentNode = findElementById(tree, oldParentName + '-li');
-                        oldParentNode.removeChild(oldParentChildrenNodeList);
-                    }
-                    const parentName = newParent.getValue();
-                    appendNode(thisNode, parentName);
-                } else { // append node to root if new parent is null
-                    tree.append(thisNode);
-                }
+                // relocate node
+                moveChildNode(oldParent, newParent, thisNode);
             }
             projectNavigation();
         });
@@ -176,6 +179,14 @@ const NavigationProjector = (controller, pinToElement) => {
                 pageAnchor.innerText = pageAnchor.innerText.substring(0, pageAnchor.innerText.indexOf(' ☚'));
             }
             projectNavigation();
+        });
+
+        controller.getPageController(hash).onActiveChanged(active => {
+            const pageName = controller.getPageController(hash).getValue();
+            if (active) {
+                const title = document.getElementsByTagName("title")[0];
+                title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+            }
         });
         // END
     });
