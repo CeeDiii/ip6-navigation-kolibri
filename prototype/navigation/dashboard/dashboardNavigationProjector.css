@@ -60,43 +60,43 @@ body {
 }
 
 .dashboard-nav #toggle img.icon {
-    content: url("icons/open.svg");
+    content: url("../icons/open.svg");
 }
 
 .dashboard-nav.open #toggle img.icon {
-    content: url("icons/close.svg");
+    content: url("../icons/close.svg");
 }
 
 .dashboard-nav .list .house img.icon{
-    content: url("icons/house.svg");
+    content: url("../icons/house.svg");
 }
 
 .dashboard-nav .list .person img.icon{
-    content: url("icons/person.svg");
+    content: url("../icons/person.svg");
 }
 
 .dashboard-nav .list .car img.icon{
-    content: url("icons/car.svg");
+    content: url("../icons/car.svg");
 }
 
 .dashboard-nav .list .placeholder img.icon{
-    content: url("icons/placeholder.svg");
+    content: url("../icons/placeholder.svg");
 }
 
 .dashboard-nav .list .calendar img.icon{
-    content: url("icons/calendar.svg");
+    content: url("../icons/calendar.svg");
 }
 
 .dashboard-nav .list .masterdetail img.icon{
-    content: url("icons/masterdetail.svg");
+    content: url("../icons/masterdetail.svg");
 }
 
 .dashboard-nav .list .forms img.icon{
-    content: url("icons/forms.svg");
+    content: url("../icons/forms.svg");
 }
 
 .dashboard-nav .list .simpleform img.icon{
-    content: url("icons/simpleform.svg");
+    content: url("../icons/simpleform.svg");
 }
 
 .dashboard-nav span.icon {
@@ -135,6 +135,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.25) 0 7px 29px 0;
+}
+
+.dashboard-nav #toggle:hover {
+    box-shadow: rgba(100, 100, 111, 0.5) 0 7px 29px 0;
 }
 
 .dashboard-nav ol li ol {
