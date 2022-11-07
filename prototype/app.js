@@ -1,9 +1,13 @@
 import { NavigationController } from "./navigation/navigationController.js";
-/** import { DashboardNavigationProjector } from "./navigation/basicNavigationProjector.js"; **/
-import { NavigationProjector } from "./navigation/bubble-state/bubblestateNavigationProjector.js";
+// import { NavigationProjector } from "./navigation/basicNavigationProjector.js";
+// import { NavigationProjector } from "./navigation/basic-tree/basicNavigationProjector.js";
+import { NavigationProjector } from "./navigation/dashboard/dashboardNavigationProjector.js";
+import { BubbleStateNavigationProjector } from "./navigation/bubble-state/bubblestateNavigationProjector.js";
 import { BreadCrumbProjector } from "./navigation/bread-crumbs/breadCrumbProjector.js";
 import { PageController } from "./pages/pageController.js";
 import { HomePageProjector } from "./pages/home/homePageProjector.js";
+import { MasterDetailViewsPageProjector } from "./pages/masterDetailViews/masterDetailViewsPageProjector.js";
+import { FormsPageProjector } from "./pages/forms/formsPageProjector.js";
 import { Person, personSelectionMold } from "./pages/person/person.js";
 import { PersonListController, PersonSelectionController } from "./pages/person/personController.js";
 import { CarListController, CarSelectionController } from "./pages/car/carController.js";
@@ -27,6 +31,15 @@ PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNot
 const homePageController = PageController("home", null);
 homePageController.setIcon('house');
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
+
+const masterDetailViewsPageController = PageController("masterdetailviews", null);
+masterDetailViewsPageController.setIcon('masterdetail');
+MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
+
+const formsPageController = PageController("forms", null);
+formsPageController.setIcon('forms');
+FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
+
 
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
@@ -54,20 +67,30 @@ const formStructure = [
 ];
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleForm", [simpleFormController]);
+simpleFormPageController.setIcon('simpleform');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
 const navigationController = NavigationController();
 
-const pinToNavElement = document.getElementById("nav");
-NavigationProjector(navigationController, pinToNavElement);
-const pinToBreadCrumbElement = document.getElementById("bread-crumbs");
+personPageController.setParent(masterDetailViewsPageController);
+carPageController.setParent(masterDetailViewsPageController);
+simpleFormPageController.setParent(formsPageController);
+simpleWorkWeekPageController.setParent(formsPageController);
+
+const pinToNavElement = document.getElementById('nav');
+BubbleStateNavigationProjector(navigationController, pinToNavElement);
+const pinToTreeNavElement = document.getElementById('tree-nav');
+NavigationProjector(navigationController, pinToTreeNavElement);
+const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
 BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
 navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);
-navigationController.addPageController(personPageController);
+navigationController.addPageController(masterDetailViewsPageController);
+navigationController.addPageController(formsPageController);
 navigationController.addPageController(simpleWorkWeekPageController);
 navigationController.addPageController(simpleFormPageController);
+navigationController.addPageController(personPageController);
 
 navigationController.setHomePage('home');
 
