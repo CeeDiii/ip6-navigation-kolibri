@@ -24,7 +24,7 @@ export { PageController }
  * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsHomepageChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsVisibleChanged
- * @property { (callback: onValueChangeCallback<PageControllerType|null>) => void } onParentChanged
+ * @property { (callback: onValueChangeCallback<?PageControllerType>) => void } onParentChanged
  */
 
 /**
