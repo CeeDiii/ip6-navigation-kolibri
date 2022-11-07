@@ -106,52 +106,48 @@
     box-shadow: -1px -5px 0 0 var(--background);
 }
 
-.bubble-state-nav ul li:nth-child(1).active ~.indicator {
-    transform: translateX(calc(70px * 0));
-}
-
-.bubble-state-nav ul li:nth-child(2).active ~.indicator {
-    transform: translateX(calc(70px * 1));
-}
-
-.bubble-state-nav ul li:nth-child(3).active ~.indicator {
-    transform: translateX(calc(70px * 2));
-}
-
-.bubble-state-nav ul li:nth-child(4).active ~.indicator {
-    transform: translateX(calc(70px * 3));
-}
-
-.bubble-state-nav ul li:nth-child(5).active ~.indicator {
-    transform: translateX(calc(70px * 4));
-}
-
 .bubble-state-nav .list .visited img.icon {
     filter: invert(5%) sepia(78%) saturate(99999%) hue-rotate(280deg) brightness(97%) contrast(101%);
 }
 
+.bubble-state-nav #toggle img.icon {
+    content: url("../icons/open.svg");
+}
+
+.bubble-state-nav.open #toggle img.icon {
+    content: url("../icons/close.svg");
+}
+
 .bubble-state-nav .list .house img.icon{
-    content: url("icons/house.svg");
+    content: url("../icons/house.svg");
 }
 
 .bubble-state-nav .list .person img.icon{
-    content: url("icons/person.svg");
+    content: url("../icons/person.svg");
 }
 
 .bubble-state-nav .list .car img.icon{
-    content: url("icons/car.svg");
-}
-
-.bubble-state-nav .list .plus img.icon.plus{
-    content: url("icons/plus.svg");
+    content: url("../icons/car.svg");
 }
 
 .bubble-state-nav .list .placeholder img.icon{
-    content: url("icons/placeholder.svg");
+    content: url("../icons/placeholder.svg");
 }
 
 .bubble-state-nav .list .calendar img.icon{
-    content: url("icons/calendar.svg");
+    content: url("../icons/calendar.svg");
+}
+
+.bubble-state-nav .list .masterdetail img.icon{
+    content: url("../icons/masterdetail.svg");
+}
+
+.bubble-state-nav .list .forms img.icon{
+    content: url("../icons/forms.svg");
+}
+
+.bubble-state-nav .list .simpleform img.icon{
+    content: url("../icons/simpleform.svg");
 }
 
 .bubble-state-nav .invisiblePage .indicator {

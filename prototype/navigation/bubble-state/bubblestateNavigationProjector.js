@@ -1,7 +1,7 @@
 import { ObservableList } from "../../kolibri/observable.js";
 import {dom} from "../../kolibri/util/dom.js";
 
-export { NavigationProjector }
+export { NavigationProjector as BubbleStateNavigationProjector }
 
 /**
  * @typedef NavigationProjectorType
@@ -69,6 +69,8 @@ const NavigationProjector = (controller, pinToElement) => {
      * @return void
      */
     const projectNavigation = () => {
+        const styleTag = document.createElement('style');
+        styleTag.id = 'bubble-state-nav-styles';
 
         const navigation = dom(`
             <div id="bubble-state-nav-wrapper">
@@ -80,6 +82,7 @@ const NavigationProjector = (controller, pinToElement) => {
             </div>
         `);
 
+        let i = 1;
         navigationAnchors.forEach(anchor => {
             const pageController = controller.getPageController(anchor.hash);
             const isVisible = pageController.getIsVisible();
@@ -87,9 +90,25 @@ const NavigationProjector = (controller, pinToElement) => {
             if(isVisible) {
                 const navigationPointName = anchor.hash.substring(1);
                 const navPoint = anchorListWrappers[navigationPointName];
+                const dynamicIndicatorStyle = `
+                    .bubble-state-nav ul li:nth-child(${i}).active ~.indicator {
+                        transform: translateX(calc(70px * ${i-1}));
+                    }
+                `;
+                styleTag.append(dynamicIndicatorStyle);
                 navigation['bubble-state-nav-wrapper'].children['bubbleStateWrapper'].children['bubbleStateNavPointWrapper'].append(navPoint);
+                i++;
             }
         });
+
+        const head = document.getElementsByTagName('head')[0];
+        const documentStyles = document.getElementById('bubble-state-nav-styles');
+        if (documentStyles === null) {
+            head.append(styleTag);
+        } else {
+            head.replaceChild(styleTag, documentStyles);
+        }
+
 
         const indicator = dom(`<div class="indicator"></div>`);
         navigation['bubble-state-nav-wrapper'].children['bubbleStateWrapper'].children['bubbleStateNavPointWrapper'].append(...indicator);
