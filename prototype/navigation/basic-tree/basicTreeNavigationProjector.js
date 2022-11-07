@@ -90,7 +90,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * @function
      * @param { HTMLElement } tree
      * @param { String } searchId
-     * @return { HTMLLIElement|null }
+     * @return { HTMLElement|null }
      */
     const findElementById = (tree, searchId) =>{
         if(tree.id === searchId){
