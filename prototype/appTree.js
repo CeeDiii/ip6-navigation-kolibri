@@ -1,5 +1,5 @@
 import { NavigationController } from "./navigation/navigationController.js";
-import { DashboardNavigationProjector } from "./navigation/dashboard/dashboardNavigationProjector.js";
+import { NavigationProjector } from "./navigation/dashboard/dashboardNavigationProjector.js";
 import { PageController } from "./pages/pageController.js";
 import { HomePageProjector } from "./pages/home/homePageProjector.js";
 import { Person, personSelectionMold } from "./pages/person/person.js";
@@ -11,7 +11,7 @@ import { CarPageProjector } from "./pages/car/carPageProjector.js";
 import { WeekController } from "./pages/workweek/workweek/weekController.js";
 import { SimpleWorkWeekPageProjector } from "./pages/workweek/simpleWorkWeekPageProjector.js";
 import { PageNotFoundProjector } from "./pages/404/pageNotFoundProjector.js";
-import {CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME} from "./kolibri/util/dom.js";
+import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME } from "./kolibri/util/dom.js";
 import { SimpleFormController } from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector } from "./pages/simpleForm/simpleFormPageProjector.js";
 import { MasterDetailViewsPageProjector } from "./pages/masterDetailViews/masterDetailViewsPageProjector.js";
@@ -69,12 +69,12 @@ SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/
 const navigationController = NavigationController();
 
 personPageController.setParent(masterDetailViewsPageController);
-carPageController.setParent(personPageController);
+carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
 
 const pinToNavElement = document.getElementById("nav");
-DashboardNavigationProjector(navigationController, pinToNavElement);
+NavigationProjector(navigationController, pinToNavElement);
 
 navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);

@@ -1,7 +1,7 @@
 import { ObservableList } from "../../kolibri/observable.js";
 import { dom } from "../../kolibri/util/dom.js";
 
-export { NavigationProjector as TreeNavigationProjector }
+export { NavigationProjector }
 
 /**
  * @typedef NavigationProjectorType
@@ -14,22 +14,22 @@ export { NavigationProjector as TreeNavigationProjector }
  * @return { NavigationProjectorType }
  * @example
  * const navigationController = NavigationController();
- * DashboardNavigationProjector(navigationController, pinToNavElement);
+ * NavigationProjector(navigationController, pinToNavElement);
  */
 const NavigationProjector = (controller, pinToElement) => {
     const positionWrapper = pinToElement;
-        const observableNavigationAnchors = ObservableList([]);
+    const observableNavigationAnchors = ObservableList([]);
 
     const tree = document.createElement('ol');
     tree.id = 'tree';
 
     /**
-     * Initializes a navigation anchor
+     * A function that initializes a navigation anchor
      *
      * @function
      * @param { !String } hash - the hash that represents the identifier of a page
      * @param { !String } pageName - the pageName that is displayed for this hash
-     * @param { !PageControllerType } parentNode - the parent of this node or null if no parent exists
+     * @param { ?PageControllerType } parentNode - the parent of this node or null if no parent exists
      * @return { HTMLAnchorElement }
      *
      */
@@ -59,14 +59,15 @@ const NavigationProjector = (controller, pinToElement) => {
             tree.append(...navPointDom);
         } else {
             const parentName = parentNode.getValue();
-            appendNode(...navPointDom, parentName);
+            const navPointLi = navPointDom.namedItem(`${pageName}-li`);
+            appendNode(navPointLi, parentName);
         }
 
         return anchor;
     };
 
     /**
-     * Binds the navigation anchors to the DOM.
+     * A function that binds the navigation anchors to the DOM.
      *
      * @function
      * @return void
@@ -76,8 +77,6 @@ const NavigationProjector = (controller, pinToElement) => {
         navigationDiv.classList.add('tree-nav');
         navigationDiv.append(tree);
 
-
-
         if (positionWrapper.firstChild === null) {
             positionWrapper.appendChild(navigationDiv)
         } else {
@@ -86,7 +85,7 @@ const NavigationProjector = (controller, pinToElement) => {
     };
 
     /**
-     * Finds an HTML element by its ID in an HTML Collection
+     * A function that finds an HTML element by its ID in an HTML Collection
      *
      * @function
      * @param { HTMLElement } tree
@@ -106,6 +105,14 @@ const NavigationProjector = (controller, pinToElement) => {
         return null;
     };
 
+    /**
+     * A function that appends a node to a given parentNode in a tree structure.
+     *
+     * @function
+     * @param { !HTMLElement } node
+     * @param { !String } parentName
+     * @return { void }
+     */
     const appendNode = (node, parentName) => {
         const parentLi = findElementById(tree, parentName + '-li');
         let childrenNodeList = parentLi.children.namedItem(parentName + '-children');
@@ -118,6 +125,14 @@ const NavigationProjector = (controller, pinToElement) => {
         childrenNodeList.append(node);
     };
 
+    /**
+     * A function that moves childNode from oldParent to newParent.
+     *
+     * @param { !HTMLElement } childNode
+     * @param { ?PageControllerType } oldParent
+     * @param { ?PageControllerType } newParent
+     * @return { void }
+     */
     const moveChildNode = (oldParent, newParent, childNode) => {
         if (newParent === null) { // append node to root if newParent is null
             tree.append(childNode);
