@@ -1,8 +1,8 @@
 import { NavigationController } from "./navigation/navigationController.js";
 // import { NavigationProjector } from "./navigation/basicNavigationProjector.js";
-// import { NavigationProjector } from "./navigation/basic-tree/basicNavigationProjector.js";
 import { NavigationProjector } from "./navigation/dashboard/dashboardNavigationProjector.js";
 import { BubbleStateNavigationProjector } from "./navigation/bubble-state/bubblestateNavigationProjector.js";
+import { TreeNavigationProjector } from "./navigation/basic-tree/basicTreeNavigationProjector.js";
 import { BreadCrumbProjector } from "./navigation/bread-crumbs/breadCrumbProjector.js";
 import { PageController } from "./pages/pageController.js";
 import { HomePageProjector } from "./pages/home/homePageProjector.js";
@@ -72,17 +72,19 @@ SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/
 
 const navigationController = NavigationController();
 
+const pinToNavElement = document.getElementById('nav');
+BubbleStateNavigationProjector(navigationController, pinToNavElement);
+const pinToDashboardNavElement = document.getElementById('dashboard-nav');
+NavigationProjector(navigationController, pinToDashboardNavElement);
+// const pinToTreeNavElement = document.getElementById('tree-nav');
+// TreeNavigationProjector(navigationController, pinToTreeNavElement);
+const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
+BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
+
 personPageController.setParent(masterDetailViewsPageController);
 carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
-
-const pinToNavElement = document.getElementById('nav');
-BubbleStateNavigationProjector(navigationController, pinToNavElement);
-const pinToTreeNavElement = document.getElementById('tree-nav');
-NavigationProjector(navigationController, pinToTreeNavElement);
-const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
-BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
 navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);
