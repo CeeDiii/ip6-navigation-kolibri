@@ -17,7 +17,7 @@ export { PageController }
  * @property { (isVisible: Boolean) => void } setIsVisible
  * @property { () => Boolean } getIsVisible
  * @property { (newParent: PageControllerType|null) => void } setParent - the newParent you want to set for the page, if null is set, the parent is root
- * @property { () => PageControllerType } getParent
+ * @property { () => ?PageControllerType } getParent
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged
@@ -39,7 +39,6 @@ export { PageController }
  * const homePageController = PageController("home", null);
  * homePageController.setIcon('house');
  */
-
 const PageController = (pageName, contentControllers) => {
     const pageModel = PageModel(pageName);
     const pageContentControllers = contentControllers;

@@ -103,7 +103,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * @function
      * @param { HTMLElement } tree
      * @param { String } searchId
-     * @return { HTMLLIElement|null }
+     * @return { HTMLElement|null }
      */
     const findElementById = (tree, searchId) =>{
         if(tree.id === searchId){
@@ -176,6 +176,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
         // CREATE BINDINGS
         controller.getPageController(hash).onParentChanged((newParent, oldParent) => {
+            // Create node if it does not yet exist or move node from oldParent to newParent
             const pageName = controller.getPageController(hash).getValue();
             const thisNode = findElementById(tree, pageName + '-li');
             if (thisNode === null) { // check if this node has not been initialized yet
@@ -187,6 +188,7 @@ const NavigationProjector = (controller, pinToElement) => {
             }
 
             // TODO create functions for bindings to call
+            // Add class for styling to newParent if not null and remove it from oldParent if not null
             let newParentPage = null;
             let oldParentPage = null;
             let oldParentHasNoChildren = true;
@@ -227,12 +229,24 @@ const NavigationProjector = (controller, pinToElement) => {
         });
 
         controller.getPageController(hash).onActiveChanged((newActive, oldActive) => {
-            const pageName = controller.getPageController(hash).getValue();
+            const pageController = controller.getPageController(hash);
+            const pageName = pageController.getValue();
             const pageAnchor = findElementById(tree, pageName + '-a');
             if (newActive) {
                 pageAnchor.classList.add('active');
             } else if (newActive !== oldActive) {
                 pageAnchor.classList.remove('active');
+            }
+
+            const parentNode = pageController.getParent();
+            if (parentNode !== null) {
+                const parentName = parentNode.getValue();
+                const parentAnchor = findElementById(tree, `${parentName}-a`);
+                if (newActive) {
+                    parentAnchor.classList.add('parent-active');
+                } else if (newActive !== oldActive) {
+                    parentAnchor.classList.remove('parent-active');
+                }
             }
         });
 
