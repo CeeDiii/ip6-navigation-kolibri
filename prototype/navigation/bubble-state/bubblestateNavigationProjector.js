@@ -101,14 +101,14 @@ const NavigationProjector = (controller, pinToElement) => {
             }
         });
 
+        // Add styling for indicator
         const head = document.getElementsByTagName('head')[0];
         const documentStyles = document.getElementById('bubble-state-nav-styles');
-        if (documentStyles === null) {
+        if (null === documentStyles) {
             head.append(styleTag);
         } else {
             head.replaceChild(styleTag, documentStyles);
         }
-
 
         const indicator = dom(`<div class="indicator"></div>`);
         navigation['bubble-state-nav-wrapper'].children['bubbleStateWrapper'].children['bubbleStateNavPointWrapper'].append(...indicator);
@@ -126,63 +126,95 @@ const NavigationProjector = (controller, pinToElement) => {
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS TO MODEL
+        controller.getPageController(hash).onActiveChanged(active => {
+           setActiveCSSClass(hash, active);
+           setPageTitle(hash, active);
+        });
+
         controller.getPageController(hash).onVisitedChanged(visited => {
-            if (visited) {
-                const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {
-                    const urlHash = a.hash;
-                    return urlHash === hash;
-                });
-                if (anchor !== undefined) {
-                    anchor.classList.add("visited");
-                }
-            }
-        });
-
-        controller.getPageController(hash).onActiveChanged(active => {
-            const pageName = controller.getPageController(hash).getValue();
-            if (active) {
-                if (anchorListWrappers[pageName] !== undefined) {
-                    anchorListWrappers[pageName].classList.add("active");
-                }
-            } else {
-                if (anchorListWrappers[pageName] !== undefined) {
-                    anchorListWrappers[pageName].classList.remove("active");
-                }
-            }
-        });
-
-        controller.getPageController(hash).onActiveChanged(active => {
-            const pageName = controller.getPageController(hash).getValue();
-            if (active) {
-                const title = document.getElementsByTagName("title")[0];
-                title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
-            }
+            setVisitedCSSClass(hash, visited);
         });
 
         controller.getPageController(hash).onIsVisibleChanged(() => projectNavigation());
 
-        controller.getPageController(hash).onActiveChanged(active => {
-            const pageController = controller.getPageController(hash);
-            if (active && pageController.getIsVisible() === false) {
-                positionWrapper.classList.add('invisiblePage');
-            } else {
-                positionWrapper.removeAttribute('class');
-            }
-        });
-
         controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
-            /** HTMLAnchorElement */
-            const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {
-                const urlHash = a.href.substring(a.href.indexOf("#"));
-                return urlHash === hash;
-            });
-            if (anchor !== undefined) {
-                anchor.classList.remove(oldIcon);
-                anchor.classList.add(newIcon);
-            }
+            setIconCSSClass(hash, newIcon, oldIcon);
         });
         // END
 
         projectNavigation();
     });
+
+    /* ********************* Utility functions for bindings ***************************** */
+    /**
+     * A utility function that sets the active CSS class for the given hash
+     * and removes the class from the old active hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } active
+     */
+    const setActiveCSSClass = (hash, active) => {
+        const pageName = controller.getPageController(hash).getValue();
+        if (active) {
+            if (undefined !== anchorListWrappers[pageName]) {
+                anchorListWrappers[pageName].classList.add("active");
+            }
+        } else {
+            if (undefined !== anchorListWrappers[pageName]) {
+                anchorListWrappers[pageName].classList.remove("active");
+            }
+        }
+    };
+
+    /**
+     * A utility function that sets the HTML title attribute to the value of the page identified by hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } active
+     */
+    const setPageTitle = (hash, active) => {
+        const pageName = controller.getPageController(hash).getValue();
+        if (active) {
+            const title = document.getElementsByTagName("title")[0];
+            title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+        }
+    };
+
+    /**
+     * A utility function that sets the visited CSS class for the given hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } visited
+     */
+    const setVisitedCSSClass = (hash, visited) => {
+        if (visited) {
+            const anchor = navigationAnchors.find(a => a.hash === hash);
+            if (undefined !== anchor) {
+                anchor.classList.add("visited");
+            }
+        }
+    };
+
+    /**
+     * A utility function that sets the CSS class for the given hash to newIcon
+     * and removes the CSS class for the oldIcon.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !String } newIcon
+     * @param { !String } oldIcon
+     */
+    const setIconCSSClass = (hash, newIcon, oldIcon) => {
+        const anchor = navigationAnchors.find(a => {
+            const urlHash = a.href.substring(a.href.indexOf("#"));
+            return urlHash === hash;
+        });
+        if (undefined !== anchor) {
+            anchor.classList.remove(oldIcon);
+            anchor.classList.add(newIcon);
+        }
+    }
 };

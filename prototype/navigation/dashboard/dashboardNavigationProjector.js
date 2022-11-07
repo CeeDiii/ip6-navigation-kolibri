@@ -59,7 +59,7 @@ const NavigationProjector = (controller, pinToElement) => {
         navPointDom[pageName + '-li'].append(anchor);
 
         // check if node is root element or if parentNode already exists
-        if (parentNode === null) {
+        if (null === parentNode) {
             tree.append(...navPointDom);
         } else {
             const parentName = parentNode.getValue();
@@ -78,10 +78,10 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const projectNavigation = () => {
         const navigationDiv = document.createElement("div");
-        navigationDiv.classList.add('dashboard-nav');
+        navigationDiv.classList.add('dashboard-nav', 'open');
         navigationDiv.append(tree);
 
-        if (positionWrapper.firstChild === null) {
+        if (null === positionWrapper.firstChild) {
             positionWrapper.appendChild(navigationDiv)
         } else {
             positionWrapper.replaceChild(navigationDiv, positionWrapper.firstChild);
@@ -108,9 +108,9 @@ const NavigationProjector = (controller, pinToElement) => {
     const findElementById = (tree, searchId) =>{
         if(tree.id === searchId){
             return tree;
-        } else if (tree.children != null){
+        } else if (null !== tree.children){
             let result = null;
-            for(let i=0; result == null && i < tree.children.length; i++){
+            for(let i=0; null === result && i < tree.children.length; i++){
                 result = findElementById(tree.children[i], searchId);
             }
             return result;
@@ -128,14 +128,17 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const appendNode = (node, parentName) => {
         const parentLi = findElementById(tree, parentName + '-li');
-        let childrenNodeList = parentLi.children.namedItem(parentName + '-children');
-        if (childrenNodeList === null) {
-            // create sublist for children and append child
-            childrenNodeList = document.createElement('ol');
-            childrenNodeList.id = parentName + '-children';
-            parentLi.append(childrenNodeList);
+        if (null !== parentLi) {
+            let childrenNodeList = parentLi.children.namedItem(parentName + '-children');
+            if (null === childrenNodeList) {
+                // create sublist for children and append child
+                childrenNodeList = document.createElement('ol');
+                childrenNodeList.id = parentName + '-children';
+                parentLi.append(childrenNodeList);
+            }
+            childrenNodeList.append(node);
         }
-        childrenNodeList.append(node);
+
     };
 
     /**
@@ -146,10 +149,10 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { ?PageControllerType } newParent
      * @return { void }
      */
-    const moveChildNode = (childNode, oldParent, newParent, ) => {
-        if (newParent === null) { // append node to root if newParent is null
+    const moveChildNode = (childNode, oldParent, newParent) => {
+        if (null === newParent) { // append node to root if newParent is null
             tree.append(childNode);
-        } else if (oldParent === null) { // check if old parent is root and move node from root to newParent
+        } else if (null === oldParent) { // check if old parent is root and move node from root to newParent
             tree.removeChild(childNode);
             const parentName = newParent.getValue();
             appendNode(childNode, parentName);
@@ -176,99 +179,178 @@ const NavigationProjector = (controller, pinToElement) => {
 
         // CREATE BINDINGS
         controller.getPageController(hash).onParentChanged((newParent, oldParent) => {
-            // Create node if it does not yet exist or move node from oldParent to newParent
-            const pageName = controller.getPageController(hash).getValue();
-            const thisNode = findElementById(tree, pageName + '-li');
-            if (thisNode === null) { // check if this node has not been initialized yet
-                const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
-                observableNavigationAnchors.add(newNavPoint);
-            } else {
-                // relocate node
-                moveChildNode(thisNode, oldParent, newParent);
-            }
-
-            // TODO create functions for bindings to call
-            // Add class for styling to newParent if not null and remove it from oldParent if not null
-            let newParentPage = null;
-            let oldParentPage = null;
-            let oldParentHasNoChildren = true;
-            if(newParent !== null) {
-                const pageNameNewParent = controller.getPageController(newParent.getHash()).getValue();
-                newParentPage = findElementById(tree, pageNameNewParent + '-li');
-            }
-            if(oldParent !== null) {
-                const pageNameOldParent = controller.getPageController(oldParent.getHash()).getValue();
-                oldParentPage = findElementById(tree, pageNameOldParent + '-li');
-            }
-            if(oldParentPage !== null) {
-                for (const child of oldParentPage.children) {
-                    if (child.tagName === 'ol') {
-                        oldParentHasNoChildren = false;
-                    }
-                }
-                if (oldParentHasNoChildren) {
-                    oldParentPage.classList.remove('parent');
-                }
-            }
-            if(newParentPage !== null && !newParentPage.classList.contains('parent')) {
-                newParentPage.classList.add('parent');
-            }
-
+            addNodeToTree(hash, newParent, oldParent);
+            setParentCSSClass(hash, newParent, oldParent);
             projectNavigation();
         });
 
         controller.getPageController(hash).onIsVisibleChanged(visible => {
-            const pageName = controller.getPageController(hash).getValue();
-            const pageLi = findElementById(tree, pageName + '-li');
-            if (visible) {
-                pageLi.classList.remove('invisible');
-            } else {
-                pageLi.classList.add('invisible');
-            }
+            setInvisibleCSSClass(hash, visible);
             projectNavigation();
         });
 
         controller.getPageController(hash).onActiveChanged((newActive, oldActive) => {
-            const pageController = controller.getPageController(hash);
-            const pageName = pageController.getValue();
-            const pageAnchor = findElementById(tree, pageName + '-a');
+            setActiveCSSClass(hash, newActive, oldActive);
+            setParentActiveCSSClass(hash, newActive, oldActive);
+            setPageTitle(hash, newActive);
+        });
+
+        controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
+            setIconCSSClass(hash, newIcon, oldIcon);
+        });
+        // END
+    });
+
+    /* ********************* Utility functions for bindings ***************************** */
+    /**
+     * A utility function that adds the given hash as a node the newParent
+     * and removes it from the oldParent.
+     *
+     * @param { !String } hash
+     * @param { ?PageControllerType } newParent
+     * @param { ?PageControllerType } oldParent
+     */
+    const addNodeToTree = (hash, newParent, oldParent) => {
+        const pageName = controller.getPageController(hash).getValue();
+        const thisNode = findElementById(tree, pageName + '-li');
+        if (null === thisNode) { // check if this node has not been initialized yet
+            const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
+            observableNavigationAnchors.add(newNavPoint);
+        } else {
+            // relocate node
+            moveChildNode(thisNode, oldParent, newParent);
+        }
+    };
+
+    /**
+     * A utility function that adds the parent CSS class to the newParent if it does not exist already
+     * and removes it from the oldParent.
+     *
+     * @param { !String } hash
+     * @param { ?PageControllerType } newParent
+     * @param { ?PageControllerType } oldParent
+     */
+    const setParentCSSClass = (hash, newParent, oldParent) => {
+        // Add class for styling to newParent if not null and remove it from oldParent if not null
+        let newParentPage = null;
+        let oldParentPage = null;
+        let oldParentHasNoChildren = true;
+        if(null !== newParent) {
+            const pageNameNewParent = newParent.getValue();
+            newParentPage = findElementById(tree, pageNameNewParent + '-li');
+        }
+        if(null !== oldParent) {
+            const pageNameOldParent = oldParent.getValue();
+            oldParentPage = findElementById(tree, pageNameOldParent + '-li');
+        }
+        if(null !== oldParentPage) {
+            for (const child of oldParentPage.children) {
+                if (child.tagName === 'ol') {
+                    oldParentHasNoChildren = false;
+                }
+            }
+            if (oldParentHasNoChildren) {
+                oldParentPage.classList.remove('parent');
+            }
+        }
+        if(null !== newParentPage && !newParentPage.classList.contains('parent')) {
+            newParentPage.classList.add('parent');
+        }
+    };
+
+    /**
+     * A utility function that sets the active CSS class for the given hash
+     * and removes the class from the old active hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } newActive
+     * @param { !Boolean } oldActive
+     */
+    const setActiveCSSClass = (hash, newActive, oldActive) => {
+        const pageController = controller.getPageController(hash);
+        const pageName = pageController.getValue();
+        const pageAnchor = findElementById(tree, pageName + '-a');
+        if (null !== pageAnchor) {
             if (newActive) {
                 pageAnchor.classList.add('active');
             } else if (newActive !== oldActive) {
                 pageAnchor.classList.remove('active');
             }
+        }
+    };
 
-            const parentNode = pageController.getParent();
-            if (parentNode !== null) {
-                const parentName = parentNode.getValue();
-                const parentAnchor = findElementById(tree, `${parentName}-a`);
-                if (newActive) {
-                    parentAnchor.classList.add('parent-active');
-                } else if (newActive !== oldActive) {
-                    parentAnchor.classList.remove('parent-active');
-                }
+    /**
+     * A utility function that sets the active CSS class for the parent of a given hash
+     * and removes the class from the old active hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } newActive
+     * @param { !Boolean } oldActive
+     */
+    const setParentActiveCSSClass = (hash, newActive, oldActive) => {
+        const pageController = controller.getPageController(hash);
+        const parentNode = pageController.getParent();
+        if (null !== parentNode) {
+            const parentName = parentNode.getValue();
+            const parentAnchor = findElementById(tree, `${parentName}-a`);
+            if (newActive) {
+                parentAnchor.classList.add('parent-active');
+            } else if (newActive !== oldActive) {
+                parentAnchor.classList.remove('parent-active');
             }
-        });
+        }
+    };
 
-        controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
-            /** HTMLAnchorElement */
-            const anchor = navigationAnchors.find(/** HTMLAnchorElement */ a => {
-                const urlHash = a.href.substring(a.href.indexOf("#"));
-                return urlHash === hash;
-            });
-            if (anchor !== undefined) {
-                anchor.classList.remove(oldIcon);
-                anchor.classList.add(newIcon);
-            }
-        });
+    /**
+     * A utility function that sets the HTML title attribute to the value of the page identified by hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } active
+     */
+    const setPageTitle = (hash, active) => {
+        const pageName = controller.getPageController(hash).getValue();
+        if (active) {
+            const title = document.getElementsByTagName("title")[0];
+            title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+        }
+    };
 
-        controller.getPageController(hash).onActiveChanged(active => {
-            const pageName = controller.getPageController(hash).getValue();
-            if (active) {
-                const title = document.getElementsByTagName("title")[0];
-                title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
-            }
+    /**
+     * A utility function that sets the invisible CSS class for the given hash if it is invisible.
+     *
+     * @param { !String } hash
+     * @param { !Boolean } visible
+     */
+    const setInvisibleCSSClass = (hash, visible) => {
+        const pageName = controller.getPageController(hash).getValue();
+        const pageLi = findElementById(tree, pageName + '-li');
+        if (null !== pageLi && visible) {
+            pageLi.classList.remove('invisible');
+        } else if (null !== pageLi) {
+            pageLi.classList.add('invisible');
+        }
+    };
+
+    /**
+     * A utility function that sets the CSS class for the given hash to newIcon
+     * and removes the CSS class for the oldIcon.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !String } newIcon
+     * @param { !String } oldIcon
+     */
+    const setIconCSSClass = (hash, newIcon, oldIcon) => {
+        const anchor = navigationAnchors.find(a => {
+            const urlHash = a.href.substring(a.href.indexOf("#"));
+            return urlHash === hash;
         });
-        // END
-    });
+        if (anchor !== undefined) {
+            anchor.classList.remove(oldIcon);
+            anchor.classList.add(newIcon);
+        }
+    }
 };

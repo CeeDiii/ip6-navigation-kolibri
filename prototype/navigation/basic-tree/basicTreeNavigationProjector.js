@@ -1,7 +1,7 @@
 import { ObservableList } from "../../kolibri/observable.js";
 import { dom } from "../../kolibri/util/dom.js";
 
-export { NavigationProjector }
+export { NavigationProjector as TreeNavigationProjector }
 
 /**
  * @typedef NavigationProjectorType
@@ -55,7 +55,7 @@ const NavigationProjector = (controller, pinToElement) => {
         navPointDom[pageName + '-li'].append(anchor);
 
         // check if node is root element or if parentNode already exists
-        if (parentNode === null) {
+        if (null === parentNode) {
             tree.append(...navPointDom);
         } else {
             const parentName = parentNode.getValue();
@@ -77,7 +77,7 @@ const NavigationProjector = (controller, pinToElement) => {
         navigationDiv.classList.add('tree-nav');
         navigationDiv.append(tree);
 
-        if (positionWrapper.firstChild === null) {
+        if (null === positionWrapper.firstChild) {
             positionWrapper.appendChild(navigationDiv)
         } else {
             positionWrapper.replaceChild(navigationDiv, positionWrapper.firstChild);
@@ -95,9 +95,9 @@ const NavigationProjector = (controller, pinToElement) => {
     const findElementById = (tree, searchId) =>{
         if(tree.id === searchId){
             return tree;
-        } else if (tree.children != null){
+        } else if (null !== tree.children){
             let result = null;
-            for(let i=0; result == null && i < tree.children.length; i++){
+            for(let i=0; null === result && i < tree.children.length; i++){
                 result = findElementById(tree.children[i], searchId);
             }
             return result;
@@ -116,7 +116,7 @@ const NavigationProjector = (controller, pinToElement) => {
     const appendNode = (node, parentName) => {
         const parentLi = findElementById(tree, parentName + '-li');
         let childrenNodeList = parentLi.children.namedItem(parentName + '-children');
-        if (childrenNodeList === null) {
+        if (null === childrenNodeList) {
             // create sublist for children and append child
             childrenNodeList = document.createElement('ol');
             childrenNodeList.id = parentName + '-children';
@@ -133,10 +133,10 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { ?PageControllerType } newParent
      * @return { void }
      */
-    const moveChildNode = (oldParent, newParent, childNode) => {
-        if (newParent === null) { // append node to root if newParent is null
+    const moveChildNode = (childNode, oldParent, newParent) => {
+        if (null === newParent) { // append node to root if newParent is null
             tree.append(childNode);
-        } else if (oldParent === null) { // check if old parent is root and move node from root to newParent
+        } else if (null === oldParent) { // check if old parent is root and move node from root to newParent
             tree.removeChild(childNode);
             const parentName = newParent.getValue();
             appendNode(childNode, parentName);
@@ -162,47 +162,91 @@ const NavigationProjector = (controller, pinToElement) => {
 
         // CREATE BINDINGS
         controller.getPageController(hash).onParentChanged((newParent, oldParent) => {
-            const pageName = controller.getPageController(hash).getValue();
-            const thisNode = findElementById(tree, pageName + '-li');
-            if (thisNode === null) { // check if this node has not been initialized yet
-                const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
-                observableNavigationAnchors.add(newNavPoint);
-            } else {
-                // relocate node
-                moveChildNode(oldParent, newParent, thisNode);
-            }
+            addNodeToTree(hash, newParent, oldParent);
             projectNavigation();
         });
 
         controller.getPageController(hash).onIsVisibleChanged(visible => {
-            const pageName = controller.getPageController(hash).getValue();
-            const pageLi = findElementById(tree, pageName + '-li');
-            if (visible) {
-                pageLi.classList.remove('invisible');
-            } else {
-                pageLi.classList.add('invisible');
-            }
+            setInvisibleCSSClass(hash, visible);
             projectNavigation();
         });
 
         controller.getPageController(hash).onActiveChanged((newActive, oldActive) => {
-            const pageName = controller.getPageController(hash).getValue();
-            const pageAnchor = findElementById(tree, pageName + '-a');
-            if (newActive) {
-                pageAnchor.append(' ☚');
-            } else if (newActive !== oldActive) {
-                pageAnchor.innerText = pageAnchor.innerText.substring(0, pageAnchor.innerText.indexOf(' ☚'));
-            }
+            setActiveCursor(hash, newActive, oldActive);
+            setPageTitle(hash, newActive);
             projectNavigation();
         });
 
-        controller.getPageController(hash).onActiveChanged(active => {
-            const pageName = controller.getPageController(hash).getValue();
-            if (active) {
-                const title = document.getElementsByTagName("title")[0];
-                title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
-            }
-        });
         // END
     });
+
+    /* ********************* Utility functions for bindings ***************************** */
+    /**
+     * A utility function that adds the given hash as a node the newParent
+     * and removes it from the oldParent.
+     *
+     * @param { !String } hash
+     * @param { ?PageControllerType } newParent
+     * @param { ?PageControllerType } oldParent
+     */
+    const addNodeToTree = (hash, newParent, oldParent) => {
+        const pageName = controller.getPageController(hash).getValue();
+        const thisNode = findElementById(tree, pageName + '-li');
+        if (null === thisNode) { // check if this node has not been initialized yet
+            const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
+            observableNavigationAnchors.add(newNavPoint);
+        } else {
+            // relocate node
+            moveChildNode(thisNode, oldParent, newParent);
+        }
+    };
+
+
+    /**
+     * A utility function that sets the HTML title attribute to the value of the page identified by hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } active
+     */
+    const setPageTitle = (hash, active) => {
+        const pageName = controller.getPageController(hash).getValue();
+        if (active) {
+            const title = document.getElementsByTagName("title")[0];
+            title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+        }
+    };
+
+    /**
+     * A utility function that moves the active cursor from the oldActive hash to the newActive.
+     *
+     * @param { !String } hash
+     * @param { !Boolean } newActive
+     * @param { !Boolean } oldActive
+     */
+    const setActiveCursor = (hash, newActive, oldActive) => {
+        const pageName = controller.getPageController(hash).getValue();
+        const pageAnchor = findElementById(tree, pageName + '-a');
+        if (newActive) {
+            pageAnchor.append(' ☚');
+        } else if (newActive !== oldActive) {
+            pageAnchor.innerText = pageAnchor.innerText.substring(0, pageAnchor.innerText.indexOf(' ☚'));
+        }
+    };
+
+    /**
+     * A utility function that sets the invisible CSS class for the given hash if it is invisible.
+     *
+     * @param { !String } hash
+     * @param { !Boolean } visible
+     */
+    const setInvisibleCSSClass = (hash, visible) => {
+        const pageName = controller.getPageController(hash).getValue();
+        const pageLi = findElementById(tree, pageName + '-li');
+        if (visible) {
+            pageLi.classList.remove('invisible');
+        } else {
+            pageLi.classList.add('invisible');
+        }
+    };
 };
