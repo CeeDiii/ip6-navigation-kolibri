@@ -16,7 +16,7 @@ export { PageController }
  * @property { (isHomepage: Boolean) => void } setIsHomepage
  * @property { (isVisible: Boolean) => void } setIsVisible
  * @property { () => Boolean } getIsVisible
- * @property { (newParent: PageControllerType|null) => void } setParent - the newParent you want to set for the page, if null is set, the parent is root
+ * @property { (newParent: ?PageControllerType) => void } setParent - the newParent you want to set for the page, if null is set, the parent is root
  * @property { () => ?PageControllerType } getParent
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
@@ -49,7 +49,28 @@ const PageController = (pageName, contentControllers) => {
             pageModel.getPageObs(ACTIVE).setValue(true);
             pageModel.getPageObs(VISITED).setValue(true);
         },
-        passivate:           () => pageModel.getPageObs(ACTIVE).setValue(false),
+        passivate: () => pageModel.getPageObs(ACTIVE).setValue(false),
+        setParent: newParent => {
+            if (null !== newParent) {
+                let parent = newParent;
+                let canAddParent = true;
+                // iterate through all parents and check if thisNode is already a parent in the hierarchy
+                while (null !== parent) {
+                    if (parent.getValue() === pageName) {
+                        console.error('Parent of a node cannot be a child of a node or the node itself.');
+                        canAddParent = false;
+                        break;
+                    }
+                    parent = parent.getParent();
+                }
+                if (canAddParent) {
+                    pageModel.getPageObs(PARENT).setValue(newParent);
+                }
+            } else {
+                // allow null as parent
+                pageModel.getPageObs(PARENT).setValue(newParent);
+            }
+        },
         getValue:            pageModel.getPageObs(VALUE).getValue,
         getHash:             pageModel.getPageObs(HASH).getValue,
         setIcon:             pageModel.getPageObs(ICON).setValue,
@@ -57,7 +78,6 @@ const PageController = (pageName, contentControllers) => {
         setIsHomepage:       pageModel.getPageObs(IS_HOMEPAGE).setValue,
         setIsVisible:        pageModel.getPageObs(VISIBLE).setValue,
         getIsVisible:        pageModel.getPageObs(VISIBLE).getValue,
-        setParent:           pageModel.getPageObs(PARENT).setValue,
         getParent:           pageModel.getPageObs(PARENT).getValue,
         onActiveChanged:     pageModel.getPageObs(ACTIVE).onChange,
         onIconChanged:       pageModel.getPageObs(ICON).onChange,
