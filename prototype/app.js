@@ -81,11 +81,6 @@ NavigationProjector(navigationController, pinToDashboardNavElement);
 const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
 BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
-personPageController.setParent(masterDetailViewsPageController);
-carPageController.setParent(masterDetailViewsPageController);
-simpleFormPageController.setParent(formsPageController);
-simpleWorkWeekPageController.setParent(formsPageController);
-
 navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);
 navigationController.addPageController(masterDetailViewsPageController);
@@ -93,6 +88,12 @@ navigationController.addPageController(formsPageController);
 navigationController.addPageController(simpleWorkWeekPageController);
 navigationController.addPageController(simpleFormPageController);
 navigationController.addPageController(personPageController);
+
+// Has to happen after adding to the navigation controller
+personPageController.setParent(masterDetailViewsPageController);
+carPageController.setParent(masterDetailViewsPageController);
+simpleFormPageController.setParent(formsPageController);
+simpleWorkWeekPageController.setParent(formsPageController);
 
 navigationController.setHomePage('home');
 
