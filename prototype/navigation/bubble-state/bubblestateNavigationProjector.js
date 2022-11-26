@@ -129,6 +129,7 @@ const NavigationProjector = (controller, pinToElement) => {
         controller.getPageController(hash).onActiveChanged(active => {
            setActiveCSSClass(hash, active);
            setPageTitle(hash, active);
+           handleIndicatorVisibility(hash, active);
         });
 
         controller.getPageController(hash).onVisitedChanged(visited => {
@@ -216,5 +217,22 @@ const NavigationProjector = (controller, pinToElement) => {
             anchor.classList.remove(oldIcon);
             anchor.classList.add(newIcon);
         }
-    }
+    };
+
+    /**
+     * A utility function that sets the CSS class for the indicator when an invisible page is displayed
+     * and removes the CSS class when a visible.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } active
+     */
+    const handleIndicatorVisibility = (hash, active) => {
+        const pageController = controller.getPageController(hash);
+        if (active && pageController.getIsVisible() === false) {
+            positionWrapper.classList.add('invisiblePage');
+        } else {
+            positionWrapper.classList.remove('invisiblePage');
+        }
+    };
 };

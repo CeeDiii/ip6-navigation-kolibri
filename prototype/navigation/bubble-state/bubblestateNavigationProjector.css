@@ -150,6 +150,6 @@
     content: url("../icons/simpleform.svg");
 }
 
-.bubble-state-nav .invisiblePage .indicator {
+.invisiblePage .bubble-state-nav .indicator {
     display: none;
 }
