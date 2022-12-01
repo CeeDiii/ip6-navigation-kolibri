@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://webengineering-fhnw.github.io/Kolibri/css/kolibri-light-colors.css" rel="stylesheet">
+    <link href="https://webengineering-fhnw.github.io/Kolibri/css/kolibri-light-fonts.css" rel="stylesheet">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .navigation-sidebar {
+          --base-unit: 4em;
+          /*--detail-width: 0;*/
+          --detail-width:   calc(  3 * var(--base-unit));
+          --header-height:  calc(4/5 * var(--base-unit));
+          --header-padding: calc(1/5 * var(--base-unit));
+          position: fixed;
+          top:  0;
+          left: 0;
+          min-height: 100vh;
+          background-color: transparent;
+          display: grid;
+          grid-template-columns: var(--base-unit) var(--detail-width);
+      }
+
+      .navigation-sidebar .overview {
+          min-height:       100%;
+          background-color: var(--kb-color-hsl-bg-light);
+      }
+
+      .navigation-sidebar .overview .logo {
+          text-align:       center;
+          padding-top:      var(--header-padding) ;
+          padding-bottom:   var(--header-padding);
+      }
+
+      .navigation-sidebar .overview .logo img {
+          height:       var(--header-height);
+          aspect-ratio: 1;
+      }
+
+      .navigation-sidebar .detail {
+          min-height:       100%;
+          background-color: var(--kb-hsla-primary-bg);
+      }
+
+      .navigation-sidebar .detail .header {
+          font-family:      var(--kb-font-rubik-light-regular);
+          font-size:        1.4em;
+          height:           var(--header-height);
+          padding-top:      var(--header-padding);
+          padding-bottom:   var(--header-padding);
+          padding-left:     var(--header-padding);
+          display:          flex;
+          flex-direction:   column;
+          justify-content:  center;
+      }
+
+    </style>
+</head>
+<body>
+  <div class="navigation-sidebar">
+
+
+    <div class="overview">
+        <div class="logo">
+            <img src="https://webengineering-fhnw.github.io/Kolibri/img/logo/logo-new-128.svg">
+        </div>
+        <div class="content"></div>
+        <div class="button"></div>
+    </div>
+    <div class="detail">
+        <div class="header">
+            <div>
+                Kolibri
+            </div>
+        </div>
+        <div class="content"></div>
+    </div>
+  </div>
+</body>
+</html>
