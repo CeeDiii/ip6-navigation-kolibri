@@ -8,16 +8,26 @@
     <link href="./style.css" rel="stylesheet">
 </head>
 <body>
-  <div class="navigation-sidebar">
+  <div id="navigation-sidebar" class="navigation-sidebar">
 
     <div class="overview">
         <div class="logo">
             <img src="https://webengineering-fhnw.github.io/Kolibri/img/logo/logo-new-128.svg">
         </div>
         <div class="content">
-
+            <div class="row">
+                <a href="#Welcome"><img src="../icons/house.svg"></a>
+            </div>
+            <div class="row">
+                <a href="#Goals"><img class="active" src="../icons/forms.svg"></a>
+            </div>
+            <div class="row">
+                <a href="#Documentation"><img src="../icons/masterdetail.svg"></a>
+            </div>
         </div>
-        <div class="button"></div>
+        <div class="toggle open" onclick="document.getElementById('navigation-sidebar').classList.toggle('open')">
+            <img src="../icons/right-arrow-gradient.svg">
+        </div>
     </div>
     <div class="detail">
         <div class="header">
