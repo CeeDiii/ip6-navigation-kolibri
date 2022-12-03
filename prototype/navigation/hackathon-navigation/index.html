@@ -5,80 +5,10 @@
     <title>Title</title>
     <link href="https://webengineering-fhnw.github.io/Kolibri/css/kolibri-light-colors.css" rel="stylesheet">
     <link href="https://webengineering-fhnw.github.io/Kolibri/css/kolibri-light-fonts.css" rel="stylesheet">
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-
-      .navigation-sidebar {
-          --base-unit: 4em;
-          /*--detail-width: 0;*/
-          --detail-width:   calc(  3 * var(--base-unit));
-          --header-height:  calc(4/5 * var(--base-unit));
-          --header-padding: calc(1/5 * var(--base-unit));
-          position: fixed;
-          top:  0;
-          left: 0;
-          min-height: 100vh;
-          background-color: transparent;
-          display: grid;
-          grid-template-columns: var(--base-unit) var(--detail-width);
-          font-family:      var(--kb-font-rubik-light-regular);
-      }
-
-      .navigation-sidebar .overview {
-          min-height:       100%;
-          background-color: var(--kb-color-hsl-bg-light);
-      }
-
-      .navigation-sidebar .overview .logo {
-          text-align:       center;
-          padding-top:      var(--header-padding) ;
-          padding-bottom:   var(--header-padding);
-      }
-
-      .navigation-sidebar .overview .logo img {
-          height:       var(--header-height);
-          aspect-ratio: 1;
-      }
-
-      .navigation-sidebar .detail {
-          min-height:       100%;
-          background-color: var(--kb-hsla-primary-bg);
-      }
-
-      .navigation-sidebar .detail .header {
-          font-size:        1.4em;
-          height:           var(--header-height);
-          padding-top:      var(--header-padding);
-          padding-bottom:   var(--header-padding);
-          padding-left:     var(--header-padding);
-          display:          flex;
-          flex-direction:   column;
-          justify-content:  center;
-      }
-
-      .navigation-sidebar .detail .content .row {
-          padding-left:     17.92px;
-          display: flex;
-          align-items: center;
-          gap: 0 1em;
-      }
-
-      .navigation-sidebar .detail .content .row:nth-child(1){
-        font-weight: 900;
-      }
-
-      .navigation-sidebar .detail .content .row img {
-          height: calc(2/5 * var(--base-unit));
-          aspect-ratio: 1;
-      }
-
-    </style>
+    <link href="./style.css" rel="stylesheet">
 </head>
 <body>
   <div class="navigation-sidebar">
-
 
     <div class="overview">
         <div class="logo">
@@ -97,16 +27,71 @@
         </div>
         <div class="content">
             <div>
-                <div class="row">
-                    <img src="../icons/home.svg">
+                <div class="row root">
+                    <img src="../icons/house.svg">
                     <span>Home</span>
                 </div>
                 <div class="row">
-                    <img src="../icons/plus.svg">
-                    <span>Welcome</span>
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="15" width="2" height="32" rx="1"/>
+                    </svg>
+                    <a href="#Welcome">Welcome</a>
+                </div>
+                <div class="row">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="15" width="2" height="32" rx="1"/>
+                    </svg>
+                    <a href="#IntroductionToKolibri">Introduction to Kolibri</a>
                 </div>
             </div>
-
+        </div>
+        <div class="content">
+            <div>
+                <div class="row root">
+                    <img class="active" src="../icons/forms.svg">
+                    <span>About</span>
+                </div>
+                <div class="row">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="15" width="2" height="32" rx="1"/>
+                    </svg>
+                    <a href="#Goals">Goals</a>
+                </div>
+                <div class="row">
+                    <svg class="active" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="15" width="2" height="32" rx="1"/>
+                    </svg>
+                    <a class="active" href="#UseCases">Use Cases</a>
+                    <div class="sub-child">
+                        <div class="row">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="15" width="2" height="32" rx="1"/>
+                            </svg>
+                            <a href="#ContactForm">Contact Form</a>
+                        </div>
+                        <div class="row">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="15" width="2" height="32" rx="1"/>
+                            </svg>
+                            <a href="#WeeklyPlanner">Weekly Planner</a>
+                            <div class="sub-child">
+                                <div class="row">
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="15" width="2" height="32" rx="1"/>
+                                    </svg>
+                                    <a href="#SimpleDay">SimpleDay</a>
+                                </div>
+                                <div class="row">
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="15" width="2" height="32" rx="1"/>
+                                    </svg>
+                                    <a href="#SimpleWeek">SimpleWeek</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
   </div>
