@@ -1,4 +1,4 @@
-import { Attribute, VALUE, valueOf } from "../kolibri/presentationModel.js";
+import {Attribute, VALUE, valueOf} from "../kolibri/presentationModel.js";
 import { NavigationModel } from "./navigationModel.js";
 
 export { NavigationController }
@@ -13,9 +13,12 @@ export { NavigationController }
  * @property { (pageHash: String) => void } deletePageController
  * @property { (newHomepage: String) => void } setHomePage
  * @property { () => String} getHomePage
+ * @property { (name: String) => void } setWebsiteName
+ * @property { (logoSrcPath: String) => void } setWebsiteLogo
  * @property { (callback: observableListCallback) => Boolean } onNavigationHashAdd
  * @property { (callback: observableListCallback) => Boolean } onNavigationHashDel
  * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onLocationChanged
+ * @property { (callback: onValueChangeCallback<String>) => void } onWebsiteNameChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onWebsiteLogoChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged
  * @property { (anchor: HTMLAnchorElement) => void } registerAnchorClickListener
@@ -120,10 +123,13 @@ const NavigationController = () => {
             };
         },
         setHomePage:            navigationModel.setHomepage,
-        getHomePage:            navigationModel.getHomepage,
+        getHomePage:             navigationModel.getHomepage,
+        setWebsiteName:         navigationModel.setWebsiteName,
+        setWebsiteLogo:         navigationModel.setWebsiteLogo,
         onNavigationHashAdd:    navigationModel.onAdd,
         onNavigationHashDel:    navigationModel.onDel,
         onLocationChanged:      currentLocation.getObs(VALUE).onChange,
+        onWebsiteNameChanged:   navigationModel.onWebsiteNameChanged,
         onWebsiteLogoChanged:   navigationModel.onWebsiteLogoChanged,
         onVisibleChanged:       navigationModel.onVisibleChanged,
     }
