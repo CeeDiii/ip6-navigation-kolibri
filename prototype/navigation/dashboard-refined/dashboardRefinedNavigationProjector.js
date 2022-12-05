@@ -126,6 +126,20 @@ const NavigationProjector = (controller, pinToElement) => {
             detailWrapper.prepend(...detailHeader);
         }
 
+        for(const rootNode of overviewWrapper.getElementsByClassName('row')) {
+            if(undefined !== rootNode) {
+                const rootHash = rootNode.firstElementChild.hash;
+                const rootName = controller.getPageController(rootHash).getValue();
+                const rootNodeInDetailWrapper = findElementById(detailWrapper, rootName + '-node');
+                if(null !== rootNodeInDetailWrapper && 1 < rootNodeInDetailWrapper.children.length) {
+                    const firstNavigationalChild = rootNodeInDetailWrapper.children.item(1);
+                    const firstNavigationalChildHash = firstNavigationalChild.getElementsByTagName('a')[0].hash;
+
+                    rootNode.firstElementChild.hash = firstNavigationalChildHash;
+                }
+            }
+        }
+
         navigationDiv.append(overviewWrapper, detailWrapper);
 
         if (null === positionWrapper.firstChild) {

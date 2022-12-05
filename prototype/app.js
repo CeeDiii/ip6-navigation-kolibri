@@ -33,7 +33,7 @@ PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNot
 const homePageController = PageController("home", null);
 homePageController.setIcon('./navigation/icons/house.svg');
 homePageController.setIsNavigational(false);
-HomePageProjector(homePageController, pinToContentElement, './pages/home/welcome.html');
+HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
 masterDetailViewsPageController.setIcon('./navigation/icons/masterdetail.svg');
