@@ -1,6 +1,7 @@
 import { NavigationController } from "./navigation/navigationController.js";
 // import { NavigationProjector } from "./navigation/basicNavigationProjector.js";
-import { NavigationProjector } from "./navigation/dashboard/dashboardNavigationProjector.js";
+// import { NavigationProjector } from "./navigation/dashboard/dashboardNavigationProjector.js";
+import { NavigationProjector } from "./navigation/dashboard-refined/dashboardRefinedNavigationProjector.js";
 import { BubbleStateNavigationProjector } from "./navigation/bubble-state/bubblestateNavigationProjector.js";
 import { TreeNavigationProjector } from "./navigation/basic-tree/basicTreeNavigationProjector.js";
 import { BreadCrumbProjector } from "./navigation/bread-crumbs/breadCrumbProjector.js";
@@ -30,14 +31,17 @@ PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNot
 
 const homePageController = PageController("home", null);
 homePageController.setIcon('house');
+homePageController.setIsNavigational(false);
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
 masterDetailViewsPageController.setIcon('masterdetail');
+masterDetailViewsPageController.setIsNavigational(false);
 MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
 
 const formsPageController = PageController("forms", null);
 formsPageController.setIcon('forms');
+formsPageController.setIsNavigational(false);
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
 

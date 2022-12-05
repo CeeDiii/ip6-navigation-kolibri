@@ -1,4 +1,14 @@
-import { ACTIVE, HASH, ICON, IS_HOMEPAGE, PARENT, VALUE, VISIBLE, VISITED } from "../kolibri/presentationModel.js";
+import {
+    ACTIVE,
+    HASH,
+    ICON,
+    IS_HOMEPAGE,
+    NAVIGATIONAL,
+    PARENT,
+    VALUE,
+    VISIBLE,
+    VISITED
+} from "../kolibri/presentationModel.js";
 import { PageModel } from "./pageModel.js";
 
 export { PageController }
@@ -18,6 +28,8 @@ export { PageController }
  * @property { () => Boolean } getIsVisible
  * @property { (newParent: ?PageControllerType) => void } setParent - the newParent you want to set for the page, if null is set, the parent is root
  * @property { () => ?PageControllerType } getParent
+ * @property { (isNavigational: Boolean) => void } setIsNavigational
+ * @property { () => Boolean } getIsNavigational
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged
@@ -78,6 +90,8 @@ const PageController = (pageName, contentControllers) => {
         setIsHomepage:       pageModel.getPageObs(IS_HOMEPAGE).setValue,
         setIsVisible:        pageModel.getPageObs(VISIBLE).setValue,
         getIsVisible:        pageModel.getPageObs(VISIBLE).getValue,
+        setIsNavigational:   pageModel.getPageObs(NAVIGATIONAL).setValue,
+        getIsNavigational:   pageModel.getPageObs(NAVIGATIONAL).getValue,
         getParent:           pageModel.getPageObs(PARENT).getValue,
         onActiveChanged:     pageModel.getPageObs(ACTIVE).onChange,
         onIconChanged:       pageModel.getPageObs(ICON).onChange,

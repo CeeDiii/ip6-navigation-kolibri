@@ -12,7 +12,7 @@
     box-sizing: border-box;
 }
 
-.navigation-sidebar {
+.dashboard-refined-nav {
     --base-unit: 4em;
     /*--detail-width: 0;*/
     --detail-width:   calc(  4 * var(--base-unit));
@@ -28,7 +28,7 @@
     font-family:      var(--kb-font-rubik-light-regular);
 }
 
-.navigation-sidebar .overview {
+.dashboard-refined-nav .overview {
     min-height:       100%;
     /*background-color: var(--kb-color-hsl-bg-light);*/
     background-color: #F7F7FC;
@@ -38,43 +38,43 @@
     border-radius: 0 calc(1/6 * var(--base-unit)) calc(1/6 * var(--base-unit)) 0;
 }
 
-.navigation-sidebar.open .overview {
+.dashboard-refined-nav.open .overview {
     border-radius: 0;
 }
 
-.navigation-sidebar .overview .logo {
+.dashboard-refined-nav .overview .logo {
     padding-top:      var(--std-padding) ;
     padding-bottom:   var(--std-padding);
 }
 
-.navigation-sidebar .overview .logo img {
+.dashboard-refined-nav .overview .logo img {
     height:       var(--header-height);
     aspect-ratio: 1;
 }
 
-.navigation-sidebar .overview .content .row {
+.dashboard-refined-nav .overview .content .row {
     margin-bottom: calc(2 * var(--std-padding));
 }
 
-.navigation-sidebar .overview .content .row img {
+.dashboard-refined-nav .overview .content .row img {
     height:       calc(4/9 * var(--base-unit));
     aspect-ratio: 1;
     filter: invert(92%) sepia(11%) saturate(202%) hue-rotate(196deg) brightness(92%) contrast(98%);
 }
 
-.navigation-sidebar .overview .content .row img.active {
+.dashboard-refined-nav .overview .content .row img.active {
     filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%);
 }
 
-.navigation-sidebar .overview .content .row img:hover {
-    filter: invert(37%) sepia(88%) saturate(7486%) hue-rotate(326deg) brightness(88%) contrast(101%);
+.dashboard-refined-nav .overview .content .row img:hover {
+    filter: invert(51%) sepia(76%) saturate(6321%) hue-rotate(306deg) brightness(100%) contrast(105%);
 }
 
-.navigation-sidebar.open .overview .content .row img {
+.dashboard-refined-nav.open .overview .content .row img {
     display: none;
 }
 
-.navigation-sidebar .overview .toggle {
+.dashboard-refined-nav .overview .toggle {
     min-height: calc(1/2 * var(--base-unit));
     min-width:  calc(1/2 * var(--base-unit));
     position: absolute;
@@ -87,23 +87,23 @@
     /*background-color: var(--kb-hsla-primary-bg);*/
 }
 
-.navigation-sidebar .overview .toggle img {
+.dashboard-refined-nav .overview .toggle img {
     height:       calc(9/20 * var(--base-unit));
     aspect-ratio: 1;
     transition: 0.2s;
     cursor: pointer;
 }
 
-.navigation-sidebar.open .overview .toggle img {
+.dashboard-refined-nav.open .overview .toggle img {
     transform: rotate(180deg);
     transition: 0.2s;
 }
 
-.navigation-sidebar .detail {
+.dashboard-refined-nav .detail {
     display: none;
 }
 
-.navigation-sidebar.open .detail {
+.dashboard-refined-nav.open .detail {
     display: block;
     min-height:       100%;
     background-color: #EBECFE;
@@ -111,7 +111,7 @@
     border-radius: 0 calc(1/6 * var(--base-unit)) calc(1/6 * var(--base-unit)) 0;
 }
 
-.navigation-sidebar .detail .header {
+.dashboard-refined-nav .detail .header {
     height:           var(--header-height);
     padding-top:      var(--std-padding);
     padding-bottom:   var(--std-padding);
@@ -123,65 +123,82 @@
     color: var(--kolibri--light---black--200);
 }
 
-.navigation-sidebar .detail .content {
+.dashboard-refined-nav .detail .content {
     margin-bottom: calc(3/5 * var(--base-unit));
 }
 
-.navigation-sidebar .detail .content .row {
+.dashboard-refined-nav .detail .content .row {
     margin-bottom: calc(1/20 * var(--base-unit));
     padding-left:     calc(2/9 * var(--base-unit));
+}
+
+.dashboard-refined-nav .detail .content .node {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0 1em;
 }
 
-.navigation-sidebar .detail .content .row img {
+.dashboard-refined-nav .detail .content .row img {
     height: calc(2/5 * var(--base-unit));
     aspect-ratio: 1;
 }
 
-.navigation-sidebar .detail .content .row svg {
+.dashboard-refined-nav .detail .content .row svg {
     width: calc(2/5 * var(--base-unit));
     height: calc(2/5 * var(--base-unit));
 }
 
-.navigation-sidebar .detail .content .row svg rect {
+.dashboard-refined-nav .detail .content .row svg rect {
     fill: var(--kolibri--light---black--500);
 }
-.navigation-sidebar .detail .content .row svg.active rect {
+.dashboard-refined-nav .detail .content .row svg.active rect {
     fill: var(--kb-rgb-primary-accent);
     width: 4px;
 }
 
-.navigation-sidebar .detail .content .row.root img.active {
+.dashboard-refined-nav .detail .content .row.root img.active {
     filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%); /* convert svg color to --kb-color-hsl-primary-accent */
 }
 
-.navigation-sidebar .detail .content .row a.active {
+.dashboard-refined-nav .detail .content .row a.active {
     font-style: var(--kb-font-rubik-light-medium);
     font-weight: 600;
     color: var(--kb-color-hsl-bg-dark);
 }
 
-.navigation-sidebar .detail .content .row.root {
+.dashboard-refined-nav .detail .content .row.root {
     margin-bottom: calc(1/5 * var(--base-unit));
 }
 
-.navigation-sidebar .detail .content .row.root span {
+.dashboard-refined-nav .detail .content .row.root span {
     text-transform: uppercase;
     font-size: var(--font-size-textM);
     color: var(--kolibri--light---black--200);
 }
 
-.navigation-sidebar .detail .content .row a {
+.dashboard-refined-nav .detail .content .row a {
     font-size: var(--font-size-textM);
     letter-spacing: 0.01em;
     text-decoration: none;
     color: var(--kolibri--light---black--500);
 }
 
-.navigation-sidebar .detail .content .row a:hover {
+.dashboard-refined-nav .detail .content .row a:hover {
     color: var(--kb-color-hsl-pink-500);
+}
+
+/** Icons for root points **/
+
+.dashboard-refined-nav .detail img.home-icon{
+    content: url("../icons/house.svg");
+}
+
+.dashboard-refined-nav .detail img.masterdetail-icon{
+    content: url("../icons/masterdetail.svg");
+}
+
+.dashboard-refined-nav .detail img.forms-icon{
+    content: url("../icons/forms.svg");
 }
 
