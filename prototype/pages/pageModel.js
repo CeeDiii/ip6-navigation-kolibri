@@ -31,7 +31,7 @@ const PageModel = pageName => {
     pageAttr.getObs(ACTIVE).setValue(false);
     pageAttr.getObs(HASH).setValue('#' + pageName);
     pageAttr.getObs(VISITED).setValue(false);
-    pageAttr.getObs(ICON).setValue('placeholder');
+    pageAttr.getObs(ICON).setValue('./navigation/icons/placeholder.svg');
     pageAttr.getObs(IS_HOMEPAGE).setValue(false);
     pageAttr.getObs(VISIBLE).setValue(true);
     pageAttr.getObs(PARENT).setValue(null);
