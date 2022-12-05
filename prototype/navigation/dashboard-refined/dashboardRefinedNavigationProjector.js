@@ -19,11 +19,46 @@ export { NavigationProjector }
 const NavigationProjector = (controller, pinToElement) => {
     const positionWrapper = pinToElement;
     const observableNavigationAnchors = ObservableList([]);
-    const navigationAnchors = [];
+
+    let navigationDiv = null;
+
+    // ************** Create overview and detail wrapper *******************
+
+    const overviewWrapper = document.createElement('div');
+    overviewWrapper.classList.add('overview');
+
+    // create overview header
+    const overviewLogo = dom(`
+            <div class="logo">
+                <img src="" alt="website-logo">
+            </div>
+        `);
+
+    // create overview content wrapper
     const overviewContentWrapper = document.createElement('div');
     overviewContentWrapper.classList.add('content');
+
+    // create overview footer
+    const overviewToggle = dom(`
+            <div class="toggle" onclick="document.getElementById('dashboard-refined-nav').classList.toggle('open')">
+                <img src="../prototype/navigation/icons/right-arrow-gradient.svg" alt="arrow">
+            </div>
+        `);
+
+    // create detail header
+    const detailHeader = dom(`
+            <div class="header">
+                <div>
+                    Website Title
+                </div>
+            </div>
+        `);
+
+    // create detail content wrapper
     const detailWrapper = document.createElement('div');
     detailWrapper.classList.add('detail');
+
+    // ************** END overview and detail wrapper ********************
 
     /**
      * A function that initializes a navigation anchor
@@ -39,7 +74,7 @@ const NavigationProjector = (controller, pinToElement) => {
     const initializeNavigationPoint = (hash, pageName, parentNode, isNavigational) => {
         let anchor;
 
-        // initialize anchor
+        // initialize if not root
         if(isNavigational) {
             anchor = dom(`<a href="${hash}">${pageName}</a>`);
 
@@ -58,8 +93,9 @@ const NavigationProjector = (controller, pinToElement) => {
                 const parentName = parentNode.getValue();
                 appendNode(navPointNode.namedItem(pageName + '-node'), parentName);
             }
-
+        // initialize node if it is root
         } else {
+            // initialize root in detail (right sidebar, when opened)
             const rootPointNode = dom(`
                 <div class="content">
                     <div id="${pageName}-node">
@@ -71,6 +107,7 @@ const NavigationProjector = (controller, pinToElement) => {
                 </div>
             `);
 
+            // initialize overview anchor (left sidebar, when closed)
             anchor = dom(`<a href="${hash}"><img class="${pageName}-icon" id="${pageName}-icon-overview" alt="${pageName}-icon"></a>`);
             const overviewNavPointNode = dom(`
                 <div class="row">
@@ -87,34 +124,13 @@ const NavigationProjector = (controller, pinToElement) => {
     };
 
     /**
-     * A function that binds the navigation anchors to the DOM.
+     * A helper function that creates the base structure for this navigation.
      *
      * @function
      * @return void
      */
-    const projectNavigation = () => {
-        const overviewWrapper = document.createElement('div');
-        overviewWrapper.classList.add('overview');
-        const overviewLogo = dom(`
-            <div class="logo">
-                <img src="https://webengineering-fhnw.github.io/Kolibri/img/logo/logo-new-128.svg">
-            </div>
-        `);
-        const overviewToggle = dom(`
-            <div class="toggle" onclick="document.getElementById('dashboard-refined-nav').classList.toggle('open')">
-                <img src="../prototype/navigation/icons/right-arrow-gradient.svg">
-            </div>
-        `);
-
-        const detailHeader = dom(`
-            <div class="header">
-                <div>
-                    Kolibri
-                </div>
-            </div>
-        `);
-
-        const navigationDiv = document.createElement("div");
+    const initializeBaseStructure = () => {
+        navigationDiv = document.createElement("div");
         navigationDiv.id = 'dashboard-refined-nav';
         navigationDiv.classList.add('dashboard-refined-nav');
 
@@ -122,10 +138,41 @@ const NavigationProjector = (controller, pinToElement) => {
         overviewWrapper.append(overviewContentWrapper);
         overviewWrapper.append(...overviewToggle);
 
-        if(detailWrapper.firstElementChild && !detailWrapper.firstElementChild.classList.contains('header')) { //TODO fix!!!
-            detailWrapper.prepend(...detailHeader);
+        detailWrapper.prepend(...detailHeader);
+
+        navigationDiv.append(overviewWrapper, detailWrapper);
+    };
+
+    /**
+     * A function that binds the navigation anchors to the DOM.
+     *
+     * @function
+     * @return void
+     */
+    const projectNavigation = () => {
+        if (navigationDiv === null) {
+            initializeBaseStructure();
         }
 
+        replaceRootNodeHashesWithFirstChildHashes();
+
+        if (null === positionWrapper.firstChild) {
+            positionWrapper.appendChild(navigationDiv)
+        } else {
+            positionWrapper.replaceChild(navigationDiv, positionWrapper.firstChild);
+        }
+    };
+
+    /**
+     * A helper function that replaces the navigation hashes for root nodes
+     * with the hash of their first child.
+     * This will be done because root nodes are not navigational.
+     *
+     * @function
+     * @return void
+     */
+    const replaceRootNodeHashesWithFirstChildHashes = () => {
+        // change navigation hash for root
         for(const rootNode of overviewWrapper.getElementsByClassName('row')) {
             if(undefined !== rootNode) {
                 const rootHash = rootNode.firstElementChild.hash;
@@ -138,14 +185,6 @@ const NavigationProjector = (controller, pinToElement) => {
                     rootNode.firstElementChild.hash = firstNavigationalChildHash;
                 }
             }
-        }
-
-        navigationDiv.append(overviewWrapper, detailWrapper);
-
-        if (null === positionWrapper.firstChild) {
-            positionWrapper.appendChild(navigationDiv)
-        } else {
-            positionWrapper.replaceChild(navigationDiv, positionWrapper.firstChild);
         }
     };
 
@@ -197,7 +236,6 @@ const NavigationProjector = (controller, pinToElement) => {
         if (null === newParent) { // append node to root if newParent is null
             detailWrapper.append(childNode);
         } else if (null === oldParent) { // check if old parent is root and move node from root to newParent
-            console.log(childNode.parentNode);
             detailWrapper.removeChild(childNode);
             const parentName = newParent.getValue();
             appendNode(childNode, parentName);
@@ -212,7 +250,22 @@ const NavigationProjector = (controller, pinToElement) => {
 
     observableNavigationAnchors.onAdd(anchor => {
         controller.registerAnchorClickListener(anchor);
-        navigationAnchors.push(anchor);
+    });
+
+    controller.onWebsiteNameChanged(newWebsiteName => {
+        if (null !== newWebsiteName) {
+            const detailHeaderWrapper = detailHeader[0];
+            const detailHeaderText = detailHeaderWrapper.firstElementChild;
+            detailHeaderText.innerHTML = newWebsiteName;
+        }
+    });
+
+    controller.onWebsiteLogoChanged(newWebsiteLogoSrc => {
+        if (null !== newWebsiteLogoSrc) {
+            const logoWrapper = overviewLogo[0];
+            const logoImg = logoWrapper.getElementsByTagName('img')[0];
+            logoImg.src = newWebsiteLogoSrc;
+        }
     });
 
     controller.onNavigationHashAdd(hash => {
@@ -235,8 +288,8 @@ const NavigationProjector = (controller, pinToElement) => {
             setPageTitle(hash, newActive);
         });
 
-        controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
-            setIconSource(hash, newIcon, oldIcon);
+        controller.getPageController(hash).onIconChanged(newIcon => {
+            setIconSource(hash, newIcon);
         });
         // END
     });
@@ -262,42 +315,6 @@ const NavigationProjector = (controller, pinToElement) => {
             moveChildNode(thisNode, oldParent, newParent);
         }
     };
-
-    /**
-     * A utility function that adds the parent CSS class to the newParent if it does not exist already
-     * and removes it from the oldParent.
-     *
-     * @param { !String } hash
-     * @param { ?PageControllerType } newParent
-     * @param { ?PageControllerType } oldParent
-     */
-    /*const setParentCSSClass = (hash, newParent, oldParent) => {
-        // Add class for styling to newParent if not null and remove it from oldParent if not null
-        let newParentPage = null;
-        let oldParentPage = null;
-        let oldParentHasNoChildren = true;
-        if(null !== newParent) {
-            const pageNameNewParent = newParent.getValue();
-            newParentPage = findElementById(detail, pageNameNewParent + '-li');
-        }
-        if(null !== oldParent) {
-            const pageNameOldParent = oldParent.getValue();
-            oldParentPage = findElementById(detail, pageNameOldParent + '-li');
-        }
-        if(null !== oldParentPage) {
-            for (const child of oldParentPage.children) {
-                if (child.tagName === 'ol') {
-                    oldParentHasNoChildren = false;
-                }
-            }
-            if (oldParentHasNoChildren) {
-                oldParentPage.classList.remove('parent');
-            }
-        }
-        if(null !== newParentPage && !newParentPage.classList.contains('parent')) {
-            newParentPage.classList.add('parent');
-        }
-    };*/
 
     /**
      * A utility function that sets the active CSS class for the given hash
@@ -357,18 +374,6 @@ const NavigationProjector = (controller, pinToElement) => {
                 }
             }
         }
-
-            /*
-            const parentName = parentNode.getValue();
-            const parentAnchor = findElementById(detail, `${parentName}-a`);
-            if (newActive) {
-                parentAnchor.classList.add('parent-active');
-            } else if (newActive !== oldActive) {
-                parentAnchor.classList.remove('parent-active');
-            }
-            */
-
-
     };
 
     /**
@@ -408,9 +413,8 @@ const NavigationProjector = (controller, pinToElement) => {
      * @function
      * @param { !String } hash
      * @param { !String } newIcon
-     * @param { !String } oldIcon
      */
-    const setIconSource = (hash, newIcon, oldIcon) => {
+    const setIconSource = (hash, newIcon) => {
         const pageController = controller.getPageController(hash);
         const pageName = pageController.getValue();
         const imageToReplaceOverview = findElementById(overviewContentWrapper, pageName + '-icon-overview');
