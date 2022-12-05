@@ -21,6 +21,7 @@ import { PageNotFoundProjector } from "./pages/404/pageNotFoundProjector.js";
 import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME } from "./kolibri/util/dom.js";
 import { SimpleFormController } from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector } from "./pages/simpleForm/simpleFormPageProjector.js";
+import { WelcomePageProjector } from "./pages/welcome/welcomePageProjector.js";
 
 const pinToContentElement = document.getElementById("content");
 
@@ -32,7 +33,7 @@ PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNot
 const homePageController = PageController("home", null);
 homePageController.setIcon('./navigation/icons/house.svg');
 homePageController.setIsNavigational(false);
-HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
+HomePageProjector(homePageController, pinToContentElement, './pages/home/welcome.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
 masterDetailViewsPageController.setIcon('./navigation/icons/masterdetail.svg');
@@ -44,21 +45,24 @@ formsPageController.setIcon('./navigation/icons/forms.svg');
 formsPageController.setIsNavigational(false);
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
+const welcomePageController = PageController("welcome", null);
+welcomePageController.setIcon('./navigation/icons/cute-robot.svg');
+WelcomePageProjector(welcomePageController, pinToContentElement, './pages/welcome/welcome.html');
 
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
-personPageController.setIcon('person');
+personPageController.setIcon('./navigation/icons/person.svg');
 PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html');
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
-carPageController.setIcon('car');
+carPageController.setIcon('./navigation/icons/car.svg');
 CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
-simpleWorkWeekPageController.setIcon('calendar');
+simpleWorkWeekPageController.setIcon('./navigation/icons/calendar.svg');
 SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
 
 const formStructure = [
@@ -71,7 +75,7 @@ const formStructure = [
 ];
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleForm", [simpleFormController]);
-simpleFormPageController.setIcon('simpleform');
+simpleFormPageController.setIcon('./navigation/icons/simpleform.svg');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
 const navigationController = NavigationController();
@@ -89,11 +93,13 @@ navigationController.addErrorPageController('E404', errorController);
 navigationController.addPageController(homePageController);
 navigationController.addPageController(masterDetailViewsPageController);
 navigationController.addPageController(formsPageController);
+navigationController.addPageController(welcomePageController);
 navigationController.addPageController(simpleWorkWeekPageController);
 navigationController.addPageController(simpleFormPageController);
 navigationController.addPageController(personPageController);
 
 // Has to happen after adding to the navigation controller
+welcomePageController.setParent(homePageController);
 personPageController.setParent(masterDetailViewsPageController);
 carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);

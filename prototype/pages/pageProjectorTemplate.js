@@ -16,7 +16,7 @@ export { PageProjector }
  * @example
  * const homePageController = PageController("home", null);
  * homePageController.setIcon('house');
- * HomePageProjector(homePageController);
+ * WelcomePageProjector(homePageController);
  */
 
 const PageProjector = (pageController, pinToElement, contentFilePath) => {

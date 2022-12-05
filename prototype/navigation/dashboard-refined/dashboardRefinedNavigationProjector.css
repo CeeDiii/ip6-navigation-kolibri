@@ -24,8 +24,12 @@
     min-height: 100vh;
     background-color: transparent;
     display: grid;
-    grid-template-columns: var(--base-unit) var(--detail-width);
+    grid-template-columns: var(--base-unit);
     font-family:      var(--kb-font-rubik-light-regular);
+}
+
+.dashboard-refined-nav.open{
+    grid-template-columns: var(--base-unit) var(--detail-width);
 }
 
 .dashboard-refined-nav .overview {

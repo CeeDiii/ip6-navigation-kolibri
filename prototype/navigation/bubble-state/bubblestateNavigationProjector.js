@@ -138,8 +138,8 @@ const NavigationProjector = (controller, pinToElement) => {
 
         controller.getPageController(hash).onIsVisibleChanged(() => projectNavigation());
 
-        controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
-            setIconCSSClass(hash, newIcon, oldIcon);
+        controller.getPageController(hash).onIconChanged(newIcon => {
+            setIconSource(hash, newIcon);
         });
         // END
 
@@ -200,22 +200,21 @@ const NavigationProjector = (controller, pinToElement) => {
     };
 
     /**
-     * A utility function that sets the CSS class for the given hash to newIcon
-     * and removes the CSS class for the oldIcon.
+     * A utility function that sets the icon source for the given hash to newIcon.
      *
      * @function
      * @param { !String } hash
      * @param { !String } newIcon
-     * @param { !String } oldIcon
      */
-    const setIconCSSClass = (hash, newIcon, oldIcon) => {
-        const anchor = navigationAnchors.find(a => {
-            const urlHash = a.href.substring(a.href.indexOf("#"));
-            return urlHash === hash;
-        });
-        if (undefined !== anchor) {
-            anchor.classList.remove(oldIcon);
-            anchor.classList.add(newIcon);
+    const setIconSource = (hash, newIcon) => {
+        const pageController = controller.getPageController(hash);
+        const pageName = pageController.getValue();
+        const anchor = navigationAnchors.find(a => a.hash === hash);
+        if(undefined !== anchor) {
+            const imageToReplace = anchor.getElementsByTagName('img')[0];
+            if (null !== imageToReplace) {
+                imageToReplace.setAttribute('src', newIcon);
+            }
         }
     };
 

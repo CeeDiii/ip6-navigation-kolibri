@@ -71,7 +71,7 @@ const NavigationProjector = (controller, pinToElement) => {
                 </div>
             `);
 
-            anchor = dom(`<a href="${hash}"><img class="${pageName}-icon" id="${pageName}-icon" alt="${pageName}-icon"></a>`);
+            anchor = dom(`<a href="${hash}"><img class="${pageName}-icon" id="${pageName}-icon-overview" alt="${pageName}-icon"></a>`);
             const overviewNavPointNode = dom(`
                 <div class="row">
                 </div>
@@ -216,8 +216,8 @@ const NavigationProjector = (controller, pinToElement) => {
         });
 
         controller.getPageController(hash).onActiveChanged((newActive, oldActive) => {
-            //setActiveCSSClass(hash, newActive, oldActive);
-            //setParentActiveCSSClass(hash, newActive, oldActive);
+            setActiveCSSClass(hash, newActive, oldActive);
+            setParentActiveCSSClass(hash, newActive, oldActive);
             setPageTitle(hash, newActive);
         });
 
@@ -294,18 +294,20 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !Boolean } newActive
      * @param { !Boolean } oldActive
      */
-    /*const setActiveCSSClass = (hash, newActive, oldActive) => {
+    const setActiveCSSClass = (hash, newActive, oldActive) => {
         const pageController = controller.getPageController(hash);
         const pageName = pageController.getValue();
-        const pageAnchor = findElementById(detail, pageName + '-a');
-        if (null !== pageAnchor) {
+        const pageNode = findElementById(detailWrapper, pageName + '-node');
+        if (null !== pageNode) {
             if (newActive) {
-                pageAnchor.classList.add('active');
+                pageNode.getElementsByTagName('svg')[0].classList.add('active');
+                pageNode.getElementsByTagName('a')[0].classList.add('active');
             } else if (newActive !== oldActive) {
-                pageAnchor.classList.remove('active');
+                pageNode.getElementsByTagName('svg')[0].classList.remove('active');
+                pageNode.getElementsByTagName('a')[0].classList.remove('active');
             }
         }
-    };*/
+    };
 
     /**
      * A utility function that sets the active CSS class for the parent of a given hash
@@ -316,10 +318,33 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !Boolean } newActive
      * @param { !Boolean } oldActive
      */
-    /*const setParentActiveCSSClass = (hash, newActive, oldActive) => {
+    const setParentActiveCSSClass = (hash, newActive, oldActive) => {
         const pageController = controller.getPageController(hash);
-        const parentNode = pageController.getParent();
+        let parentNode = pageController.getParent();
         if (null !== parentNode) {
+            while (null !== parentNode.getParent()) {
+                parentNode = parentNode.getParent();
+            }
+            const parentName = parentNode.getValue();
+            const detailParent = findElementById(detailWrapper, parentName + '-icon');
+            const overviewParent = findElementById(overviewContentWrapper, parentName + '-icon-overview');
+            if (null !== detailParent) {
+                if (newActive) {
+                    detailParent.classList.add('active');
+                } else if (newActive !== oldActive) {
+                    detailParent.classList.remove('active');
+                }
+            }
+            if (null !== overviewParent) {
+                if (newActive) {
+                    overviewParent.classList.add('active');
+                } else if (newActive !== oldActive) {
+                    overviewParent.classList.remove('active');
+                }
+            }
+        }
+
+            /*
             const parentName = parentNode.getValue();
             const parentAnchor = findElementById(detail, `${parentName}-a`);
             if (newActive) {
@@ -327,8 +352,10 @@ const NavigationProjector = (controller, pinToElement) => {
             } else if (newActive !== oldActive) {
                 parentAnchor.classList.remove('parent-active');
             }
-        }
-    };*/
+            */
+
+
+    };
 
     /**
      * A utility function that sets the HTML title attribute to the value of the page identified by hash.
@@ -362,8 +389,7 @@ const NavigationProjector = (controller, pinToElement) => {
     };*/
 
     /**
-     * A utility function that sets the CSS class for the given hash to newIcon
-     * and removes the CSS class for the oldIcon.
+     * A utility function that sets the icon source for the given hash to newIcon.
      *
      * @function
      * @param { !String } hash
@@ -371,8 +397,9 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !String } oldIcon
      */
     const setIconSource = (hash, newIcon, oldIcon) => {
-        const pageName = hash.substring(1);
-        const imageToReplaceOverview = findElementById(overviewContentWrapper, pageName + '-icon');
+        const pageController = controller.getPageController(hash);
+        const pageName = pageController.getValue();
+        const imageToReplaceOverview = findElementById(overviewContentWrapper, pageName + '-icon-overview');
         const imageToReplaceDetail = findElementById(detailWrapper, pageName + '-icon');
         if (null !== imageToReplaceOverview) {
             imageToReplaceOverview.setAttribute('src', newIcon);
