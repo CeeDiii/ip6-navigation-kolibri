@@ -79,6 +79,8 @@ simpleFormPageController.setIcon('./navigation/icons/simpleform.svg');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
 const navigationController = NavigationController();
+navigationController.setWebsiteName('Kolibri');
+navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
 
 const pinToNavElement = document.getElementById('nav');
 BubbleStateNavigationProjector(navigationController, pinToNavElement);
