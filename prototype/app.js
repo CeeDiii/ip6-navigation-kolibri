@@ -30,17 +30,17 @@ errorController.setIsVisible(false);
 PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNotFound.html');
 
 const homePageController = PageController("home", null);
-homePageController.setIcon('house');
+homePageController.setIcon('./navigation/icons/house.svg');
 homePageController.setIsNavigational(false);
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
-masterDetailViewsPageController.setIcon('masterdetail');
+masterDetailViewsPageController.setIcon('./navigation/icons/masterdetail.svg');
 masterDetailViewsPageController.setIsNavigational(false);
 MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
 
 const formsPageController = PageController("forms", null);
-formsPageController.setIcon('forms');
+formsPageController.setIcon('./navigation/icons/forms.svg');
 formsPageController.setIsNavigational(false);
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 

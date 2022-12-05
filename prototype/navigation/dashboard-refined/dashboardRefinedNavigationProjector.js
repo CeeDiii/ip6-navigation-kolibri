@@ -64,14 +64,14 @@ const NavigationProjector = (controller, pinToElement) => {
                 <div class="content">
                     <div id="${pageName}-node">
                         <div class="row root" id="${pageName}-root">
-                            <img class="icon" id="${pageName}-icon" alt="${pageName}-icon">
+                            <img class="icon ${pageName}-icon" id="${pageName}-icon" alt="${pageName}-icon">
                             <span>${pageName}</span>
                         </div>
                     </div>
                 </div>
             `);
 
-            anchor = dom(`<a href="${hash}"><img id="${pageName}-icon" alt="${pageName}-icon"></a>`);
+            anchor = dom(`<a href="${hash}"><img class="${pageName}-icon" id="${pageName}-icon" alt="${pageName}-icon"></a>`);
             const overviewNavPointNode = dom(`
                 <div class="row">
                 </div>
@@ -102,7 +102,7 @@ const NavigationProjector = (controller, pinToElement) => {
         `);
         const overviewToggle = dom(`
             <div class="toggle" onclick="document.getElementById('dashboard-refined-nav').classList.toggle('open')">
-                <img src="../icons/right-arrow-gradient.svg">
+                <img src="../prototype/navigation/icons/right-arrow-gradient.svg">
             </div>
         `);
 
@@ -222,7 +222,7 @@ const NavigationProjector = (controller, pinToElement) => {
         });
 
         controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
-            //setIconCSSClass(hash, newIcon, oldIcon);
+            setIconSource(hash, newIcon, oldIcon);
         });
         // END
     });
@@ -370,14 +370,15 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !String } newIcon
      * @param { !String } oldIcon
      */
-    /*const setIconCSSClass = (hash, newIcon, oldIcon) => {
-        const anchor = navigationAnchors.find(a => {
-            const urlHash = a.href.substring(a.href.indexOf("#"));
-            return urlHash === hash;
-        });
-        if (anchor !== undefined) {
-            anchor.classList.remove(oldIcon);
-            anchor.classList.add(newIcon);
+    const setIconSource = (hash, newIcon, oldIcon) => {
+        const pageName = hash.substring(1);
+        const imageToReplaceOverview = findElementById(overviewContentWrapper, pageName + '-icon');
+        const imageToReplaceDetail = findElementById(detailWrapper, pageName + '-icon');
+        if (null !== imageToReplaceOverview) {
+            imageToReplaceOverview.setAttribute('src', newIcon);
         }
-    }*/
+        if (null !== imageToReplaceDetail) {
+            imageToReplaceDetail.setAttribute('src', newIcon);
+        }
+    }
 };

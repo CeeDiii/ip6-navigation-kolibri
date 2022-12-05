@@ -21,7 +21,7 @@ export { PageController }
  * @property { () => [T] } getPageContentControllers
  * @property { () => String } getValue
  * @property { () => String } getHash
- * @property { (iconName: String) => void } setIcon
+ * @property { (iconPathOrName: String) => void } setIcon
  * @property { (visitedState: Boolean) => void } setVisited
  * @property { (isHomepage: Boolean) => void } setIsHomepage
  * @property { (isVisible: Boolean) => void } setIsVisible

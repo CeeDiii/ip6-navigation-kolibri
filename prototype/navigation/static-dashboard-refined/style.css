@@ -130,6 +130,10 @@
 .navigation-sidebar .detail .content .row {
     margin-bottom: calc(1/20 * var(--base-unit));
     padding-left:     calc(2/9 * var(--base-unit));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 1em;
 }
 
 .navigation-sidebar .detail .content .node {

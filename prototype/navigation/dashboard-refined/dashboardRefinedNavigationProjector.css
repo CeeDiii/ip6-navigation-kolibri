@@ -130,6 +130,10 @@
 .dashboard-refined-nav .detail .content .row {
     margin-bottom: calc(1/20 * var(--base-unit));
     padding-left:     calc(2/9 * var(--base-unit));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 1em;
 }
 
 .dashboard-refined-nav .detail .content .node {
@@ -186,19 +190,5 @@
 
 .dashboard-refined-nav .detail .content .row a:hover {
     color: var(--kb-color-hsl-pink-500);
-}
-
-/** Icons for root points **/
-
-.dashboard-refined-nav .detail img.home-icon{
-    content: url("../icons/house.svg");
-}
-
-.dashboard-refined-nav .detail img.masterdetail-icon{
-    content: url("../icons/masterdetail.svg");
-}
-
-.dashboard-refined-nav .detail img.forms-icon{
-    content: url("../icons/forms.svg");
 }
 
