@@ -11,3 +11,58 @@
     padding: 5px;
     margin-top: 32px;
 }
+
+#content .welcome .logo-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+#content .welcome svg {
+    overflow: visible;
+}
+
+#content .welcome div.kolibri-logo-svg {
+    height: 250px;
+    aspect-ratio: 1;
+    padding: 2em;
+    transition: transform .4s linear;
+}
+
+#content .welcome .kolibri-logo-anim {
+    animation: kolibri_fly_in 2s ease;
+}
+
+#content .welcome .flatter {
+    animation-name:             kolibri-wings;
+    animation-duration:         .2s;
+    animation-iteration-count:  15;
+    animation-direction:        reverse;
+    animation-timing-function:  ease-in;
+    transform-origin:           45% 45%;
+}
+
+@keyframes kolibri_fly_in {
+    0% {
+        transform: scaleX(-1)  scale(0.4) translateX(400%) rotate(-30deg);
+    }
+    60% {
+        transform:             scale(0.6) translateX(300%) rotate(-30deg);
+    }
+    100% {
+        transform:             scale(1.0) translateX(0)    rotate(  0deg) ;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .kolibri-logo-anim {
+        animation-duration: 0.01ms ;
+    }
+}
+
+@keyframes kolibri-wings {
+    from {
+        transform:      scaleX(1) rotate(0deg);
+    }
+    to {
+        transform:      scaleX(-1) rotate(30deg);
+    }
+}
