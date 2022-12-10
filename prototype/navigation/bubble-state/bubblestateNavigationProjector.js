@@ -1,5 +1,5 @@
 import { ObservableList } from "../../kolibri/observable.js";
-import {dom} from "../../kolibri/util/dom.js";
+import { dom } from "../../kolibri/util/dom.js";
 
 export { NavigationProjector as BubbleStateNavigationProjector }
 
@@ -34,7 +34,6 @@ const NavigationProjector = (controller, pinToElement) => {
      *
      */
     const initializeNavigationPoint = (hash, pageName) => {
-
         // initialize anchor
         const anchorDom = dom(`
             <a href="${hash}">
@@ -85,9 +84,10 @@ const NavigationProjector = (controller, pinToElement) => {
         let i = 1;
         navigationAnchors.forEach(anchor => {
             const pageController = controller.getPageController(anchor.hash);
+            const isNavigational = pageController.getIsNavigational();
             const isVisible = pageController.getIsVisible();
 
-            if(isVisible) {
+            if(isNavigational && isVisible) {
                 const navigationPointName = anchor.hash.substring(1);
                 const navPoint = anchorListWrappers[navigationPointName];
                 const dynamicIndicatorStyle = `
@@ -135,6 +135,8 @@ const NavigationProjector = (controller, pinToElement) => {
         controller.getPageController(hash).onVisitedChanged(visited => {
             setVisitedCSSClass(hash, visited);
         });
+
+        controller.getPageController(hash).onIsNavigationalChanged(() => projectNavigation());
 
         controller.getPageController(hash).onIsVisibleChanged(() => projectNavigation());
 
@@ -207,8 +209,6 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !String } newIcon
      */
     const setIconSource = (hash, newIcon) => {
-        const pageController = controller.getPageController(hash);
-        const pageName = pageController.getValue();
         const anchor = navigationAnchors.find(a => a.hash === hash);
         if(undefined !== anchor) {
             const imageToReplace = anchor.getElementsByTagName('img')[0];
