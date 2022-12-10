@@ -1,34 +1,40 @@
-import { NavigationController } from "./navigation/navigationController.js";
-// import { NavigationProjector } from "./navigation/basicNavigationProjector.js";
-// import { NavigationProjector } from "./navigation/dashboard/dashboardNavigationProjector.js";
-import { NavigationProjector } from "./navigation/dashboard-refined/dashboardRefinedNavigationProjector.js";
-import { BubbleStateNavigationProjector } from "./navigation/bubble-state/bubblestateNavigationProjector.js";
-import { TreeNavigationProjector } from "./navigation/basic-tree/basicTreeNavigationProjector.js";
-import { BreadCrumbProjector } from "./navigation/bread-crumbs/breadCrumbProjector.js";
-import { PageController } from "./pages/pageController.js";
-import { HomePageProjector } from "./pages/home/homePageProjector.js";
-import { MasterDetailViewsPageProjector } from "./pages/masterDetailViews/masterDetailViewsPageProjector.js";
-import { FormsPageProjector } from "./pages/forms/formsPageProjector.js";
-import { Person, personSelectionMold } from "./pages/person/person.js";
+import { NavigationController }                            from "./navigation/navigationController.js";
+// import { NavigationProjector }                             from "./navigation/basicNavigationProjector.js";
+// import { NavigationProjector }                             from "./navigation/dashboard/dashboardNavigationProjector.js";
+import { NavigationProjector }                             from "./navigation/dashboard-refined/dashboardRefinedNavigationProjector.js";
+import { BubbleStateNavigationProjector }                  from "./navigation/bubble-state/bubblestateNavigationProjector.js";
+import { TreeNavigationProjector }                         from "./navigation/basic-tree/basicTreeNavigationProjector.js";
+import { BreadCrumbProjector }                             from "./navigation/bread-crumbs/breadCrumbProjector.js";
+import { PageController }                                  from "./pages/pageController.js";
+import { ForbiddenPageProjector }                          from "./pages/403/forbiddenPageProjector.js";
+import { PageNotFoundProjector }                           from "./pages/404/pageNotFoundProjector.js";
+import { HomePageProjector }                               from "./pages/home/homePageProjector.js";
+import { MasterDetailViewsPageProjector }                  from "./pages/masterDetailViews/masterDetailViewsPageProjector.js";
+import { FormsPageProjector }                              from "./pages/forms/formsPageProjector.js";
+import { WelcomePageProjector }                            from "./pages/welcome/welcomePageProjector.js";
+import { Person, personSelectionMold }                     from "./pages/person/person.js";
 import { PersonListController, PersonSelectionController } from "./pages/person/personController.js";
-import { CarListController, CarSelectionController } from "./pages/car/carController.js";
-import { PersonPageProjector } from "./pages/person/personPageProjector.js";
-import { Car,carSelectionMold } from "./pages/car/car.js";
-import { CarPageProjector } from "./pages/car/carPageProjector.js";
-import { WeekController } from "./pages/workweek/workweek/weekController.js";
-import { SimpleWorkWeekPageProjector } from "./pages/workweek/simpleWorkWeekPageProjector.js";
-import { PageNotFoundProjector } from "./pages/404/pageNotFoundProjector.js";
-import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME } from "./kolibri/util/dom.js";
-import { SimpleFormController } from "./kolibri/projector/simpleForm/simpleFormController.js";
-import { SimpleFormPageProjector } from "./pages/simpleForm/simpleFormPageProjector.js";
-import { WelcomePageProjector } from "./pages/welcome/welcomePageProjector.js";
+import { CarListController, CarSelectionController }       from "./pages/car/carController.js";
+import { PersonPageProjector }                             from "./pages/person/personPageProjector.js";
+import { Car,carSelectionMold }                            from "./pages/car/car.js";
+import { CarPageProjector }                                from "./pages/car/carPageProjector.js";
+import { WeekController }                                  from "./pages/workweek/workweek/weekController.js";
+import { SimpleWorkWeekPageProjector }                     from "./pages/workweek/simpleWorkWeekPageProjector.js";
+import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME }       from "./kolibri/util/dom.js";
+import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
+import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
 
 const pinToContentElement = document.getElementById("content");
 
+// Assembling 403 error page as example. Can be modified
+const errorForbiddenController = PageController("forbidden", null);
+errorForbiddenController.setIsVisible(false);
+ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
+
 // Assembling 404 error page as example. Can be modified
-const errorController = PageController("pagenotfound", null);
-errorController.setIsVisible(false);
-PageNotFoundProjector(errorController, pinToContentElement, './pages/404/pageNotFound.html');
+const errorNotFoundController = PageController("pagenotfound", null);
+errorNotFoundController.setIsVisible(false);
+PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
 
 const homePageController = PageController("home", null);
 homePageController.setIcon('./navigation/icons/house.svg');
@@ -91,14 +97,16 @@ NavigationProjector(navigationController, pinToDashboardNavElement);
 const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
 BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
-navigationController.addErrorPageController('E404', errorController);
+navigationController.addErrorPageController('E403', errorForbiddenController);
+navigationController.addErrorPageController('E404', errorNotFoundController);
 navigationController.addPageController(homePageController);
 navigationController.addPageController(masterDetailViewsPageController);
 navigationController.addPageController(formsPageController);
 navigationController.addPageController(welcomePageController);
-navigationController.addPageController(simpleWorkWeekPageController);
-navigationController.addPageController(simpleFormPageController);
 navigationController.addPageController(personPageController);
+navigationController.addPageController(carPageController);
+navigationController.addPageController(simpleFormPageController);
+navigationController.addPageController(simpleWorkWeekPageController);
 
 // Has to happen after adding to the navigation controller
 welcomePageController.setParent(homePageController);
@@ -107,9 +115,4 @@ carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
 
-navigationController.setHomePage('welcome');
-
-// only used to show dynamic extension of navigation bar
-window.addNavigationPointAtRuntime = () => {
-    navigationController.addPageController(carPageController);
-};
+navigationController.setHomePage(welcomePageController.getHash());
