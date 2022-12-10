@@ -1,0 +1,13 @@
+#content .welcome h1 {
+    margin-top: 35px;
+}
+
+#content .welcome .message-wrapper {
+    text-align: center;
+    padding: 16px;
+}
+
+#content .welcome button {
+    padding: 5px;
+    margin-top: 32px;
+}

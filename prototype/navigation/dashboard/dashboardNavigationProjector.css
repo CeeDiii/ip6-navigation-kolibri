@@ -1,15 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'arial', sans-serif;
-}
-
-body {
-    min-height: 100vh;
-    perspective: none;
-}
-
 .dashboard-nav {
     position: fixed;
     inset: 20px;
@@ -59,44 +47,13 @@ body {
     max-width: 24px;
 }
 
-.dashboard-nav #toggle img.icon {
-    content: url("../icons/open.svg");
+.dashboard-nav #toggle img {
+    transition: 0.2s;
 }
 
-.dashboard-nav.open #toggle img.icon {
-    content: url("../icons/close.svg");
-}
-
-.dashboard-nav .list .house img.icon{
-    content: url("../icons/house.svg");
-}
-
-.dashboard-nav .list .person img.icon{
-    content: url("../icons/person.svg");
-}
-
-.dashboard-nav .list .car img.icon{
-    content: url("../icons/car.svg");
-}
-
-.dashboard-nav .list .placeholder img.icon{
-    content: url("../icons/placeholder.svg");
-}
-
-.dashboard-nav .list .calendar img.icon{
-    content: url("../icons/calendar.svg");
-}
-
-.dashboard-nav .list .masterdetail img.icon{
-    content: url("../icons/masterdetail.svg");
-}
-
-.dashboard-nav .list .forms img.icon{
-    content: url("../icons/forms.svg");
-}
-
-.dashboard-nav .list .simpleform img.icon{
-    content: url("../icons/simpleform.svg");
+.dashboard-nav.open #toggle img {
+    transform: rotate(180deg);
+    transition: 0.2s;
 }
 
 .dashboard-nav span.icon {

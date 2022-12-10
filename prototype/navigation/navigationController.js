@@ -13,9 +13,12 @@ export { NavigationController }
  * @property { (pageHash: String) => void } deletePageController
  * @property { (newHomepage: String) => void } setHomePage
  * @property { () => String} getHomePage
+ * @property { (name: String) => void } setWebsiteName
+ * @property { (logoSrcPath: String) => void } setWebsiteLogo
  * @property { (callback: observableListCallback) => Boolean } onNavigationHashAdd
  * @property { (callback: observableListCallback) => Boolean } onNavigationHashDel
  * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onLocationChanged
+ * @property { (callback: onValueChangeCallback<String>) => void } onWebsiteNameChanged
  * @property { (callback: onValueChangeCallback<String>) => void } onWebsiteLogoChanged
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged
  * @property { (anchor: HTMLAnchorElement) => void } registerAnchorClickListener
@@ -35,12 +38,12 @@ const NavigationController = () => {
     const navigate = hash => {
         // check if hash is empty to redirect to fallback homepage
         if(hash === '' || hash === '#') {
-            hash = '#' + navigationModel.getHomepage();
+            hash = navigationModel.getHomepage();
             if(hash === '#') return; // return if fallback homepage is not defined
         }
 
         window.location.hash = hash;
-        const newLocation = pageControllers[hash];
+        /** @type { PageControllerType } */ const newLocation = pageControllers[hash];
 
         // on initialization the currentLocation can be null and therefore not passivated
         if (valueOf(currentLocation) !== null) {
@@ -51,6 +54,9 @@ const NavigationController = () => {
         if(newLocation === undefined) {
             pageControllers['#E404'].activate();
             currentLocation.getObs(VALUE).setValue(pageControllers['#E404']);
+        } else if (!newLocation.getIsNavigational()) {
+            pageControllers['#E403'].activate();
+            currentLocation.getObs(VALUE).setValue(pageControllers['#E403']);
         } else {
             // otherwise activate newLocation and display the page
             newLocation.activate();
@@ -121,9 +127,12 @@ const NavigationController = () => {
         },
         setHomePage:            navigationModel.setHomepage,
         getHomePage:            navigationModel.getHomepage,
+        setWebsiteName:         navigationModel.setWebsiteName,
+        setWebsiteLogo:         navigationModel.setWebsiteLogo,
         onNavigationHashAdd:    navigationModel.onAdd,
         onNavigationHashDel:    navigationModel.onDel,
         onLocationChanged:      currentLocation.getObs(VALUE).onChange,
+        onWebsiteNameChanged:   navigationModel.onWebsiteNameChanged,
         onWebsiteLogoChanged:   navigationModel.onWebsiteLogoChanged,
         onVisibleChanged:       navigationModel.onVisibleChanged,
     }

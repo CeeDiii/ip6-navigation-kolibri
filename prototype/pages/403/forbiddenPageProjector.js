@@ -1,8 +1,4 @@
-import { dom } from "../../kolibri/util/dom.js";
-import { projectForm, }  from "../../kolibri/projector/simpleForm/simpleFormProjector.js"
-
-
-export { SimpleFormPageProjector }
+export { ForbiddenPageProjector }
 /**
  * @typedef PageProjectorType
  * @property { () => void } projectPage
@@ -14,24 +10,22 @@ export { SimpleFormPageProjector }
  * @param { !HTMLDivElement } pinToElement
  * @param { !String } contentFilePath - relative to index.html!
  * @returns { PageProjectorType }
- * @example
- * const homePageController = PageController("home", null);
- * homePageController.setIcon('house');
- * WelcomePageProjector(homePageController);
  */
 
-const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) => {
+const ForbiddenPageProjector = (pageController, pinToElement, contentFilePath) => {
     const pageWrapper = pinToElement;
-    const contentWrapper = document.createElement("div");
+    const contentWrapper = document.createElement('div');
 
     const initialize = () => {
         const contentPromise = fetchPageContent(contentFilePath);
         contentPromise.then(contentHtml => {
             contentWrapper.innerHTML = contentHtml;
 
-            const formHolder = document.getElementById('form-holder');
-            const form = projectForm(pageController.getPageContentControllers()[0]);
-            formHolder.append(...form);
+            if (pageWrapper.firstChild === null) {
+                pageWrapper.append(contentWrapper);
+            } else {
+                pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
+            }
         });
     };
 

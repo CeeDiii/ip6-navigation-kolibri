@@ -89,7 +89,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
         const toggle = dom(`
             <div id="toggle">
-                <img class="icon" alt="toggle icon" src="">
+                <img src="../prototype/navigation/icons/right-arrow.svg" alt="right-arrow">
             </div>
         `);
 
@@ -195,8 +195,8 @@ const NavigationProjector = (controller, pinToElement) => {
             setPageTitle(hash, newActive);
         });
 
-        controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
-            setIconCSSClass(hash, newIcon, oldIcon);
+        controller.getPageController(hash).onIconChanged(newIcon => {
+            setIconSource(hash, newIcon);
         });
         // END
     });
@@ -291,8 +291,11 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const setParentActiveCSSClass = (hash, newActive, oldActive) => {
         const pageController = controller.getPageController(hash);
-        const parentNode = pageController.getParent();
+        let parentNode = pageController.getParent();
         if (null !== parentNode) {
+            while (null !== parentNode.getParent()) {
+                parentNode = parentNode.getParent();
+            }
             const parentName = parentNode.getValue();
             const parentAnchor = findElementById(tree, `${parentName}-a`);
             if (newActive) {
@@ -335,22 +338,16 @@ const NavigationProjector = (controller, pinToElement) => {
     };
 
     /**
-     * A utility function that sets the CSS class for the given hash to newIcon
-     * and removes the CSS class for the oldIcon.
+     * A utility function that sets the icon source for the given hash to newIcon.
      *
      * @function
      * @param { !String } hash
      * @param { !String } newIcon
-     * @param { !String } oldIcon
      */
-    const setIconCSSClass = (hash, newIcon, oldIcon) => {
-        const anchor = navigationAnchors.find(a => {
-            const urlHash = a.href.substring(a.href.indexOf("#"));
-            return urlHash === hash;
-        });
-        if (anchor !== undefined) {
-            anchor.classList.remove(oldIcon);
-            anchor.classList.add(newIcon);
-        }
+    const setIconSource = (hash, newIcon) => {
+        const anchor = navigationAnchors.find(a => a.hash === hash);
+        const anchorIcon = anchor.getElementsByTagName('img')[0];
+
+        anchorIcon.setAttribute('src', newIcon);
     }
 };

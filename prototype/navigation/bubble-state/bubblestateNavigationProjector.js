@@ -1,5 +1,5 @@
 import { ObservableList } from "../../kolibri/observable.js";
-import {dom} from "../../kolibri/util/dom.js";
+import { dom } from "../../kolibri/util/dom.js";
 
 export { NavigationProjector as BubbleStateNavigationProjector }
 
@@ -34,7 +34,6 @@ const NavigationProjector = (controller, pinToElement) => {
      *
      */
     const initializeNavigationPoint = (hash, pageName) => {
-
         // initialize anchor
         const anchorDom = dom(`
             <a href="${hash}">
@@ -85,9 +84,10 @@ const NavigationProjector = (controller, pinToElement) => {
         let i = 1;
         navigationAnchors.forEach(anchor => {
             const pageController = controller.getPageController(anchor.hash);
+            const isNavigational = pageController.getIsNavigational();
             const isVisible = pageController.getIsVisible();
 
-            if(isVisible) {
+            if(isNavigational && isVisible) {
                 const navigationPointName = anchor.hash.substring(1);
                 const navPoint = anchorListWrappers[navigationPointName];
                 const dynamicIndicatorStyle = `
@@ -136,10 +136,12 @@ const NavigationProjector = (controller, pinToElement) => {
             setVisitedCSSClass(hash, visited);
         });
 
+        controller.getPageController(hash).onIsNavigationalChanged(() => projectNavigation());
+
         controller.getPageController(hash).onIsVisibleChanged(() => projectNavigation());
 
-        controller.getPageController(hash).onIconChanged((newIcon, oldIcon) => {
-            setIconCSSClass(hash, newIcon, oldIcon);
+        controller.getPageController(hash).onIconChanged(newIcon => {
+            setIconSource(hash, newIcon);
         });
         // END
 
@@ -200,22 +202,19 @@ const NavigationProjector = (controller, pinToElement) => {
     };
 
     /**
-     * A utility function that sets the CSS class for the given hash to newIcon
-     * and removes the CSS class for the oldIcon.
+     * A utility function that sets the icon source for the given hash to newIcon.
      *
      * @function
      * @param { !String } hash
      * @param { !String } newIcon
-     * @param { !String } oldIcon
      */
-    const setIconCSSClass = (hash, newIcon, oldIcon) => {
-        const anchor = navigationAnchors.find(a => {
-            const urlHash = a.href.substring(a.href.indexOf("#"));
-            return urlHash === hash;
-        });
-        if (undefined !== anchor) {
-            anchor.classList.remove(oldIcon);
-            anchor.classList.add(newIcon);
+    const setIconSource = (hash, newIcon) => {
+        const anchor = navigationAnchors.find(a => a.hash === hash);
+        if(undefined !== anchor) {
+            const imageToReplace = anchor.getElementsByTagName('img')[0];
+            if (null !== imageToReplace) {
+                imageToReplace.setAttribute('src', newIcon);
+            }
         }
     };
 
