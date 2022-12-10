@@ -35,6 +35,14 @@ const NavigationController = () => {
     const currentLocation  = Attribute(null);
     const pageControllers  = {};
 
+    /**
+     * A function that navigates to the route
+     * that is found for a given hash.
+     *
+     * @function
+     * @param { String } hash
+     * @return { void }
+     */
     const navigate = hash => {
         // check if hash is empty to redirect to fallback homepage
         if(hash === '' || hash === '#') {
@@ -43,25 +51,42 @@ const NavigationController = () => {
         }
 
         window.location.hash = hash;
-        /** @type { PageControllerType } */ const newLocation = pageControllers[hash];
+        const newLocation = getRoutingLocation(hash);
 
         // on initialization the currentLocation can be null and therefore not passivated
         if (valueOf(currentLocation) !== null) {
             valueOf(currentLocation).passivate();
         }
 
+        newLocation.activate();
+        currentLocation.getObs(VALUE).setValue(newLocation);
+    };
+
+    /**
+     * A function that finds the correct route for a hash
+     * and returns the corresponding pageController.
+     *
+     * @function
+     * @param { String } hash
+     * @return { PageControllerType }
+     */
+    const getRoutingLocation = hash => {
+        /** @type { PageControllerType } */ let newLocation = pageControllers[hash];
+
         // if newLocation is undefined, navigate to an error page
         if(newLocation === undefined) {
-            pageControllers['#E404'].activate();
-            currentLocation.getObs(VALUE).setValue(pageControllers['#E404']);
+            newLocation = pageControllers['#E404'];
+        // if the newLocation exists but is not navigational we return a 403 forbidden error
         } else if (!newLocation.getIsNavigational()) {
-            pageControllers['#E403'].activate();
-            currentLocation.getObs(VALUE).setValue(pageControllers['#E403']);
-        } else {
-            // otherwise activate newLocation and display the page
-            newLocation.activate();
-            currentLocation.getObs(VALUE).setValue(newLocation);
+            newLocation = pageControllers['#E403'];
         }
+        return newLocation
+    };
+
+    // handles initial page load and page reload
+    window.onload = () => {
+        const hash = window.location.hash;
+        navigate(hash);
     };
 
     // handles navigation through the browser URL field
@@ -70,12 +95,6 @@ const NavigationController = () => {
         if (hash !== valueOf(currentLocation).getHash()) {
             navigate(hash);
         }
-    };
-
-    // handles initial page load and page reload
-    window.onload = () => {
-        const hash = window.location.hash;
-        navigate(hash);
     };
 
     /**
