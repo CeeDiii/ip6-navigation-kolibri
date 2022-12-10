@@ -19,6 +19,7 @@ export { PageController }
  * @property { () => void } activate
  * @property { () => void } passivate
  * @property { () => [T] } getPageContentControllers
+ * @property { (newValue: String) => void } setValue
  * @property { () => String } getValue
  * @property { () => String } getHash
  * @property { (iconPathOrName: String) => void } setIcon
@@ -84,6 +85,7 @@ const PageController = (pageName, contentControllers) => {
                 pageModel.getPageObs(PARENT).setValue(newParent);
             }
         },
+        setValue:                pageModel.getPageObs(VALUE).setValue,
         getValue:                pageModel.getPageObs(VALUE).getValue,
         getHash:                 pageModel.getPageObs(HASH).getValue,
         setIcon:                 pageModel.getPageObs(ICON).setValue,
