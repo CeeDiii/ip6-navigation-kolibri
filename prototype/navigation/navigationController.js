@@ -1,4 +1,4 @@
-import {Attribute, VALUE, valueOf} from "../kolibri/presentationModel.js";
+import { Attribute, VALUE, valueOf } from "../kolibri/presentationModel.js";
 import { NavigationModel } from "./navigationModel.js";
 
 export { NavigationController }
@@ -38,12 +38,12 @@ const NavigationController = () => {
     const navigate = hash => {
         // check if hash is empty to redirect to fallback homepage
         if(hash === '' || hash === '#') {
-            hash = '#' + navigationModel.getHomepage();
+            hash = navigationModel.getHomepage();
             if(hash === '#') return; // return if fallback homepage is not defined
         }
 
         window.location.hash = hash;
-        const newLocation = pageControllers[hash];
+        /** @type { PageControllerType } */ const newLocation = pageControllers[hash];
 
         // on initialization the currentLocation can be null and therefore not passivated
         if (valueOf(currentLocation) !== null) {
@@ -54,6 +54,9 @@ const NavigationController = () => {
         if(newLocation === undefined) {
             pageControllers['#E404'].activate();
             currentLocation.getObs(VALUE).setValue(pageControllers['#E404']);
+        } else if (!newLocation.getIsNavigational()) {
+            pageControllers['#E403'].activate();
+            currentLocation.getObs(VALUE).setValue(pageControllers['#E403']);
         } else {
             // otherwise activate newLocation and display the page
             newLocation.activate();
@@ -123,7 +126,7 @@ const NavigationController = () => {
             };
         },
         setHomePage:            navigationModel.setHomepage,
-        getHomePage:             navigationModel.getHomepage,
+        getHomePage:            navigationModel.getHomepage,
         setWebsiteName:         navigationModel.setWebsiteName,
         setWebsiteLogo:         navigationModel.setWebsiteLogo,
         onNavigationHashAdd:    navigationModel.onAdd,

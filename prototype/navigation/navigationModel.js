@@ -27,7 +27,9 @@ export { NavigationModel }
 
 const NavigationModel = () => {
     const navigationHashes = Attribute(ObservableList([]));
-    let homepage = '';
+
+    // homepage stores the hash of the homepage
+    let homepage = '#';
 
 
     return {
