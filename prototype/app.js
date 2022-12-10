@@ -107,7 +107,7 @@ carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
 
-navigationController.setHomePage('home');
+navigationController.setHomePage('welcome');
 
 // only used to show dynamic extension of navigation bar
 window.addNavigationPointAtRuntime = () => {
