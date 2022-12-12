@@ -77,8 +77,6 @@ const NavigationController = () => {
         if(newLocation === undefined) {
             newLocation = pageControllers['#E404'];
         // if the newLocation exists but is not navigational we return a 403 forbidden error
-        } else if (!newLocation.getIsNavigational()) {
-            newLocation = pageControllers['#E403'];
         }
         return newLocation
     };

@@ -87,7 +87,7 @@ const NavigationProjector = (controller, pinToElement) => {
             const isNavigational = pageController.getIsNavigational();
             const isVisible = pageController.getIsVisible();
 
-            if(isNavigational && isVisible) {
+            if(isVisible) {
                 const navigationPointName = anchor.hash.substring(1);
                 const navPoint = anchorListWrappers[navigationPointName];
                 const dynamicIndicatorStyle = `

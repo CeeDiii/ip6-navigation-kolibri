@@ -1,10 +1,8 @@
 import { NavigationController }                            from "./navigation/navigationController.js";
-// import { NavigationProjector }                             from "./navigation/basicNavigationProjector.js";
 // import { NavigationProjector }                             from "./navigation/dashboard/dashboardNavigationProjector.js";
-import { NavigationProjector }                             from "./navigation/dashboard-refined/dashboardRefinedNavigationProjector.js";
+// import { NavigationProjector }                             from "./navigation/dashboard-refined/dashboardRefinedNavigationProjector.js";
 import { BubbleStateNavigationProjector }                  from "./navigation/bubble-state/bubblestateNavigationProjector.js";
-import { TreeNavigationProjector }                         from "./navigation/basic-tree/basicTreeNavigationProjector.js";
-import { BreadCrumbProjector }                             from "./navigation/bread-crumbs/breadCrumbProjector.js";
+// import { BreadCrumbProjector }                             from "./navigation/bread-crumbs/breadCrumbProjector.js";
 import { PageController }                                  from "./pages/pageController.js";
 import { ForbiddenPageProjector }                          from "./pages/403/forbiddenPageProjector.js";
 import { PageNotFoundProjector }                           from "./pages/404/pageNotFoundProjector.js";
@@ -67,10 +65,6 @@ const carPageController = PageController("car", [carListController, carSelection
 carPageController.setIcon('./navigation/icons/car.svg');
 CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
 
-const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
-simpleWorkWeekPageController.setIcon('./navigation/icons/calendar.svg');
-SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
-
 const formStructure = [
     {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
     {value: 0,            label: "Number", name: "number", type: NUMBER   },
@@ -84,6 +78,8 @@ const simpleFormPageController = PageController("simpleForm", [simpleFormControl
 simpleFormPageController.setIcon('./navigation/icons/simpleform.svg');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
+// add simpleWorkweek page
+
 const navigationController = NavigationController();
 navigationController.setWebsiteName('Kolibri');
 navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
@@ -91,11 +87,13 @@ navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
 const pinToNavElement = document.getElementById('nav');
 BubbleStateNavigationProjector(navigationController, pinToNavElement);
 const pinToDashboardNavElement = document.getElementById('dashboard-nav');
-NavigationProjector(navigationController, pinToDashboardNavElement);
-// const pinToTreeNavElement = document.getElementById('tree-nav');
-// TreeNavigationProjector(navigationController, pinToTreeNavElement);
+
+// add dashboard projector
+
 const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
-BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
+
+// add breadcrumbs projector
+
 
 navigationController.addErrorPageController('E403', errorForbiddenController);
 navigationController.addErrorPageController('E404', errorNotFoundController);
@@ -106,13 +104,15 @@ navigationController.addPageController(welcomePageController);
 navigationController.addPageController(personPageController);
 navigationController.addPageController(carPageController);
 navigationController.addPageController(simpleFormPageController);
-navigationController.addPageController(simpleWorkWeekPageController);
+
+// add simpleWorkweek to nav
 
 // Has to happen after adding to the navigation controller
 welcomePageController.setParent(homePageController);
 personPageController.setParent(masterDetailViewsPageController);
 carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
-simpleWorkWeekPageController.setParent(formsPageController);
+
+// add simpleWorkweek to hierarchy
 
 navigationController.setHomePage(welcomePageController.getHash());
