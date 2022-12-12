@@ -4,31 +4,35 @@ import { NavigationModel } from "./navigationModel.js";
 export { NavigationController }
 
 /**
- * Controller that coordinates communication between model and projector
- *
+ * NavigationControllerType is a Controller that coordinates communication between Model and Projector.
+ * The controller handles the routing triggered by the registered anchor elements.
+ * The controller passes the website logo path, the homepage, the websites name and the page controllers to the {@link NavigationModel}.
  * @typedef NavigationControllerType
- * @property { (pageController: PageControllerType) => Boolean } addPageController
- * @property { (errorKey: String, pageController: PageControllerType) => Boolean } addErrorPageController
- * @property { (pageHash: String) => PageControllerType } getPageController
- * @property { (pageHash: String) => void } deletePageController
- * @property { (newHomepage: String) => void } setHomePage
- * @property { () => String} getHomePage
- * @property { (name: String) => void } setWebsiteName
- * @property { (logoSrcPath: String) => void } setWebsiteLogo
- * @property { (callback: observableListCallback) => Boolean } onNavigationHashAdd
- * @property { (callback: observableListCallback) => Boolean } onNavigationHashDel
- * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onLocationChanged
- * @property { (callback: onValueChangeCallback<String>) => void } onWebsiteNameChanged
- * @property { (callback: onValueChangeCallback<String>) => void } onWebsiteLogoChanged
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged
- * @property { (anchor: HTMLAnchorElement) => void } registerAnchorClickListener
+ * @property { (pageController: PageControllerType) => Boolean } addPageController - a function that adds a page controller to the navigation controller and adds the page hash to the {@link NavigationModel}.
+ * @property { (errorKey: String, pageController: PageControllerType) => Boolean } addErrorPageController - a function that adds an error page controller and adds the error key as a hash to the {@link NavigationModel}. this type of page controller is used to customize http error handling.
+ * @property { (pageHash: String) => PageControllerType } getPageController - a function that returns the page controller of a specific hash.
+ * @property { (pageHash: String) => void } deletePageController - a function that deletes the page controller of a specific hash.
+ * @property { (newHomepage: String) => void } setHomePage - a function that sets the homepage in the {@link NavigationModel}. the homepage is the fallback page which gets opened when no hash is provided in the request url.
+ * @property { () => String} getHomePage - a function that returns the hash of the homepage.
+ * @property { (name: String) => void } setWebsiteName - a function that sets the name for the website in the {@link NavigationModel}
+ * @property { (logoSrcPath: String) => void } setWebsiteLogo - a function that sets the path for the logo that can be displayed in the navigation in the {@link NavigationModel}
+ * @property { (callback: observableListCallback) => Boolean } onNavigationHashAdd - a function that registers an {@link observableListCallback} that will be called whenever a page hash is added.
+ * @property { (callback: observableListCallback) => Boolean } onNavigationHashDel - a function that registers an {@link observableListCallback} that will be called whenever a page hash is deleted.
+ * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onLocationChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the current location is changed.
+ * @property { (callback: onValueChangeCallback<String>)  => void } onWebsiteNameChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page name is changed.
+ * @property { (callback: onValueChangeCallback<String>)  => void } onWebsiteLogoChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page logo is changed.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever a pages visibility is changed.
+ * @property { (anchor: HTMLAnchorElement) => void } registerAnchorClickListener - a function that registers a click listener on an anchor. this binding triggers a location change trough navigate based on the hash the anchor has.
  */
 
 /**
- * @constructor
+ * Constructor for a NavigationControllerType
  * @return  { NavigationControllerType }
+ * @constructor
  * @example
  * const navigationController = NavigationController();
+ * navigationController.setWebsiteName('Kolibri');
+ * navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
  */
 const NavigationController = () => {
     const navigationModel  = NavigationModel();
