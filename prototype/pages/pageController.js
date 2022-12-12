@@ -13,32 +13,35 @@ import { PageModel } from "./pageModel.js";
 
 export { PageController }
 /**
- * PageController is a controller for pages.
+ * PageControllerType is a controller for PageModelTypes.
+ * It coordinates the state of the PageModelType and communicates changes to the PageProjectorTypes that are bound to the PageModelType and external observers.
+ * The PageControllerType is responsible for the lifecycle handling of a PageModelType.
+ *
  * @template T
  * @typedef PageControllerType
- * @property { () => void } activate
- * @property { () => void } passivate
- * @property { () => [T] } getPageContentControllers
- * @property { (newValue: String) => void } setValue
- * @property { () => String } getValue
- * @property { () => String } getHash
- * @property { (iconPathOrName: String) => void } setIcon
- * @property { (visitedState: Boolean) => void } setVisited
- * @property { (isHomepage: Boolean) => void } setIsHomepage
- * @property { (isVisible: Boolean) => void } setIsVisible
- * @property { () => Boolean } getIsVisible
- * @property { (newParent: ?PageControllerType) => void } setParent - the newParent you want to set for the page, if null is set, the parent is root
- * @property { () => ?PageControllerType } getParent
- * @property { (isNavigational: Boolean) => void } setIsNavigational
- * @property { () => Boolean } getIsNavigational
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged
- * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged
- * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsHomepageChanged
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsNavigationalChanged
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsVisibleChanged
- * @property { (callback: onValueChangeCallback<?PageControllerType>) => void } onParentChanged
+ * @property { () => void } activate - a lifecycle function that allows a page to do initialization before displaying. this function will be called by a NavigationController on activation of this page.
+ * @property { () => void } passivate - a lifecycle function that allows page to clean up before removing it from displaying. this function will be called by a NavigationController on passivation of this page.
+ * @property { () => ?[T] } getPageContentControllers - a getter function that returns the controllers that are responsible for the content of this page or null.
+ * @property { (newValue: String) => void } setValue - a setter function that sets the newValue of the page.
+ * @property { () => String } getValue - a getter function that returns the value of the page.
+ * @property { () => String } getHash - a getter function that returns the hash of the page.
+ * @property { (iconPathOrName: String) => void } setIcon - a setter function that sets the newValue of the page.
+ * @property { (visitedState: Boolean) => void } setVisited - a setter function that sets the visitedState of the page.
+ * @property { (isHomepage: Boolean) => void } setIsHomepage - a setter function that sets the isHomepage state of the page.
+ * @property { (isVisible: Boolean) => void } setIsVisible - a setter function that sets the isVisible state of the page.
+ * @property { () => Boolean } getIsVisible - a getter function that returns the isVisible state of the page.
+ * @property { (newParent: ?PageControllerType) => void } setParent - a setter function that sets the newParent that is given, if null is set, the parent is root
+ * @property { () => ?PageControllerType } getParent - a getter function that returns the parent of the page or null.
+ * @property { (isNavigational: Boolean) => void } setIsNavigational - a setter function
+ * @property { () => Boolean } getIsNavigational - a getter function that returns the isNavigational state of the page.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the active state changes.
+ * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the icon changes.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the visited state changes.
+ * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the value changes.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsHomepageChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isHomepage state changes.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsNavigationalChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isNavigational state changes.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsVisibleChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isVisibile state changes.
+ * @property { (callback: onValueChangeCallback<?PageControllerType>) => void } onParentChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the parent changes.
  */
 
 /**
@@ -46,12 +49,13 @@ export { PageController }
  *
  * @template T
  * @constructor
- * @param { !String } pageName
- * @param { [T] } contentControllers
+ * @param { !String } pageName - a name for page. the display name can be changed later, however the initial pageName must be unique as it will be set as the unchangeable hash that identifies the page. Mandatory
+ * @param { [T] } contentControllers - the controllers that produce the dynamic content of this page.
  * @returns  PageControllerType
  * @example
- * const homePageController = PageController("home", null);
- * homePageController.setIcon('house');
+ * const homePageController = PageController('home', null);
+ * homePageController.setIcon('./navigation/icons/house.svg');
+ * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
 const PageController = (pageName, contentControllers) => {
     const pageModel = PageModel(pageName);
@@ -104,6 +108,5 @@ const PageController = (pageName, contentControllers) => {
         onIsNavigationalChanged: pageModel.getPageObs(NAVIGATIONAL).onChange,
         onIsVisibleChanged:      pageModel.getPageObs(VISIBLE).onChange,
         onParentChanged:         pageModel.getPageObs(PARENT).onChange,
-        // more to come...
     }
 };
