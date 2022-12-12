@@ -12,11 +12,14 @@
     box-shadow: 2px 2px 4px #dbd7db;
 }
 
-.bread-crumbs a:hover {
-    background-color: #dda9fe;
-    box-shadow: 4px 4px 6px #cecbce;
-}
-
 .bread-crumbs a:visited {
     color: black;
 }
+
+.bread-crumbs a:hover {
+    background-color: #EBECFE;
+    color: var(--kb-color-hsl-pink-500);
+    box-shadow: 4px 4px 6px #cecbce;
+}
+
+

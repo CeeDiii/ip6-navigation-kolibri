@@ -67,11 +67,11 @@
 }
 
 .dashboard-refined-nav .overview .content .row img.active {
-    filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%);
+    filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%); /* convert svg color to --kb-color-hsl-primary-accent */
 }
 
 .dashboard-refined-nav .overview .content .row img:hover {
-    filter: invert(51%) sepia(76%) saturate(6321%) hue-rotate(306deg) brightness(100%) contrast(105%);
+    filter: invert(51%) sepia(76%) saturate(6321%) hue-rotate(306deg) brightness(100%) contrast(105%); /* convert svg color to --kb-color-hsl-pink-500 */
 }
 
 .dashboard-refined-nav.open .overview .content .row img {

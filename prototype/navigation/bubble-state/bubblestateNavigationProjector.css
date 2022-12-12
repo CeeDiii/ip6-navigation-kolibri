@@ -75,7 +75,7 @@
     position: absolute;
     width: 70px;
     height:70px;
-    background: #dda9fe;
+    background-color: #EBECFE;
     top: -50%;
     border-radius: 50%;
     border: 6px solid var(--background);
@@ -107,8 +107,13 @@
 }
 
 .bubble-state-nav .list .visited img.icon {
-    filter: invert(5%) sepia(78%) saturate(99999%) hue-rotate(280deg) brightness(97%) contrast(101%);
+    filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%); /* convert svg color to --kb-color-hsl-primary-accent */
 }
+
+.bubble-state-nav .list a:hover {
+    filter: invert(51%) sepia(76%) saturate(6321%) hue-rotate(306deg) brightness(100%) contrast(105%); /* convert svg color to --kb-color-hsl-pink-500 */
+}
+
 
 .invisiblePage .bubble-state-nav .indicator {
     display: none;
