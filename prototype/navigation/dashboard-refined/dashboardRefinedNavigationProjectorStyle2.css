@@ -138,10 +138,6 @@
 .dashboard-refined-nav .detail .content .row {
     margin-bottom:    calc(1/20 * var(--base-unit));
     padding-left:     calc(1/2 * var(--base-unit));
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0 1em;
 }
 
 .dashboard-refined-nav .detail .content .node {
@@ -175,6 +171,10 @@
 
 .dashboard-refined-nav .detail .content .row.root {
     margin-bottom: calc(1/5 * var(--base-unit));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 1em;
 }
 
 .dashboard-refined-nav .detail .content .row.root span {
