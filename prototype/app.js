@@ -101,11 +101,12 @@ const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
 BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
 const debugController = PageController('debug', null);
+debugController.setVisible(false);
 DebugPageProjector(debugController, pinToContentElement, null);
 
 navigationController.addErrorPageController('E403', errorForbiddenController);
 navigationController.addErrorPageController('E404', errorNotFoundController);
-navigationController.addErrorPageController('debug', debugController);
+navigationController.addPageController(debugController);
 navigationController.addPageController(homePageController);
 navigationController.addPageController(masterDetailViewsPageController);
 navigationController.addPageController(formsPageController);
