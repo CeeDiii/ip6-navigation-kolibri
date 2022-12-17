@@ -87,9 +87,11 @@ const NavigationProjector = (controller, pinToElement) => {
             positionWrapper.replaceChild(navigationDiv, positionWrapper.firstChild);
         }
 
+        const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
+
         const toggle = dom(`
             <div id="toggle">
-                <img src="../prototype/navigation/icons/right-arrow.svg" alt="right-arrow">
+                <img src="${arrowSVGPathRelativeIndex}" alt="right-arrow">
             </div>
         `);
 
@@ -195,9 +197,7 @@ const NavigationProjector = (controller, pinToElement) => {
             setPageTitle(hash, newActive);
         });
 
-        controller.getPageController(hash).onIconChanged(newIcon => {
-            setIconSource(hash, newIcon);
-        });
+        controller.getPageController(hash).onIconChanged(newIcon => setIconSource(hash, newIcon));
         // END
     });
 
@@ -232,30 +232,40 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const setParentCSSClass = (hash, newParent, oldParent) => {
         // Add class for styling to newParent if not null and remove it from oldParent if not null
-        let newParentPage = null;
-        let oldParentPage = null;
         let oldParentHasNoChildren = true;
-        if(null !== newParent) {
-            const pageNameNewParent = newParent.getValue();
-            newParentPage = findElementById(tree, pageNameNewParent + '-li');
-        }
-        if(null !== oldParent) {
-            const pageNameOldParent = oldParent.getValue();
-            oldParentPage = findElementById(tree, pageNameOldParent + '-li');
-        }
-        if(null !== oldParentPage) {
-            for (const child of oldParentPage.children) {
+
+        const newParentPageList = findPageListTagInTree(newParent);
+        const oldParentPageList = findPageListTagInTree(oldParent);
+
+        if(null !== oldParentPageList) {
+            for (const child of oldParentPageList.children) {
                 if (child.tagName === 'ol') {
                     oldParentHasNoChildren = false;
                 }
             }
             if (oldParentHasNoChildren) {
-                oldParentPage.classList.remove('parent');
+                oldParentPageList.classList.remove('parent');
             }
         }
-        if(null !== newParentPage && !newParentPage.classList.contains('parent')) {
-            newParentPage.classList.add('parent');
+        if(null !== newParentPageList && !newParentPageList.classList.contains('parent')) {
+            newParentPageList.classList.add('parent');
         }
+    };
+
+    /**
+     * A utility function that finds the page list tag in a DOMTree
+     *
+     * @function
+     * @param { ?PageControllerType } controller
+     * @return { ?HTMLElement }
+     */
+    const findPageListTagInTree = controller => {
+        let parentPage = null;
+        if(null !== controller) {
+            const pageNameNewParent = controller.getValue();
+            parentPage = findElementById(tree, pageNameNewParent + '-li');
+        }
+        return parentPage;
     };
 
     /**

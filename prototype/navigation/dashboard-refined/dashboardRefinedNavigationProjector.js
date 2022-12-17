@@ -38,10 +38,12 @@ const NavigationProjector = (controller, pinToElement) => {
     const overviewContentWrapper = document.createElement('div');
     overviewContentWrapper.classList.add('content');
 
+    const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
+
     // create overview footer
     const overviewToggle = dom(`
             <div class="toggle" onclick="document.getElementById('dashboard-refined-nav').classList.toggle('open')">
-                <img src="../prototype/navigation/icons/right-arrow-gradient.svg" alt="arrow">
+                <img src="${arrowSVGPathRelativeIndex}" alt="arrow">
             </div>
         `);
 
@@ -180,9 +182,8 @@ const NavigationProjector = (controller, pinToElement) => {
                 const rootNodeInDetailWrapper = findElementById(detailWrapper, rootName + '-node');
                 if(null !== rootNodeInDetailWrapper && 1 < rootNodeInDetailWrapper.children.length) {
                     const firstNavigationalChild = rootNodeInDetailWrapper.children.item(1);
-                    const firstNavigationalChildHash = firstNavigationalChild.getElementsByTagName('a')[0].hash;
 
-                    rootNode.firstElementChild.hash = firstNavigationalChildHash;
+                    rootNode.firstElementChild.hash = firstNavigationalChild.getElementsByTagName('a')[0].hash;
                 }
             }
         }
@@ -248,9 +249,7 @@ const NavigationProjector = (controller, pinToElement) => {
         }
     };
 
-    observableNavigationAnchors.onAdd(anchor => {
-        controller.registerAnchorClickListener(anchor);
-    });
+    observableNavigationAnchors.onAdd(anchor => controller.registerAnchorClickListener(anchor));
 
     controller.onWebsiteNameChanged(newWebsiteName => {
         if (null !== newWebsiteName) {
@@ -273,19 +272,16 @@ const NavigationProjector = (controller, pinToElement) => {
         // CREATE BINDINGS
         controller.getPageController(hash).onParentChanged((newParent, oldParent) => {
             addNodeToTree(hash, newParent, oldParent);
-            //setParentCSSClass(hash, newParent, oldParent);
             projectNavigation();
         });
-        
+
         controller.getPageController(hash).onActiveChanged((newActive, oldActive) => {
             setActiveCSSClass(hash, newActive, oldActive);
-            setParentActiveCSSClass(hash, newActive, oldActive);
+            setParentActiveCSSClass(hash, newActive);
             setPageTitle(hash, newActive);
         });
 
-        controller.getPageController(hash).onIconChanged(newIcon => {
-            setIconSource(hash, newIcon);
-        });
+        controller.getPageController(hash).onIconChanged(newIcon => setIconSource(hash, newIcon));
         // END
     });
 
@@ -342,34 +338,55 @@ const NavigationProjector = (controller, pinToElement) => {
      * @function
      * @param { !String } hash
      * @param { !Boolean } newActive
-     * @param { !Boolean } oldActive
      */
-    const setParentActiveCSSClass = (hash, newActive, oldActive) => {
-        const pageController = controller.getPageController(hash);
-        let parentNode = pageController.getParent();
+    const setParentActiveCSSClass = (hash, newActive) => {
+        const parentNode = getRootParentNode(hash);
         if (null !== parentNode) {
-            while (null !== parentNode.getParent()) {
-                parentNode = parentNode.getParent();
-            }
             const parentName = parentNode.getValue();
             const detailParent = findElementById(detailWrapper, parentName + '-icon');
             const overviewParent = findElementById(overviewContentWrapper, parentName + '-icon-overview');
             if (null !== detailParent) {
-                if (newActive) {
-                    detailParent.classList.add('active');
-                } else if (newActive !== oldActive) {
-                    detailParent.classList.remove('active');
-                }
+                toggleCSSClass(detailParent, 'active', newActive);
             }
             if (null !== overviewParent) {
-                if (newActive) {
-                    overviewParent.classList.add('active');
-                } else if (newActive !== oldActive) {
-                    overviewParent.classList.remove('active');
-                }
+                toggleCSSClass(overviewParent, 'active', newActive);
             }
         }
     };
+
+    /**
+     * A utility function the returns the root parent node for a given hash.
+     *
+     * @function
+     * @param { String } hash
+     * @return { ?PageControllerType }
+     */
+    const getRootParentNode = hash => {
+        const pageController = controller.getPageController(hash);
+        let parentNode = pageController.getParent();
+        while (null !== parentNode && null !== parentNode.getParent()) {
+            parentNode = parentNode.getParent();
+        }
+        return parentNode;
+    };
+
+    /**
+     * A utility function that adds or removes a CSS class to an element based on a given condition.
+     *
+     * @function
+     * @param { HTMLElement } element
+     * @param { String } cssClass
+     * @param { Boolean } condition
+     * @return { void }
+     */
+    const toggleCSSClass = (element, cssClass, condition) => {
+        if (condition) {
+            element.classList.add(cssClass);
+        } else {
+            element.classList.remove(cssClass);
+        }
+    };
+
 
     /**
      * A utility function that sets the HTML title attribute to the value of the page identified by hash.
