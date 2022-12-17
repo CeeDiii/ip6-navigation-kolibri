@@ -79,8 +79,8 @@ const NavigationController = () => {
     const getRoutingLocation = hash => {
         /** @type { PageControllerType } */ let newLocation = pageControllers[hash];
 
-        if (hash.includes('$')) {
-            const [configurablePageHash, configPath] = hash.split('$');
+        if (hash.includes('@')) {
+            const [configurablePageHash, configPath] = hash.split('@');
             if (configPath === 'debug') {
                 newLocation = pageControllers['#debug'];
                 const debuggableController = pageControllers[configurablePageHash];
