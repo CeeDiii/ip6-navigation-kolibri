@@ -8,10 +8,10 @@ import { id }         from "./stdlib.js";
 export { Attribute, QualifiedAttribute,
          presentationModelFromAttributeNames,
          valueOf, obsValueOf, readQualifierValue,
-         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, IS_HOMEPAGE, PARENT, NAVIGATIONAL }
+         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, HOMEPAGE, IS_HOMEPAGE, PARENT, NAVIGATIONAL, FAVICON }
 
 /**
- * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'is_homepage'|'parent'|'navigational'} ObservableTypeString
+ * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'homepage'|'is_homepage'|'parent'|'navigational'|'favicon'} ObservableTypeString
  * Feel free to extend this type with new unique type strings as needed for your application.
  */
 
@@ -27,9 +27,11 @@ export { Attribute, QualifiedAttribute,
 /** @type ObservableTypeString */ const VISITED      = "visited";
 /** @type ObservableTypeString */ const LOGO         = "logo";
 /** @type ObservableTypeString */ const VISIBLE      = "visible";
+/** @type ObservableTypeString */ const HOMEPAGE      = "homepage";
 /** @type ObservableTypeString */ const IS_HOMEPAGE  = "is_homepage";
 /** @type ObservableTypeString */ const PARENT       = "parent";
 /** @type ObservableTypeString */ const NAVIGATIONAL = "navigational";
+/** @type ObservableTypeString */ const FAVICON      = "favicon";
 
 /**
  * Convenience function to read the current state of the attribute's VALUE observable for the given attribute.

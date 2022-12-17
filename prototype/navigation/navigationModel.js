@@ -1,4 +1,4 @@
-import { Attribute, valueOf, NAME, LOGO, VISIBLE } from "../kolibri/presentationModel.js";
+import { Attribute, valueOf, NAME, LOGO, VISIBLE, HOMEPAGE, FAVICON } from "../kolibri/presentationModel.js";
 import { ObservableList } from "../kolibri/observable.js";
 
 export { NavigationModel }
@@ -9,15 +9,18 @@ export { NavigationModel }
  * @typedef NavigationModelType
  * @property { (pageHash: String) => void } addNavigationHash - a function that adds the hash of a page, calling all registered {@link observableListCallback}s.
  * @property { (pageHash: String) => void } deleteNavigationHash - a function that deletes the hash of a page, calling all registered {@link observableListCallback}s.
- * @property { () => String } getHomepage - a function that returns the hash of the homepage.
- * @property { (newHomepage: String) => void } setHomepage - a function that sets the homepage. the homepage is the fallback page which gets opened when no hash is provided in the request url.
  * @property { (callback: observableListCallback) => Boolean } onAdd - a function that registers an {@link observableListCallback} that will be called whenever a page hash is added.
  * @property { (callback: observableListCallback) => Boolean } onDel - a function that registers an {@link observableListCallback} that will be called whenever a page hash is deleted.
- * @property { (name: String) => void } setWebsiteName - a function that sets the name for the website, calling all registered {@link onValueChangeCallback}s.
- * @property { (logoSrcPath: String) => void } setWebsiteLogo - a function that sets the path for the page logo that can be displayed in the navigation, calling all registered {@link onValueChangeCallback}s.
+ * @property { (newHomepage: String) => void }      setHomepage    - a function that sets the homepage. the homepage is the fallback page which gets opened when no hash is provided in the request url. calling all registered {@link onValueChangeCallback}s.
+ * @property { () => String }                       getHomepage    - a function that returns the hash of the homepage.
+ * @property { (name: String) => void }             setWebsiteName - a function that sets the name for the website, calling all registered {@link onValueChangeCallback}s.
+ * @property { (logoSrcPath: String) => void }      setWebsiteLogo - a function that sets the path for the page logo that can be displayed in the navigation, calling all registered {@link onValueChangeCallback}s.
+ * @property { (favIconSrcPath: String) => void }   setFavIcon     - a function that sets the favicon, calling all registered {@link onValueChangeCallback}s.
  * @property { (callback: onValueChangeCallback<String>)  => void } onWebsiteNameChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page name is changed.
  * @property { (callback: onValueChangeCallback<String>)  => void } onWebsiteLogoChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page logo is changed.
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever a pages visibility is changed.
+ * @property { (callback: onValueChangeCallback<String>)  => void } onFavIconChanged     - a function that registers an {@link onValueChangeCallback} that will be called whenever the fav icon is changed.
+ * @property { (callback: onValueChangeCallback<String>)  => void } onHomepageChanged    - a function that registers an {@link onValueChangeCallback} that will be called whenever the homepage is changed.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged     - a function that registers an {@link onValueChangeCallback} that will be called whenever a pages visibility is changed.
  */
 
 /**
@@ -33,20 +36,20 @@ export { NavigationModel }
 const NavigationModel = () => {
     const navigationHashes = Attribute(ObservableList([]));
 
-    // homepage stores the hash of the homepage
-    let homepage = '#';
-
     return {
-        addNavigationHash: pageHash => valueOf(navigationHashes).add(pageHash),
+        addNavigationHash:    pageHash => valueOf(navigationHashes).add(pageHash),
         deleteNavigationHash: pageHash => valueOf(navigationHashes).del(pageHash),
-        getHomepage: ()          => homepage,
-        setHomepage: newHomepage => homepage = newHomepage,
-        onAdd: valueOf(navigationHashes).onAdd,
-        onDel: valueOf(navigationHashes).onDel,
-        setWebsiteName: name        =>  navigationHashes.getObs(NAME).setValue(name),
-        setWebsiteLogo: logoSrcPath =>  navigationHashes.getObs(LOGO).setValue(logoSrcPath),
-        onWebsiteNameChanged: navigationHashes.getObs(NAME).onChange,
+        onAdd:                valueOf(navigationHashes).onAdd,
+        onDel:                valueOf(navigationHashes).onDel,
+        setWebsiteName:       navigationHashes.getObs(NAME).setValue,
+        setWebsiteLogo:       navigationHashes.getObs(LOGO).setValue,
+        setFavIcon:           navigationHashes.getObs(FAVICON).setValue,
+        setHomepage:          navigationHashes.getObs(HOMEPAGE).setValue,
+        getHomepage:          navigationHashes.getObs(HOMEPAGE).getValue,
         onWebsiteLogoChanged: navigationHashes.getObs(LOGO).onChange,
+        onWebsiteNameChanged: navigationHashes.getObs(NAME).onChange,
+        onFavIconChanged:     navigationHashes.getObs(FAVICON).onChange,
+        onHomepageChanged:    navigationHashes.getObs(HOMEPAGE).onChange,
         onVisibleChanged:     navigationHashes.getObs(VISIBLE).onChange,
     }
 };

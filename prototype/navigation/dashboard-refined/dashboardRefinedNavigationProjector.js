@@ -267,6 +267,13 @@ const NavigationProjector = (controller, pinToElement) => {
         }
     });
 
+    controller.onFavIconChanged(newFavIconSrc => {
+        if (null !== newFavIconSrc) {
+            const favIcon = document.getElementById('favicon');
+            favIcon.href = newFavIconSrc;
+        }
+    });
+
     controller.onNavigationHashAdd(hash => {
 
         // CREATE BINDINGS

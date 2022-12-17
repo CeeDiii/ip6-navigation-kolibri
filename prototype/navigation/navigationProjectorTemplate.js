@@ -67,6 +67,18 @@ const NavigationProjector = (controller, pinToElement) => {
         navigationAnchors.push(anchor);
     });
 
+    controller.onWebsiteNameChanged(newWebsiteName => {
+        // add website name anywhere to website
+    });
+
+    controller.onWebsiteLogoChanged(newWebsiteLogoSrc => {
+        // add logo anywhere to website
+    });
+
+    controller.onFavIconChanged(newFavIconSrc => {
+        // add favicon to website
+    });
+
     controller.onNavigationHashAdd(hash => {
         const pageName = controller.getPageController(hash).getValue();
         const newNavPoint = initializeNavigationPoint(hash, pageName);
