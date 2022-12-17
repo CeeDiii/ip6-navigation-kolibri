@@ -79,11 +79,20 @@ const NavigationController = () => {
     const getRoutingLocation = hash => {
         /** @type { PageControllerType } */ let newLocation = pageControllers[hash];
 
-        // if newLocation is undefined, navigate to an error page
-        if(newLocation === undefined) {
+        if (hash.includes('$')) {
+            const [configurablePageHash, configPath] = hash.split('$');
+            if (configPath === 'debug') {
+                console.log(configurablePageHash);
+                newLocation = pageControllers['#debug'];
+                const debuggableController = pageControllers[configurablePageHash];
+                if (undefined !== debuggableController && null !== debuggableController) {
+                    newLocation.setParent(debuggableController);
+                }
+            }
+        } else if(newLocation === undefined) { // if newLocation is undefined, navigate to an error page
             newLocation = pageControllers['#E404'];
-        // if the newLocation exists but is not navigational we return a 403 forbidden error
-        } else if (!newLocation.isNavigational()) {
+
+        } else if (!newLocation.isNavigational()) { // if the newLocation exists but is not navigational we return a 403 forbidden error
             newLocation = pageControllers['#E403'];
         }
         return newLocation

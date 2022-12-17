@@ -23,6 +23,7 @@ import { SimpleWorkWeekPageProjector }                     from "./pages/workwee
 import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME }       from "./kolibri/util/dom.js";
 import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
+import {DebugPageProjector} from "./pages/debug/debugPageProjector.js";
 
 const pinToContentElement = document.getElementById("content");
 
@@ -88,6 +89,7 @@ const navigationController = NavigationController();
 navigationController.setWebsiteName('Kolibri');
 navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
 navigationController.setFavIcon('./img/logo/logo-new-128.svg');
+navigationController.setHomePage(welcomePageController.getHash());
 
 const pinToNavElement = document.getElementById('nav');
 BubbleStateNavigationProjector(navigationController, pinToNavElement);
@@ -98,8 +100,12 @@ NavigationProjector(navigationController, pinToDashboardNavElement);
 const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
 BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
+const debugController = PageController('debug', null);
+DebugPageProjector(debugController, pinToContentElement, null);
+
 navigationController.addErrorPageController('E403', errorForbiddenController);
 navigationController.addErrorPageController('E404', errorNotFoundController);
+navigationController.addErrorPageController('debug', debugController);
 navigationController.addPageController(homePageController);
 navigationController.addPageController(masterDetailViewsPageController);
 navigationController.addPageController(formsPageController);
@@ -116,4 +122,3 @@ carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
 
-navigationController.setHomePage(welcomePageController.getHash());
