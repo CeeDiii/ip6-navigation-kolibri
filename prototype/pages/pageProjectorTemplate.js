@@ -67,7 +67,7 @@ const PageProjector = (pageController, pinToElement, contentFilePath) => {
      * @param filePath - the filePath that belongs to the static page content
      * @return { Promise<String> }
      */
-    const fetchPageContent = async (filePath) => {
+    const fetchPageContent = async filePath => {
         try {
             const response = await fetch(filePath, {
                     headers: {

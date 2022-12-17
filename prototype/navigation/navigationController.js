@@ -108,11 +108,11 @@ const NavigationController = () => {
      * @param { PageControllerType } pageController
      * @return { void }
      **/
-    const bindPage = pageController => {
+    const bindPage = pageController =>
         pageController.onIsHomepageChanged(isHomepage => {
             if(isHomepage) navigationModel.setHomepage(pageController.getHash());
         });
-    };
+
 
     return {
         addPageController: pageController => {

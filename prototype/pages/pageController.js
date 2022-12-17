@@ -40,7 +40,7 @@ export { PageController }
  * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the value changes.
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsHomepageChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isHomepage state changes.
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onNavigationalChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isNavigational state changes.
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isVisibile state changes.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isVisible state changes.
  * @property { (callback: onValueChangeCallback<?PageControllerType>) => void } onParentChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the parent changes.
  */
 

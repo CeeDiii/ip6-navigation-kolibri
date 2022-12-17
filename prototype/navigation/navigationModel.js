@@ -37,12 +37,8 @@ const NavigationModel = () => {
     let homepage = '#';
 
     return {
-        addNavigationHash: pageHash => {
-            valueOf(navigationHashes).add(pageHash);
-        },
-        deleteNavigationHash: pageHash => {
-            valueOf(navigationHashes).del(pageHash);
-        },
+        addNavigationHash: pageHash => valueOf(navigationHashes).add(pageHash),
+        deleteNavigationHash: pageHash => valueOf(navigationHashes).del(pageHash),
         getHomepage: ()          => homepage,
         setHomepage: newHomepage => homepage = newHomepage,
         onAdd: valueOf(navigationHashes).onAdd,
