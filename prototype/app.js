@@ -28,27 +28,27 @@ const pinToContentElement = document.getElementById("content");
 
 // Assembling 403 error page as example. Can be modified
 const errorForbiddenController = PageController("forbidden", null);
-errorForbiddenController.setIsVisible(false);
+errorForbiddenController.setVisible(false);
 ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
 
 // Assembling 404 error page as example. Can be modified
 const errorNotFoundController = PageController("pagenotfound", null);
-errorNotFoundController.setIsVisible(false);
+errorNotFoundController.setVisible(false);
 PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
 
 const homePageController = PageController("home", null);
 homePageController.setIcon('./navigation/icons/house.svg');
-homePageController.setIsNavigational(false);
+homePageController.setNavigational(false);
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
 masterDetailViewsPageController.setIcon('./navigation/icons/masterdetail.svg');
-masterDetailViewsPageController.setIsNavigational(false);
+masterDetailViewsPageController.setNavigational(false);
 MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
 
 const formsPageController = PageController("forms", null);
 formsPageController.setIcon('./navigation/icons/forms.svg');
-formsPageController.setIsNavigational(false);
+formsPageController.setNavigational(false);
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
 const welcomePageController = PageController("welcome", null);

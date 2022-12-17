@@ -84,8 +84,8 @@ const NavigationProjector = (controller, pinToElement) => {
         let i = 1;
         navigationAnchors.forEach(anchor => {
             const pageController = controller.getPageController(anchor.hash);
-            const isNavigational = pageController.getIsNavigational();
-            const isVisible = pageController.getIsVisible();
+            const isNavigational = pageController.isNavigational();
+            const isVisible = pageController.isVisible();
 
             if(isNavigational && isVisible) {
                 const navigationPointName = anchor.hash.substring(1);
@@ -136,9 +136,9 @@ const NavigationProjector = (controller, pinToElement) => {
             setVisitedCSSClass(hash, visited);
         });
 
-        controller.getPageController(hash).onIsNavigationalChanged(() => projectNavigation());
+        controller.getPageController(hash).onNavigationalChanged(() => projectNavigation());
 
-        controller.getPageController(hash).onIsVisibleChanged(() => projectNavigation());
+        controller.getPageController(hash).onVisibleChanged(() => projectNavigation());
 
         controller.getPageController(hash).onIconChanged(newIcon => {
             setIconSource(hash, newIcon);
@@ -228,7 +228,7 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const handleIndicatorVisibility = (hash, active) => {
         const pageController = controller.getPageController(hash);
-        if (active && pageController.getIsVisible() === false) {
+        if (active && pageController.isVisible() === false) {
             positionWrapper.classList.add('invisiblePage');
         } else {
             positionWrapper.classList.remove('invisiblePage');

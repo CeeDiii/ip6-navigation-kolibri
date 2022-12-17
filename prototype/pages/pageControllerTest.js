@@ -42,24 +42,24 @@ navigationSuite.add('getParent', assert => {
     assert.is(homePageController.getParent(), parentHomePageController);
 });
 
-navigationSuite.add('getIsVisible', assert => {
+navigationSuite.add('isVisible', assert => {
     const homePageController = PageController('home', null);
 
-    assert.isTrue(homePageController.getIsVisible());
+    assert.isTrue(homePageController.isVisible());
 
-    homePageController.setIsVisible(false);
+    homePageController.setVisible(false);
 
-    assert.isTrue(!homePageController.getIsVisible());
+    assert.isTrue(!homePageController.isVisible());
 });
 
-navigationSuite.add('getIsNavigational', assert => {
+navigationSuite.add('isNavigational', assert => {
     const homePageController = PageController('home', null);
 
-    assert.isTrue(homePageController.getIsNavigational());
+    assert.isTrue(homePageController.isNavigational());
 
-    homePageController.setIsNavigational(false);
+    homePageController.setNavigational(false);
 
-    assert.isTrue(!homePageController.getIsNavigational());
+    assert.isTrue(!homePageController.isNavigational());
 });
 
 navigationSuite.add('onIconChanged', assert => {
@@ -92,15 +92,15 @@ navigationSuite.add('onActiveChanged', assert => {
 
 navigationSuite.add('onVisitedChanged', assert => {
     const homePageController = PageController('home', null);
-    let isVisited;
+    let visited;
 
-    homePageController.onVisitedChanged(state => isVisited = state);
+    homePageController.onVisitedChanged(state => visited = state);
 
-    assert.isTrue(!isVisited);
+    assert.isTrue(!visited);
 
     homePageController.setVisited(true);
 
-    assert.isTrue(isVisited);
+    assert.isTrue(visited);
 });
 
 navigationSuite.add('onValueChanged', assert => {
@@ -116,28 +116,28 @@ navigationSuite.add('onValueChanged', assert => {
     assert.is(homePageController.getValue(), 'about');
 });
 
-navigationSuite.add('onIsNavigationalChanged', assert => {
+navigationSuite.add('onNavigationalChanged', assert => {
     const homePageController = PageController('home', null);
     let isNavigational;
 
-    homePageController.onIsNavigationalChanged(state => isNavigational = state);
+    homePageController.onNavigationalChanged(state => isNavigational = state);
 
     assert.isTrue(isNavigational);
 
-    homePageController.setIsNavigational(false);
+    homePageController.setNavigational(false);
 
     assert.isTrue(!isNavigational);
 });
 
-navigationSuite.add('onIsVisibleChanged', assert => {
+navigationSuite.add('onVisibleChanged', assert => {
     const homePageController = PageController('home', null);
     let isVisible;
 
-    homePageController.onIsVisibleChanged(state => isVisible = state);
+    homePageController.onVisibleChanged(state => isVisible = state);
 
     assert.isTrue(isVisible);
 
-    homePageController.setIsVisible(false);
+    homePageController.setVisible(false);
 
     assert.isTrue(!isVisible);
 });

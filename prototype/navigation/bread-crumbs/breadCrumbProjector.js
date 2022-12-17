@@ -99,7 +99,7 @@ const BreadCrumbProjector = (controller, pinToElement) => {
         // CREATE BINDINGS
         controller.getPageController(hash).onActiveChanged(active => {
             const pageController = controller.getPageController(hash);
-            if (active && pageController.getIsVisible()) {
+            if (active && pageController.isVisible()) {
                 navigationAnchors.push(anchorMap[hash]);
                 projectNavigation();
             }

@@ -184,7 +184,7 @@ const NavigationProjector = (controller, pinToElement) => {
             projectNavigation();
         });
 
-        controller.getPageController(hash).onIsVisibleChanged(visible => {
+        controller.getPageController(hash).onVisibleChanged(visible => {
             setInvisibleCSSClass(hash, visible);
             projectNavigation();
         });

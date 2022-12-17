@@ -276,12 +276,7 @@ const NavigationProjector = (controller, pinToElement) => {
             //setParentCSSClass(hash, newParent, oldParent);
             projectNavigation();
         });
-
-        controller.getPageController(hash).onIsVisibleChanged(visible => {
-            //setInvisibleCSSClass(hash, visible);
-            projectNavigation();
-        });
-
+        
         controller.getPageController(hash).onActiveChanged((newActive, oldActive) => {
             setActiveCSSClass(hash, newActive, oldActive);
             setParentActiveCSSClass(hash, newActive, oldActive);
@@ -305,7 +300,7 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const addNodeToTree = (hash, newParent, oldParent) => {
         const pageName = controller.getPageController(hash).getValue();
-        const isNavigational = controller.getPageController(hash).getIsNavigational();
+        const isNavigational = controller.getPageController(hash).isNavigational();
         const thisNode = findElementById(detailWrapper, pageName + '-node');
         if (null === thisNode) { // check if this node has not been initialized yet
             const newNavPoint = initializeNavigationPoint(hash, pageName, newParent, isNavigational);
@@ -390,22 +385,6 @@ const NavigationProjector = (controller, pinToElement) => {
             title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
         }
     };
-
-    /**
-     * A utility function that sets the invisible CSS class for the given hash if it is invisible.
-     *
-     * @param { !String } hash
-     * @param { !Boolean } visible
-     */
-    /*const setInvisibleCSSClass = (hash, visible) => {
-        const pageName = controller.getPageController(hash).getValue();
-        const pageLi = findElementById(detail, pageName + '-node');
-        if (null !== pageLi && visible) {
-            pageLi.classList.remove('invisible');
-        } else if (null !== pageLi) {
-            pageLi.classList.add('invisible');
-        }
-    };*/
 
     /**
      * A utility function that sets the icon source for the given hash to newIcon.
