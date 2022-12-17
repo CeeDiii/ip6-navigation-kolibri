@@ -93,8 +93,11 @@ const PageController = (pageName, contentControllers) => {
         getValue:                pageModel.getPageObs(VALUE).getValue,
         getHash:                 pageModel.getPageObs(HASH).getValue,
         setIcon:                 pageModel.getPageObs(ICON).setValue,
+        getIcon:                 pageModel.getPageObs(ICON).getValue,
         setVisited:              pageModel.getPageObs(VISITED).setValue,
+        getVisited:              pageModel.getPageObs(VISITED).getValue,
         setIsHomepage:           pageModel.getPageObs(IS_HOMEPAGE).setValue, // has to be IsHomepage because we need to differentiate between the homepage value and isHomepage bool
+        isHomepage:              pageModel.getPageObs(IS_HOMEPAGE).getValue, // has to be IsHomepage because we need to differentiate between the homepage value and isHomepage bool
         setVisible:              pageModel.getPageObs(VISIBLE).setValue,
         isVisible:               pageModel.getPageObs(VISIBLE).getValue,
         setNavigational:         pageModel.getPageObs(NAVIGATIONAL).setValue,
