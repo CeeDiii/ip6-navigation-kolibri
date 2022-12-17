@@ -36,9 +36,13 @@ const PageProjector = (pageController, pinToElement, contentFilePath) => {
     const initialize = () => {
         const contentPromise = fetchPageContent(contentFilePath);
         contentPromise.then(contentHtml => {
-            // generate content
-            // projectContent(...contentControllers);
-            // ...
+            contentWrapper.innerHTML = contentHtml;
+
+            if (pageWrapper.firstChild === null) {
+                pageWrapper.append(contentWrapper);
+            } else {
+                pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
+            }
         });
     };
 
