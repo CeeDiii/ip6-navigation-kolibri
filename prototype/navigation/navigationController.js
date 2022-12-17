@@ -82,7 +82,6 @@ const NavigationController = () => {
         if (hash.includes('$')) {
             const [configurablePageHash, configPath] = hash.split('$');
             if (configPath === 'debug') {
-                console.log(configurablePageHash);
                 newLocation = pageControllers['#debug'];
                 const debuggableController = pageControllers[configurablePageHash];
                 if (undefined !== debuggableController && null !== debuggableController) {

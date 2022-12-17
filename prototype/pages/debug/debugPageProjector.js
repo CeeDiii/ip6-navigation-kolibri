@@ -27,14 +27,15 @@ const DebugPageProjector = (pageController, pinToElement, contentFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
 
-    const debugTable = dom(`
-            <table id="debug-table">
-                <tr>
-                    <th>Observable Name</th>
-                    <th>Observable Value</th>
-                </tr>
-            </table>
-        `);
+    const debugTable = document.createElement('table');
+    debugTable.id = 'debug-table';
+    const headerRow = document.createElement('tr');
+    const nameHeader = document.createElement('th');
+    nameHeader.innerText = 'Observable Name';
+    const valueHeader = document.createElement('th');
+    valueHeader.innerText = 'Observable Value';
+    debugTable.append(nameHeader, valueHeader);
+    debugTable.append(headerRow);
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.
@@ -43,7 +44,7 @@ const DebugPageProjector = (pageController, pinToElement, contentFilePath) => {
      * @return { void }
      */
     const initialize = () => {
-        contentWrapper.append(...debugTable);
+        contentWrapper.append(debugTable);
     };
 
     /**
@@ -65,8 +66,6 @@ const DebugPageProjector = (pageController, pinToElement, contentFilePath) => {
         }
     };
 
-
-
     pageController.onValueChanged(newValue => {
         // add class for specific page styling
         contentWrapper.classList.add(newValue);
@@ -83,7 +82,12 @@ const DebugPageProjector = (pageController, pinToElement, contentFilePath) => {
             for (const property in parent) {
                 if (property.startsWith('get') || property.startsWith('is')) {
                     const observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
-                    const observableValue = eval(`parent.${property}()`);
+                    let observableValue = eval(`parent.${property}()`);
+                    try {
+                        observableValue = observableValue.getHash();
+                    } catch (error) {
+                        eval(`parent.${property}()`);
+                    }
                     addListItem(observableName, observableValue);
                 }
             }
@@ -92,29 +96,24 @@ const DebugPageProjector = (pageController, pinToElement, contentFilePath) => {
     });
 
     const addListItem = (observableName, observableValue) => {
-        const debugTableElement = debugTable[0];
-        if (undefined !== debugTableElement) {
-            let row = debugTableElement.querySelector('#' + observableName + '-row');
-            console.log(row);
-
-            if (null !== row) {
-                const header = row.querySelector('#' +observableName + '-row-header');
-                const value = row.querySelector('#' +observableName + '-row-value');
-                header.innerHTML = observableName;
-                value.innerHTML = observableValue;
-            } else {
-                row = document.createElement('tr');
-                row.id = observableName+'-row';
-                const header = document.createElement('td');
-                header.id = observableName + '-row-header';
-                header.innerHTML = observableName;
-                const value = document.createElement('td');
-                value.id = observableName + '-row-value';
-                value.innerHTML = observableValue;
-                row.append(header);
-                row.append(value);
-                debugTableElement.append(row);
-            }
+        let row = debugTable.querySelector('#' + observableName + '-row');
+        if (null !== row) {
+            const header = row.querySelector('#' +observableName + '-row-header');
+            const value = row.querySelector('#' +observableName + '-row-value');
+            header.innerHTML = observableName;
+            value.innerHTML = observableValue;
+        } else {
+            row = document.createElement('tr');
+            row.id = observableName+'-row';
+            const header = document.createElement('td');
+            header.id = observableName + '-row-header';
+            header.innerHTML = observableName;
+            const value = document.createElement('td');
+            value.id = observableName + '-row-value';
+            value.innerHTML = observableValue;
+            row.append(header);
+            row.append(value);
+            debugTable.append(row);
         }
     }
 };
