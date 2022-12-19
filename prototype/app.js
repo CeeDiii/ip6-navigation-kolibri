@@ -90,6 +90,7 @@ navigationController.setWebsiteName('Kolibri');
 navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
 navigationController.setFavIcon('./img/logo/logo-new-128.svg');
 navigationController.setHomePage(welcomePageController.getHash());
+navigationController.setDebugMode(true);
 
 const pinToNavElement = document.getElementById('nav');
 BubbleStateNavigationProjector(navigationController, pinToNavElement);

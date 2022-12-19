@@ -1,4 +1,38 @@
-#content .debug {
-    display: flex;
-    justify-content: center;
+#debug .debug {
+    position: absolute;
+    right: 0;
+}
+
+.debug .toggle-switch {
+    width: 50px;
+    height: 24px;
+    border-radius: 18px;
+    background-color: var(--kolibri--light---black--500);
+    padding-top: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    cursor: pointer;
+}
+
+.debug .toggle-switch div {
+    background-color: var(--kolibri--light---black--700);
+    transform: translateX(0px);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    transition: 300ms;
+    box-shadow: 1px 1px 5px 0px var(--kolibri--light---black--300);;
+}
+
+.debug .toggle-switch.active {
+    background-color: var(--kb-hsla-success-light);
+}
+
+.debug .toggle-switch.active div {
+    transform: translateX(26px);
+    transition: 300ms;
+}
+
+.debug .toggle-checkbox {
+    display: none;
 }

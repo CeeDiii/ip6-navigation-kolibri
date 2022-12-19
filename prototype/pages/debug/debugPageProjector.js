@@ -21,8 +21,8 @@ export { DebugPageProjector }
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
 const DebugPageProjector = (pageController, pinToElement) => {
-    const pageWrapper = pinToElement;
-    const contentWrapper = document.createElement("div");
+    const pageWrapper    = pinToElement;
+    const contentWrapper = document.createElement('div');
 
     const debugTable = document.createElement('table');
     debugTable.id = 'debug-table';
@@ -86,7 +86,7 @@ const DebugPageProjector = (pageController, pinToElement) => {
                     } catch (error) {
                         eval(`parent.${property}()`);
                     }
-                    addListItem(observableName, observableValue);
+                    addListItem(observableName, observableValue, parent);
                 } else if (property.startsWith('on') && property.endsWith('Changed')) {
                     const observableName = property.slice(2, property.length-7);
                     eval(`parent.${property}(val => console.log(val))`)
@@ -96,13 +96,23 @@ const DebugPageProjector = (pageController, pinToElement) => {
         }
     });
 
-    const addListItem = (observableName, observableValue) => {
+    const addListItem = (observableName, observableValue, parent) => {
         let row = debugTable.querySelector('#' + observableName + '-row');
         if (null !== row) {
-            const header = row.querySelector('#' +observableName + '-row-header');
-            const value = row.querySelector('#' +observableName + '-row-value');
+            const header     = row.querySelector('#' + observableName + '-row-header');
             header.innerHTML = observableName;
-            value.innerHTML = observableValue;
+
+            if(typeof observableValue === "boolean") {
+                const checkbox   = row.querySelector('#' + observableName + '-checkbox');
+                const toggle     = row.querySelector('#' + observableName + '-toggle');
+                if(observableValue) {
+                    toggle.classList.add('active');
+                }
+                checkbox.checked = observableValue;
+            } else {
+                const input = row.querySelector('#' + observableName + '-input');
+                input.value = observableValue;
+            }
         } else {
             row = document.createElement('tr');
             row.id = observableName+'-row';
@@ -111,7 +121,36 @@ const DebugPageProjector = (pageController, pinToElement) => {
             header.innerHTML = observableName;
             const value = document.createElement('td');
             value.id = observableName + '-row-value';
-            value.innerHTML = observableValue;
+
+            if(typeof observableValue === "boolean") {
+                const toggle = document.createElement('div');
+                toggle.id    = observableName + '-toggle';
+                toggle.classList.add('toggle-switch');
+                toggle.onclick = () => {
+                    row.querySelector('#' + observableName + '-checkbox').click();
+                    toggle.classList.toggle('active');
+                };
+                if(observableValue) {
+                    toggle.classList.add('active');
+                }
+                const toggleHead  = document.createElement('div');
+                const checkbox    = document.createElement('input');
+                checkbox.id       = observableName + '-checkbox';
+                checkbox.classList.add('toggle-checkbox');
+                checkbox.type     = 'checkbox';
+                checkbox.checked  = observableValue;
+                checkbox.onchange = e => eval(`parent.set${observableName}(e.target.checked)`);
+                toggle.append(toggleHead);
+                value.append(toggle, checkbox);
+            } else {
+                const input    = document.createElement('input');
+                input.id       = observableName + '-input';
+                input.type     = 'text';
+                input.value    = observableValue;
+                input.onchange = e => eval(`parent.set${observableName}(e.target.value)`);
+                value.append(input);
+            }
+
             row.append(header);
             row.append(value);
             debugTable.append(row);
