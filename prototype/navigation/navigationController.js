@@ -67,13 +67,13 @@ const NavigationController = () => {
             valueOf(currentLocation).passivate();
         }
 
+        newLocation.activate();
+        currentLocation.getObs(VALUE).setValue(newLocation);
+
         if (navigationModel.isDebugMode()) {
             const debugController = pageControllers['#debug'];
             debugController.setParent(newLocation);
         }
-
-        newLocation.activate();
-        currentLocation.getObs(VALUE).setValue(newLocation);
     };
 
     /**

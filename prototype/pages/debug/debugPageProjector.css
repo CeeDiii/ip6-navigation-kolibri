@@ -58,7 +58,7 @@
     cursor: pointer;
 }
 
-.debug .toggle-switch.active {
+.debug .toggle-switch.selected {
     background-color: var(--kb-hsla-success-light);
 }
 
@@ -78,7 +78,7 @@
 }
 
 
-.debug .toggle-switch.active div {
+.debug .toggle-switch.selected div {
     transform: translateX(26px);
     transition: 300ms;
 }

@@ -25,7 +25,9 @@ export { PageController }
  * @property { () => String } getValue - a getter function that returns the value of the page.
  * @property { () => String } getHash - a getter function that returns the hash of the page.
  * @property { (iconPathOrName: String) => void } setIcon - a setter function that sets the newValue of the page.
- * @property { (visitedState: Boolean) => void } setVisited - a setter function that sets the visitedState of the page.
+ * @property { (isActive: Boolean) => void } setActive - a setter function that sets the active state of the page.
+ * @property { () => Boolean } getActive - a getter function that sets returns the active state of the page.
+ * @property { (isVisited: Boolean) => void } setVisited - a setter function that sets the visitedState of the page.
  * @property { (isVisible: Boolean) => void } setVisible - a setter function that sets the isVisible state of the page.
  * @property { () => Boolean } isVisible - a getter function that returns the isVisible state of the page.
  * @property { (newParent: ?PageControllerType) => void } setParent - a setter function that sets the newParent that is given, if null is set, the parent is root
@@ -91,6 +93,8 @@ const PageController = (pageName, contentControllers) => {
         getHash:                 pageModel.getPageObs(HASH).getValue,
         setIcon:                 pageModel.getPageObs(ICON).setValue,
         getIcon:                 pageModel.getPageObs(ICON).getValue,
+        setActive:               pageModel.getPageObs(ACTIVE).setValue,
+        getActive:               pageModel.getPageObs(ACTIVE).getValue,
         setVisited:              pageModel.getPageObs(VISITED).setValue,
         getVisited:              pageModel.getPageObs(VISITED).getValue,
         setVisible:              pageModel.getPageObs(VISIBLE).setValue,

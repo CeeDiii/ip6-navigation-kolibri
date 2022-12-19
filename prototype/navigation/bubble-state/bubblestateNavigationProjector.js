@@ -134,6 +134,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
         controller.getPageController(hash).onVisitedChanged(visited => {
             setVisitedCSSClass(hash, visited);
+            projectNavigation();
         });
 
         controller.getPageController(hash).onNavigationalChanged(() => projectNavigation());
@@ -197,6 +198,11 @@ const NavigationProjector = (controller, pinToElement) => {
             const anchor = navigationAnchors.find(a => a.hash === hash);
             if (undefined !== anchor) {
                 anchor.classList.add("visited");
+            }
+        } else {
+            const anchor = navigationAnchors.find(a => a.hash === hash);
+            if (undefined !== anchor) {
+                anchor.classList.remove("visited");
             }
         }
     };

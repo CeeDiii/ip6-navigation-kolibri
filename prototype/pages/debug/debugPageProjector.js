@@ -54,13 +54,50 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      * A function that creates the DOM binding and initializes the page on first activation.
      *
      * @function
+     * @param { PageControllerType } parent - the page controller we want to debug
      * @return { void }
      */
-    const projectPage = () => {
+    const projectPage = parent => {
         // initialize content on first call
         if (contentWrapper.firstChild === null) {
             initialize();
         }
+
+        tbody.innerHTML = '';
+        if (null !== parent) {
+            for (const property in parent) {
+                if ((property.startsWith('get') || property.startsWith('is')) && property !== 'getPageContentControllers') {
+                    let observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
+                    let observableValue = eval(`parent.${property}()`);
+
+                    if (typeof eval(observableValue.getHash) === 'function') {
+                        observableName = observableName + '_Controller';
+                        observableValue = observableValue.getHash();
+                    }
+
+                    addListItem(observableName, observableValue, parent);
+                } else if (property.startsWith('on') && property.endsWith('Changed')) {
+                    let observableName = property.slice(2, property.length-7);
+                    let observableValue = null;
+
+                    if (typeof eval(`parent.get${observableName}`) === 'function' ) {
+                        observableValue = eval(`parent.get${observableName}()`)
+                    } else if (typeof eval(`parent.is${observableName}`) === 'function' ) {
+                        observableValue = eval(`parent.is${observableName}()`)
+                    }
+
+                    if (null !== observableValue && typeof eval(observableValue.getHash) === 'function') {
+                        observableName = observableName + '_Controller';
+                        observableValue = observableValue.getHash();
+                    }
+
+                    eval(`parent.${property}(val => {
+                        updateListItem(observableName, val);
+                    })`);
+                }
+            }
+        }
+
         // bind content to document
         if (pageWrapper.firstChild === null) {
             pageWrapper.append(contentWrapper);
@@ -74,12 +111,6 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
         contentWrapper.classList.add(newValue);
     });
 
-    pageController.onActiveChanged(active => {
-        if (active) {
-            projectPage();
-        }
-    });
-
     pageController.onIconChanged(iconPath => {
        if (null !== iconPath && undefined !== iconPath) {
            bubble.innerHTML = `<img src="${iconPath}" alt="bug-icon">`;
@@ -87,28 +118,22 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
     });
 
     pageController.onParentChanged(parent => {
-        tbody.innerHTML = '';
-        if (null !== parent) {
-            for (const property in parent) {
-                if ((property.startsWith('get') || property.startsWith('is')) && property !== 'getPageContentControllers') {
-                    let observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
-                    let observableValue = eval(`parent.${property}()`);
-
-                    try {
-                        observableValue = observableValue.getHash();
-                        observableName = observableName + '_Controller';
-                    } catch (error) {
-                        // do nothing
-                    }
-                    addListItem(observableName, observableValue, parent);
-                } else if (property.startsWith('on') && property.endsWith('Changed')) {
-                    const observableName = property.slice(2, property.length-7);
-                    // todo create callback for onchange
-                }
-            }
-            projectPage();
-        }
+        projectPage(parent);
     });
+
+    const updateListItem = (observableName, observableValue) => {
+        if(typeof observableValue === "boolean") {
+            const input = tbody.querySelector('#' + observableName + '-checkbox');
+            input.checked = observableValue;
+        } else  {
+            const input = tbody.querySelector('#' + observableName + '-input');
+            if (observableName.includes('_Controller')) {
+                input.value = observableValue.getHash();
+            } else {
+                input.value = observableValue;
+            }
+        }
+    };
 
     const addListItem = (observableName, observableValue, parent) => {
         const row = document.createElement('tr');
@@ -126,11 +151,11 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
             toggle.onclick = () => {
                 if (!toggle.classList.contains('disabled')) {
                     row.querySelector('#' + observableName + '-checkbox').click();
-                    toggle.classList.toggle('active');
+                    toggle.classList.toggle('selected');
                 }
             };
             if(observableValue) {
-                toggle.classList.add('active');
+                toggle.classList.add('selected');
             }
             const toggleHead  = document.createElement('div');
             const checkbox    = document.createElement('input');
