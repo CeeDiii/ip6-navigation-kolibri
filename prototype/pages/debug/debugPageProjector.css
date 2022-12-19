@@ -1,6 +1,50 @@
-#debug .debug {
-    position: absolute;
+.debug #debug-table {
+    display: none;
+}
+
+.debug.open #debug-table {
+    position: fixed;
     right: 0;
+    padding: 10px;
+    background-color: #eeeeee;
+    box-shadow: 0px 2px 5px 0px var(--kolibri--light---black--500);
+    border-right: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    display: inline;
+    border-spacing: 16px;
+}
+
+.debug.open #debug-table tr td:first-child {
+    font-weight: bold;
+}
+
+.debug #debug-table input {
+    background-color: transparent;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.debug .closed-debug-bubble {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    right: 40px;
+    background-color: #EBECFE;
+    box-shadow: 0px 2px 5px 0px var(--kolibri--light---black--500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.debug .closed-debug-bubble:hover img {
+    filter: invert(51%) sepia(76%) saturate(6321%) hue-rotate(306deg) brightness(100%) contrast(105%); /* convert svg color to --kb-color-hsl-pink-500 */
+}
+
+.debug.open .closed-debug-bubble {
+    display: none;
 }
 
 .debug .toggle-switch {
@@ -21,7 +65,7 @@
     width: 18px;
     height: 18px;
     transition: 300ms;
-    box-shadow: 1px 1px 5px 0px var(--kolibri--light---black--300);;
+    box-shadow: 1px 1px 5px 0px var(--kolibri--light---black--300);
 }
 
 .debug .toggle-switch.active {

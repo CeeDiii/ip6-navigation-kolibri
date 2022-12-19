@@ -24,12 +24,18 @@ const DebugPageProjector = (pageController, pinToElement) => {
     const pageWrapper    = pinToElement;
     const contentWrapper = document.createElement('div');
 
-    const debugTable = document.createElement('table');
-    debugTable.id = 'debug-table';
-    const headerRow = document.createElement('tr');
-    const nameHeader = document.createElement('th');
-    nameHeader.innerText = 'Observable Name';
-    const valueHeader = document.createElement('th');
+
+    const debugTable      = document.createElement('table');
+    debugTable.id         = 'debug-table';
+    const bubble          = document.createElement('div');
+    bubble.classList.add('closed-debug-bubble');
+    bubble.onclick = () => contentWrapper.classList.toggle('open');
+    //TODO swap on icon change
+    bubble.innerHTML      = '<img src="././navigation/icons/bug.svg">';
+    const headerRow       = document.createElement('tr');
+    const nameHeader      = document.createElement('th');
+    nameHeader.innerText  = 'Observable Name';
+    const valueHeader     = document.createElement('th');
     valueHeader.innerText = 'Observable Value';
     debugTable.append(nameHeader, valueHeader);
     debugTable.append(headerRow);
@@ -41,7 +47,7 @@ const DebugPageProjector = (pageController, pinToElement) => {
      * @return { void }
      */
     const initialize = () => {
-        contentWrapper.append(debugTable);
+        contentWrapper.append(debugTable, bubble);
     };
 
     /**
