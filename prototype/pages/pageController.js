@@ -2,7 +2,6 @@ import {
     ACTIVE,
     HASH,
     ICON,
-    IS_HOMEPAGE,
     NAVIGATIONAL,
     PARENT,
     VALUE,
@@ -27,7 +26,6 @@ export { PageController }
  * @property { () => String } getHash - a getter function that returns the hash of the page.
  * @property { (iconPathOrName: String) => void } setIcon - a setter function that sets the newValue of the page.
  * @property { (visitedState: Boolean) => void } setVisited - a setter function that sets the visitedState of the page.
- * @property { (isHomepage: Boolean) => void } setIsHomepage - a setter function that sets the isHomepage state of the page.
  * @property { (isVisible: Boolean) => void } setVisible - a setter function that sets the isVisible state of the page.
  * @property { () => Boolean } isVisible - a getter function that returns the isVisible state of the page.
  * @property { (newParent: ?PageControllerType) => void } setParent - a setter function that sets the newParent that is given, if null is set, the parent is root
@@ -38,7 +36,6 @@ export { PageController }
  * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the icon changes.
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the visited state changes.
  * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the value changes.
- * @property { (callback: onValueChangeCallback<Boolean>) => void } onIsHomepageChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isHomepage state changes.
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onNavigationalChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isNavigational state changes.
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisibleChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the isVisible state changes.
  * @property { (callback: onValueChangeCallback<?PageControllerType>) => void } onParentChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the parent changes.
@@ -96,8 +93,6 @@ const PageController = (pageName, contentControllers) => {
         getIcon:                 pageModel.getPageObs(ICON).getValue,
         setVisited:              pageModel.getPageObs(VISITED).setValue,
         getVisited:              pageModel.getPageObs(VISITED).getValue,
-        setIsHomepage:           pageModel.getPageObs(IS_HOMEPAGE).setValue, // has to be IsHomepage because we need to differentiate between the homepage value and isHomepage bool
-        isHomepage:              pageModel.getPageObs(IS_HOMEPAGE).getValue, // has to be IsHomepage because we need to differentiate between the homepage value and isHomepage bool
         setVisible:              pageModel.getPageObs(VISIBLE).setValue,
         isVisible:               pageModel.getPageObs(VISIBLE).getValue,
         setNavigational:         pageModel.getPageObs(NAVIGATIONAL).setValue,
@@ -107,7 +102,6 @@ const PageController = (pageName, contentControllers) => {
         onIconChanged:           pageModel.getPageObs(ICON).onChange,
         onVisitedChanged:        pageModel.getPageObs(VISITED).onChange,
         onValueChanged:          pageModel.getPageObs(VALUE).onChange,
-        onIsHomepageChanged:     pageModel.getPageObs(IS_HOMEPAGE).onChange,
         onNavigationalChanged:   pageModel.getPageObs(NAVIGATIONAL).onChange,
         onVisibleChanged:        pageModel.getPageObs(VISIBLE).onChange,
         onParentChanged:         pageModel.getPageObs(PARENT).onChange,

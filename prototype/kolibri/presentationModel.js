@@ -8,10 +8,10 @@ import { id }         from "./stdlib.js";
 export { Attribute, QualifiedAttribute,
          presentationModelFromAttributeNames,
          valueOf, obsValueOf, readQualifierValue,
-         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, HOMEPAGE, IS_HOMEPAGE, PARENT, NAVIGATIONAL, FAVICON, DEBUGMODE }
+         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, HOMEPAGE, PARENT, NAVIGATIONAL, FAVICON, DEBUGMODE }
 
 /**
- * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'homepage'|'is_homepage'|'parent'|'navigational'|'favicon' | 'debugmode' } ObservableTypeString
+ * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'homepage'|'parent'|'navigational'|'favicon' | 'debugmode' } ObservableTypeString
  * Feel free to extend this type with new unique type strings as needed for your application.
  */
 
@@ -28,7 +28,6 @@ export { Attribute, QualifiedAttribute,
 /** @type ObservableTypeString */ const LOGO         = "logo";
 /** @type ObservableTypeString */ const VISIBLE      = "visible";
 /** @type ObservableTypeString */ const HOMEPAGE      = "homepage";
-/** @type ObservableTypeString */ const IS_HOMEPAGE  = "is_homepage";
 /** @type ObservableTypeString */ const PARENT       = "parent";
 /** @type ObservableTypeString */ const NAVIGATIONAL = "navigational";
 /** @type ObservableTypeString */ const FAVICON      = "favicon";

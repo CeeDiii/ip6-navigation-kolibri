@@ -3,7 +3,6 @@ import {
     ACTIVE,
     HASH,
     ICON,
-    IS_HOMEPAGE,
     PARENT,
     VISIBLE,
     VISITED,
@@ -36,7 +35,6 @@ const PageModel = pageName => {
     pageAttr.getObs(HASH).setValue('#' + pageName);
     pageAttr.getObs(VISITED).setValue(false);
     pageAttr.getObs(ICON).setValue('./navigation/icons/placeholder.svg');
-    pageAttr.getObs(IS_HOMEPAGE).setValue(false);
     pageAttr.getObs(VISIBLE).setValue(true);
     pageAttr.getObs(PARENT).setValue(null);
     pageAttr.getObs(NAVIGATIONAL).setValue(true);
