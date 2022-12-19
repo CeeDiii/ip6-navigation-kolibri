@@ -90,7 +90,6 @@ navigationController.setWebsiteName('Kolibri');
 navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
 navigationController.setFavIcon('./img/logo/logo-new-128.svg');
 navigationController.setHomePage(welcomePageController.getHash());
-//navigationController.setDebugMode(true);
 
 const pinToNavElement = document.getElementById('nav');
 BubbleStateNavigationProjector(navigationController, pinToNavElement);
@@ -104,8 +103,8 @@ BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 const debugController = PageController('debug', null);
 debugController.setVisible(false);
 const pinToDebugElement = document.getElementById('debug');
-DebugPageProjector(debugController, pinToDebugElement);
-
+debugController.setIcon('./navigation/icons/bug.svg');
+DebugPageProjector(navigationController, debugController, pinToDebugElement);
 
 navigationController.addErrorPageController('E403', errorForbiddenController);
 navigationController.addErrorPageController('E404', errorNotFoundController);

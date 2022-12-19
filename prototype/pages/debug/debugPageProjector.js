@@ -12,6 +12,7 @@ export { DebugPageProjector }
  * A constructor for a PageProjectorType.
  *
  * @constructor
+ * @param { !NavigationControllerType } navigationController - the navigationController that controls the navigation we want to debug. Mandatory.
  * @param { !PageControllerType } pageController - the pageController that controls the PageModelType we want to observe. Mandatory.
  * @param { !HTMLDivElement } pinToElement - the element in the DOM that we want to bind to append the pageContent. Mandatory.
  * @returns { PageProjectorType }
@@ -20,24 +21,25 @@ export { DebugPageProjector }
  * homePageController.setIcon('./navigation/icons/house.svg');
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
-const DebugPageProjector = (pageController, pinToElement) => {
+const DebugPageProjector = (navigationController, pageController, pinToElement) => {
     const pageWrapper    = pinToElement;
     const contentWrapper = document.createElement('div');
 
 
     const debugTable      = document.createElement('table');
     debugTable.id         = 'debug-table';
+    const thead           = document.createElement('thead');
+    const tbody           = document.createElement('tbody');
     const bubble          = document.createElement('div');
     bubble.classList.add('closed-debug-bubble');
     bubble.onclick = () => contentWrapper.classList.toggle('open');
-    //TODO swap on icon change
-    bubble.innerHTML      = '<img src="././navigation/icons/bug.svg">';
     const headerRow       = document.createElement('tr');
     const nameHeader      = document.createElement('th');
     nameHeader.innerText  = 'Observable Name';
     const valueHeader     = document.createElement('th');
     valueHeader.innerText = 'Observable Value';
-    debugTable.append(nameHeader, valueHeader);
+    thead.append(nameHeader, valueHeader);
+    debugTable.append(thead, tbody);
     debugTable.append(headerRow);
 
     /**
@@ -46,9 +48,7 @@ const DebugPageProjector = (pageController, pinToElement) => {
      * @function
      * @return { void }
      */
-    const initialize = () => {
-        contentWrapper.append(debugTable, bubble);
-    };
+    const initialize = () => contentWrapper.append(debugTable, bubble);
 
     /**
      * A function that creates the DOM binding and initializes the page on first activation.
@@ -80,22 +80,30 @@ const DebugPageProjector = (pageController, pinToElement) => {
         }
     });
 
+    pageController.onIconChanged(iconPath => {
+       if (null !== iconPath && undefined !== iconPath) {
+           bubble.innerHTML = `<img src="${iconPath}" alt="bug-icon">`;
+       }
+    });
+
     pageController.onParentChanged(parent => {
+        tbody.innerHTML = '';
         if (null !== parent) {
             for (const property in parent) {
-                if (property.startsWith('get') || property.startsWith('is')) {
-                    const observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
+                if ((property.startsWith('get') || property.startsWith('is')) && property !== 'getPageContentControllers') {
+                    let observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
                     let observableValue = eval(`parent.${property}()`);
 
                     try {
                         observableValue = observableValue.getHash();
+                        observableName = observableName + '_Controller';
                     } catch (error) {
-                        eval(`parent.${property}()`);
+                        // do nothing
                     }
                     addListItem(observableName, observableValue, parent);
                 } else if (property.startsWith('on') && property.endsWith('Changed')) {
                     const observableName = property.slice(2, property.length-7);
-                    eval(`parent.${property}(val => console.log(val))`)
+                    // todo create callback for onchange
                 }
             }
             projectPage();
@@ -103,64 +111,52 @@ const DebugPageProjector = (pageController, pinToElement) => {
     });
 
     const addListItem = (observableName, observableValue, parent) => {
-        let row = debugTable.querySelector('#' + observableName + '-row');
-        if (null !== row) {
-            const header     = row.querySelector('#' + observableName + '-row-header');
-            header.innerHTML = observableName;
+        const row = document.createElement('tr');
+        row.id = observableName+'-row';
+        const header = document.createElement('td');
+        header.id = observableName + '-row-header';
+        header.innerHTML = observableName;
+        const value = document.createElement('td');
+        value.id = observableName + '-row-value';
 
-            if(typeof observableValue === "boolean") {
-                const checkbox   = row.querySelector('#' + observableName + '-checkbox');
-                const toggle     = row.querySelector('#' + observableName + '-toggle');
-                if(observableValue) {
-                    toggle.classList.add('active');
-                }
-                checkbox.checked = observableValue;
-            } else {
-                const input = row.querySelector('#' + observableName + '-input');
-                input.value = observableValue;
+        if(typeof observableValue === "boolean") {
+            const toggle = document.createElement('div');
+            toggle.id    = observableName + '-toggle';
+            toggle.classList.add('toggle-switch');
+            toggle.onclick = () => {
+                row.querySelector('#' + observableName + '-checkbox').click();
+                toggle.classList.toggle('active');
+            };
+            if(observableValue) {
+                toggle.classList.add('active');
             }
+            const toggleHead  = document.createElement('div');
+            const checkbox    = document.createElement('input');
+            checkbox.id       = observableName + '-checkbox';
+            checkbox.classList.add('toggle-checkbox');
+            checkbox.type     = 'checkbox';
+            checkbox.checked  = observableValue;
+            checkbox.onchange = e => eval(`parent.set${observableName}(e.target.checked)`);
+            toggle.append(toggleHead);
+            value.append(toggle, checkbox);
         } else {
-            row = document.createElement('tr');
-            row.id = observableName+'-row';
-            const header = document.createElement('td');
-            header.id = observableName + '-row-header';
-            header.innerHTML = observableName;
-            const value = document.createElement('td');
-            value.id = observableName + '-row-value';
-
-            if(typeof observableValue === "boolean") {
-                const toggle = document.createElement('div');
-                toggle.id    = observableName + '-toggle';
-                toggle.classList.add('toggle-switch');
-                toggle.onclick = () => {
-                    row.querySelector('#' + observableName + '-checkbox').click();
-                    toggle.classList.toggle('active');
-                };
-                if(observableValue) {
-                    toggle.classList.add('active');
-                }
-                const toggleHead  = document.createElement('div');
-                const checkbox    = document.createElement('input');
-                checkbox.id       = observableName + '-checkbox';
-                checkbox.classList.add('toggle-checkbox');
-                checkbox.type     = 'checkbox';
-                checkbox.checked  = observableValue;
-                checkbox.onchange = e => eval(`parent.set${observableName}(e.target.checked)`);
-                toggle.append(toggleHead);
-                value.append(toggle, checkbox);
+            const input    = document.createElement('input');
+            input.id       = observableName + '-input';
+            input.type     = 'text';
+            input.value    = observableValue;
+            if (observableName.includes('_Controller')) {
+                observableName = observableName.substring(0, observableName.indexOf('_Controller'));
+                input.onchange = e => eval(`parent.set${observableName}(navigationController.getPageController(e.target.value))`);
+                value.append(input);
             } else {
-                const input    = document.createElement('input');
-                input.id       = observableName + '-input';
-                input.type     = 'text';
-                input.value    = observableValue;
                 input.onchange = e => eval(`parent.set${observableName}(e.target.value)`);
                 value.append(input);
             }
-
-            row.append(header);
-            row.append(value);
-            debugTable.append(row);
         }
+
+        row.append(header);
+        row.append(value);
+        tbody.append(row);
     }
 };
 
