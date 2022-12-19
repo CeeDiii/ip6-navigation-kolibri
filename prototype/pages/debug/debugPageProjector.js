@@ -54,13 +54,20 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      * A function that creates the DOM binding and initializes the page on first activation.
      *
      * @function
-     * @param { PageControllerType } parent - the page controller we want to debug
+     * @param { ?PageControllerType } parent - the page controller we want to debug
      * @return { void }
      */
     const projectPage = parent => {
         // initialize content on first call
         if (contentWrapper.firstChild === null) {
             initialize();
+        }
+
+        // bind content to document
+        if (pageWrapper.firstChild === null) {
+            pageWrapper.append(contentWrapper);
+        } else {
+            pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
         }
 
         tbody.innerHTML = '';
@@ -97,13 +104,6 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
                 }
             }
         }
-
-        // bind content to document
-        if (pageWrapper.firstChild === null) {
-            pageWrapper.append(contentWrapper);
-        } else {
-            pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
-        }
     };
 
     pageController.onValueChanged(newValue => {
@@ -118,7 +118,9 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
     });
 
     pageController.onParentChanged(parent => {
-        projectPage(parent);
+        if (navigationController.isDebugMode()) {
+            projectPage(parent);
+        }
     });
 
     const updateListItem = (observableName, observableValue) => {
