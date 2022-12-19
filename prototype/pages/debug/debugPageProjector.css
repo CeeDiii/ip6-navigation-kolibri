@@ -6,7 +6,7 @@
     position: fixed;
     right: 0;
     padding: 10px;
-    background-color: #eeeeee;
+    background-color: var(--kb-color-hsl-bg-light);
     box-shadow: 0 2px 5px 0 var(--kolibri--light---black--500);
     border-right: 0;
     border-top-left-radius: 5px;
@@ -15,14 +15,46 @@
     border-spacing: 16px;
 }
 
+.debug #debug-table .close-button {
+    cursor: pointer;
+    background-color: #EBECFE;
+    box-shadow: 0 2px 2px var(--kolibri--light---black--500);
+    min-height: 30px;
+    min-width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+
 .debug.open #debug-table tr td:first-child {
     font-weight: bold;
 }
 
 .debug #debug-table input {
-    background-color: transparent;
+    border: 2px solid var(--kb-hsla-primary-light);
+    border-radius: 4px;
+    background-color: #F7F7FC;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.debug #debug-table input:focus {
+    border-color: var(--kb-hsla-primary-accent);
+}
+
+.debug #debug-table input:hover {
+    border-color: var(--kb-color-hsl-pink-500);
+}
+
+
+.debug #debug-table input:disabled {
+    background-color: var(--kolibri--light---black--600);
+    border: 2px solid var(--kolibri--light---black--600);
+}
+
+.debug #debug-table input:disabled:hover {
+    border: 2px solid var(--kolibri--light---black--600);
 }
 
 .debug .closed-debug-bubble {

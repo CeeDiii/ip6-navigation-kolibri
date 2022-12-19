@@ -1,3 +1,5 @@
+import { dom } from "../../kolibri/util/dom.js";
+
 export { DebugPageProjector }
 
 /**
@@ -33,12 +35,19 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
     const bubble          = document.createElement('div');
     bubble.classList.add('closed-debug-bubble');
     bubble.onclick = () => contentWrapper.classList.toggle('open');
+    const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
+    const closeButton = dom(`
+            <div class="close-button">
+                <img src="${arrowSVGPathRelativeIndex}" alt="arrow">
+            </div>
+        `);
+    closeButton[0].onclick = () => contentWrapper.classList.toggle('open');
     const headerRow       = document.createElement('tr');
     const nameHeader      = document.createElement('th');
     nameHeader.innerText  = 'Observable Name';
     const valueHeader     = document.createElement('th');
     valueHeader.innerText = 'Observable Value';
-    thead.append(nameHeader, valueHeader);
+    thead.append(nameHeader, valueHeader, ...closeButton);
     debugTable.append(thead, tbody);
     debugTable.append(headerRow);
 

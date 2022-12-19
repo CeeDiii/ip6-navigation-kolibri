@@ -21,9 +21,9 @@ export { PageController }
  * @property { () => void } activate - a lifecycle function that allows a page to do initialization before displaying. this function will be called by a NavigationController on activation of this page.
  * @property { () => void } passivate - a lifecycle function that allows page to clean up before removing it from displaying. this function will be called by a NavigationController on passivation of this page.
  * @property { () => ?[T] } getPageContentControllers - a getter function that returns the controllers that are responsible for the content of this page or null.
+ * @property { () => String } getHash - a getter function that returns the hash of the page.
  * @property { (newValue: String) => void } setValue - a setter function that sets the newValue of the page.
  * @property { () => String } getValue - a getter function that returns the value of the page.
- * @property { () => String } getHash - a getter function that returns the hash of the page.
  * @property { (iconPathOrName: String) => void } setIcon - a setter function that sets the newValue of the page.
  * @property { (isActive: Boolean) => void } setActive - a setter function that sets the active state of the page.
  * @property { () => Boolean } isActive - a getter function that returns the active state of the page.
@@ -89,9 +89,9 @@ const PageController = (pageName, contentControllers) => {
                 pageModel.getPageObs(PARENT).setValue(newParent);
             }
         },
+        getHash:                 pageModel.getPageObs(HASH).getValue,
         setValue:                pageModel.getPageObs(VALUE).setValue,
         getValue:                pageModel.getPageObs(VALUE).getValue,
-        getHash:                 pageModel.getPageObs(HASH).getValue,
         setIcon:                 pageModel.getPageObs(ICON).setValue,
         getIcon:                 pageModel.getPageObs(ICON).getValue,
         setActive:               pageModel.getPageObs(ACTIVE).setValue,
