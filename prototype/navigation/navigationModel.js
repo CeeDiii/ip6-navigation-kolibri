@@ -39,6 +39,7 @@ export { NavigationModel }
 const NavigationModel = () => {
     const navigationHashes = Attribute(ObservableList([]));
 
+    navigationHashes.getObs(HOMEPAGE).setValue('');
     navigationHashes.getObs(DEBUGMODE).setValue(false);
 
     return {

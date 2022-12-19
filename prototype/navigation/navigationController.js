@@ -56,7 +56,7 @@ const NavigationController = () => {
         // check if hash is empty to redirect to fallback homepage
         if(hash === '' || hash === '#') {
             hash = navigationModel.getHomepage();
-            if(hash === '#') return; // return if fallback homepage is not defined
+            if(null === hash) return; // return if fallback homepage is not defined
         }
 
         window.location.hash = hash;
