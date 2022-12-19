@@ -110,23 +110,9 @@ const NavigationController = () => {
         }
     };
 
-    /**
-     * This function handles all bindings to the pageController
-     *
-     * @function
-     * @param { PageControllerType } pageController
-     * @return { void }
-     **/
-    const bindPage = pageController =>
-        pageController.onIsHomepageChanged(isHomepage => {
-            if(isHomepage) navigationModel.setHomepage(pageController.getHash());
-        });
-
-
     return {
         addPageController: pageController => {
             if (pageController && pageControllers[pageController.getHash()] === undefined) {
-                bindPage(pageController);
                 const hash = pageController.getHash();
                 pageControllers[hash] = pageController;
                 navigationModel.addNavigationHash(hash);
@@ -137,7 +123,6 @@ const NavigationController = () => {
         },
         addErrorPageController: (errorKey, pageController) => {
             if (pageController && pageControllers[pageController.getHash()] === undefined) {
-                bindPage(pageController);
                 pageControllers['#' + errorKey] = pageController;
                 navigationModel.addNavigationHash('#' + errorKey);
                 return true;
