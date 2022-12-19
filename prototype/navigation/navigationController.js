@@ -17,6 +17,8 @@ export { NavigationController }
  * @property { (name: String) => void }             setWebsiteName   - a function that sets the name for the website in the {@link NavigationModel}
  * @property { (logoSrcPath: String) => void }      setWebsiteLogo   - a function that sets the path for the logo that can be displayed in the navigation in the {@link NavigationModel}
  * @property { (favIconSrcPath: String) => void }   setFavIcon       - a function that sets the favicon, calling all registered {@link onValueChangeCallback}s.
+ * @property { (debugModeActive: Boolean) => void } setDebugMode     - a function that sets the debug mode active state. calling all registered {@link onValueChangeCallback}s.
+ * @property { () => Boolean }                      isDebugMode      - a function that returns the if the debug mode is active.
  * @property { (callback: observableListCallback) => Boolean }                 onNavigationHashAdd  - a function that registers an {@link observableListCallback} that will be called whenever a page hash is added.
  * @property { (callback: observableListCallback) => Boolean }                 onNavigationHashDel  - a function that registers an {@link observableListCallback} that will be called whenever a page hash is deleted.
  * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onLocationChanged    - a function that registers an {@link onValueChangeCallback} that will be called whenever the current location is changed.
@@ -24,6 +26,7 @@ export { NavigationController }
  * @property { (callback: onValueChangeCallback<String>)  => void }            onWebsiteLogoChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page logo is changed.
  * @property { (callback: onValueChangeCallback<String>)  => void }            onFavIconChanged     - a function that registers an {@link onValueChangeCallback} that will be called whenever the favicon is changed.
  * @property { (callback: onValueChangeCallback<Boolean>) => void }            onVisibleChanged     - a function that registers an {@link onValueChangeCallback} that will be called whenever a pages visibility is changed.
+ * @property { (callback: onValueChangeCallback<Boolean>) => void }            onDebugModeChanged   - a function that registers an {@link onValueChangeCallback} that will be called whenever the debug mode active state is changed.
  * @property { (anchor: HTMLAnchorElement) => void } registerAnchorClickListener - a function that registers a click listener on an anchor. this binding triggers a location change trough navigate based on the hash the anchor has.
  */
 
@@ -64,6 +67,11 @@ const NavigationController = () => {
             valueOf(currentLocation).passivate();
         }
 
+        if (navigationModel.isDebugMode()) {
+            const debugController = pageControllers['#debug'];
+            debugController.setParent(newLocation);
+        }
+
         newLocation.activate();
         currentLocation.getObs(VALUE).setValue(newLocation);
     };
@@ -79,16 +87,7 @@ const NavigationController = () => {
     const getRoutingLocation = hash => {
         /** @type { PageControllerType } */ let newLocation = pageControllers[hash];
 
-        if (hash.includes('@')) {
-            const [configurablePageHash, configPath] = hash.split('@');
-            if (configPath === 'debug') {
-                newLocation = pageControllers['#debug'];
-                const debuggableController = pageControllers[configurablePageHash];
-                if (undefined !== debuggableController && null !== debuggableController) {
-                    newLocation.setParent(debuggableController);
-                }
-            }
-        } else if(newLocation === undefined) { // if newLocation is undefined, navigate to an error page
+        if(newLocation === undefined) { // if newLocation is undefined, navigate to an error page
             newLocation = pageControllers['#E404'];
 
         } else if (!newLocation.isNavigational()) { // if the newLocation exists but is not navigational we return a 403 forbidden error
@@ -163,12 +162,15 @@ const NavigationController = () => {
         setFavIcon:             navigationModel.setFavIcon,
         setHomePage:            navigationModel.setHomepage,
         getHomePage:            navigationModel.getHomepage,
+        setDebugMode:           navigationModel.setDebugMode,
+        isDebugMode:            navigationModel.isDebugMode,
         onNavigationHashAdd:    navigationModel.onAdd,
         onNavigationHashDel:    navigationModel.onDel,
         onLocationChanged:      currentLocation.getObs(VALUE).onChange,
         onWebsiteNameChanged:   navigationModel.onWebsiteNameChanged,
         onWebsiteLogoChanged:   navigationModel.onWebsiteLogoChanged,
         onFavIconChanged:       navigationModel.onFavIconChanged,
+        onDebugModeChanged:     navigationModel.onDebugModeChanged,
         onVisibleChanged:       navigationModel.onVisibleChanged,
     }
 };

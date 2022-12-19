@@ -8,6 +8,7 @@ import { BreadCrumbProjector }                             from "./navigation/br
 import { PageController }                                  from "./pages/pageController.js";
 import { ForbiddenPageProjector }                          from "./pages/403/forbiddenPageProjector.js";
 import { PageNotFoundProjector }                           from "./pages/404/pageNotFoundProjector.js";
+import { DebugPageProjector }                              from "./pages/debug/debugPageProjector.js";
 import { HomePageProjector }                               from "./pages/home/homePageProjector.js";
 import { MasterDetailViewsPageProjector }                  from "./pages/masterDetailViews/masterDetailViewsPageProjector.js";
 import { FormsPageProjector }                              from "./pages/forms/formsPageProjector.js";
@@ -23,7 +24,6 @@ import { SimpleWorkWeekPageProjector }                     from "./pages/workwee
 import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME }       from "./kolibri/util/dom.js";
 import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
-import {DebugPageProjector} from "./pages/debug/debugPageProjector.js";
 
 const pinToContentElement = document.getElementById("content");
 
@@ -102,7 +102,9 @@ BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 
 const debugController = PageController('debug', null);
 debugController.setVisible(false);
-DebugPageProjector(debugController, pinToContentElement, null);
+const pinToDebugElement = document.getElementById('debug');
+DebugPageProjector(debugController, pinToDebugElement);
+
 
 navigationController.addErrorPageController('E403', errorForbiddenController);
 navigationController.addErrorPageController('E404', errorNotFoundController);

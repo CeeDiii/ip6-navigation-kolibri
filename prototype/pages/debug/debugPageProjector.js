@@ -1,5 +1,3 @@
-import { dom } from "../../kolibri/util/dom.js";
-
 export { DebugPageProjector }
 
 /**
@@ -16,14 +14,13 @@ export { DebugPageProjector }
  * @constructor
  * @param { !PageControllerType } pageController - the pageController that controls the PageModelType we want to observe. Mandatory.
  * @param { !HTMLDivElement } pinToElement - the element in the DOM that we want to bind to append the pageContent. Mandatory.
- * @param { String } contentFilePath - the path to the static html content relative to index.html! Can be null.
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
  * homePageController.setIcon('./navigation/icons/house.svg');
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
-const DebugPageProjector = (pageController, pinToElement, contentFilePath) => {
+const DebugPageProjector = (pageController, pinToElement) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
 
@@ -83,12 +80,16 @@ const DebugPageProjector = (pageController, pinToElement, contentFilePath) => {
                 if (property.startsWith('get') || property.startsWith('is')) {
                     const observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
                     let observableValue = eval(`parent.${property}()`);
+
                     try {
                         observableValue = observableValue.getHash();
                     } catch (error) {
                         eval(`parent.${property}()`);
                     }
                     addListItem(observableName, observableValue);
+                } else if (property.startsWith('on') && property.endsWith('Changed')) {
+                    const observableName = property.slice(2, property.length-7);
+                    eval(`parent.${property}(val => console.log(val))`)
                 }
             }
             projectPage();
