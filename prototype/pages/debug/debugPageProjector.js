@@ -124,8 +124,10 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
             toggle.id    = observableName + '-toggle';
             toggle.classList.add('toggle-switch');
             toggle.onclick = () => {
-                row.querySelector('#' + observableName + '-checkbox').click();
-                toggle.classList.toggle('active');
+                if (!toggle.classList.contains('disabled')) {
+                    row.querySelector('#' + observableName + '-checkbox').click();
+                    toggle.classList.toggle('active');
+                }
             };
             if(observableValue) {
                 toggle.classList.add('active');
@@ -136,8 +138,13 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
             checkbox.classList.add('toggle-checkbox');
             checkbox.type     = 'checkbox';
             checkbox.checked  = observableValue;
-            checkbox.onchange = e => eval(`parent.set${observableName}(e.target.checked)`);
             toggle.append(toggleHead);
+            if (typeof eval(`parent.set${observableName}`) === 'function') {
+                checkbox.onchange = e => eval(`parent.set${observableName}(e.target.checked)`);
+            } else {
+                toggle.classList.add('disabled');
+                checkbox.disabled = true;
+            }
             value.append(toggle, checkbox);
         } else {
             const input    = document.createElement('input');
@@ -146,10 +153,18 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
             input.value    = observableValue;
             if (observableName.includes('_Controller')) {
                 observableName = observableName.substring(0, observableName.indexOf('_Controller'));
-                input.onchange = e => eval(`parent.set${observableName}(navigationController.getPageController(e.target.value))`);
+                if (typeof eval(`parent.set${observableName}`) === 'function') {
+                    input.onchange = e => eval(`parent.set${observableName}(navigationController.getPageController(e.target.value))`);
+                } else {
+                    input.disabled = true;
+                }
                 value.append(input);
             } else {
-                input.onchange = e => eval(`parent.set${observableName}(e.target.value)`);
+                if (typeof eval(`parent.set${observableName}`) === 'function') {
+                    input.onchange = e => eval(`parent.set${observableName}(e.target.value)`);
+                } else {
+                    input.disabled = true;
+                }
                 value.append(input);
             }
         }

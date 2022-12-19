@@ -7,7 +7,7 @@
     right: 0;
     padding: 10px;
     background-color: #eeeeee;
-    box-shadow: 0px 2px 5px 0px var(--kolibri--light---black--500);
+    box-shadow: 0 2px 5px 0 var(--kolibri--light---black--500);
     border-right: 0;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -32,7 +32,7 @@
     border-radius: 25px;
     right: 40px;
     background-color: #EBECFE;
-    box-shadow: 0px 2px 5px 0px var(--kolibri--light---black--500);
+    box-shadow: 0 2px 5px 0 var(--kolibri--light---black--500);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,6 +58,15 @@
     cursor: pointer;
 }
 
+.debug .toggle-switch.active {
+    background-color: var(--kb-hsla-success-light);
+}
+
+.debug .toggle-switch.disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
 .debug .toggle-switch div {
     background-color: var(--kolibri--light---black--700);
     transform: translateX(0px);
@@ -65,12 +74,9 @@
     width: 18px;
     height: 18px;
     transition: 300ms;
-    box-shadow: 1px 1px 5px 0px var(--kolibri--light---black--300);
+    box-shadow: 1px 1px 5px 0 var(--kolibri--light---black--300);
 }
 
-.debug .toggle-switch.active {
-    background-color: var(--kb-hsla-success-light);
-}
 
 .debug .toggle-switch.active div {
     transform: translateX(26px);
