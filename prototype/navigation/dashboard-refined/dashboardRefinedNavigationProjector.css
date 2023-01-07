@@ -190,7 +190,7 @@
     display: none;
 }
 
-.dashboard-refined-nav .tree-node:first-child > .tree-node {
+.dashboard-refined-nav .tree-node > span ~ .tree-node {
     margin-left: 0;
 }
 
