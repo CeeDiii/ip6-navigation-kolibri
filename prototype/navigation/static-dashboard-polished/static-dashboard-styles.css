@@ -153,6 +153,17 @@
     color: var(--kolibri--light---black--200);
 }
 
+.navigation-sidebar .tree > .tree-node > span > a {
+    font-size: var(--font-size-textM);
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    color: var(--kolibri--light---black--200);
+}
+
+.navigation-sidebar .tree > .tree-node > span > a {
+    pointer-events: none;
+}
+
 .navigation-sidebar .tree > .tree-node > span > img {
     height: calc(2/5 * var(--base-unit));
     aspect-ratio: 1;
