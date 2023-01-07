@@ -131,68 +131,87 @@
     margin-bottom: calc(3/5 * var(--base-unit));
 }
 
-.dashboard-refined-nav .detail .content .row {
-    margin-bottom: calc(1/20 * var(--base-unit));
-    padding-left:     calc(2/9 * var(--base-unit));
+/* Wrapper */
+.dashboard-refined-nav .tree {
+    display: flex;
+    flex-direction: column;
+    padding-left: calc(2/9 * var(--base-unit));
 }
 
-.dashboard-refined-nav .detail .content .node {
+/* Root Nodes */
+.dashboard-refined-nav .tree > .tree-node  {
+    margin-bottom: calc(3/5 * var(--base-unit))
+}
+
+.dashboard-refined-nav .tree > .tree-node > span {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 0 1em;
-}
-
-.dashboard-refined-nav .detail .content .row img {
-    height: calc(2/5 * var(--base-unit));
-    aspect-ratio: 1;
-}
-
-.dashboard-refined-nav .detail .content .row svg {
-    width: calc(2/5 * var(--base-unit));
-    height: calc(2/5 * var(--base-unit));
-}
-
-.dashboard-refined-nav .detail .content .row svg rect {
-    fill: var(--kolibri--light---black--500);
-}
-.dashboard-refined-nav .detail .content .row svg.active rect {
-    fill: var(--kb-rgb-primary-accent);
-    width: 4px;
-}
-
-.dashboard-refined-nav .detail .content .row.root img.active {
-    filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%); /* convert svg color to --kb-color-hsl-primary-accent */
-}
-
-.dashboard-refined-nav .detail .content .row a.active {
-    font-style: var(--kb-font-rubik-light-medium);
-    font-weight: 600;
-    color: var(--kb-color-hsl-bg-dark);
-}
-
-.dashboard-refined-nav .detail .content .row.root {
     margin-bottom: calc(1/5 * var(--base-unit));
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0 1em;
-}
-
-.dashboard-refined-nav .detail .content .row.root span {
     text-transform: uppercase;
     font-size: var(--font-size-textM);
     color: var(--kolibri--light---black--200);
 }
 
-.dashboard-refined-nav .detail .content .row a {
+.dashboard-refined-nav .tree > .tree-node > span > a {
+    font-size: var(--font-size-textM);
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    color: var(--kolibri--light---black--200);
+}
+
+.dashboard-refined-nav .tree > .tree-node > span > a {
+    pointer-events: none;
+}
+
+.dashboard-refined-nav .tree > .tree-node > span > img {
+    height: calc(2/5 * var(--base-unit));
+    aspect-ratio: 1;
+}
+
+.dashboard-refined-nav .tree > .tree-node > span > img.active {
+    filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%); /* convert svg color to --kb-color-hsl-primary-accent */
+}
+
+/* Child Nodes */
+.dashboard-refined-nav .tree-node > .tree-node {
+    margin-left: calc(2/5 * var(--base-unit));
+}
+
+.dashboard-refined-nav .tree-node:first-child > .tree-node {
+    margin-left: 0;
+}
+
+.dashboard-refined-nav .tree-node > .tree-node > span {
+    display: flex;
+    align-items: center;
+    gap: 0 1em;
+    margin-bottom: calc(1/20 * var(--base-unit));
+}
+
+.dashboard-refined-nav .tree-node > .tree-node > span > img {
+    filter: invert(80%) sepia(10%) saturate(568%) hue-rotate(196deg) brightness(81%) contrast(88%); /* convert svg color to --kb--light--black-500 */
+    width: calc(2/5 * var(--base-unit));
+    height: calc(2/5 * var(--base-unit));
+}
+
+.dashboard-refined-nav .tree-node > .tree-node > span > img.active {
+    filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%); /* convert svg color to --kb-color-hsl-primary-accent */
+}
+
+.dashboard-refined-nav .tree-node > .tree-node > span > a {
     font-size: var(--font-size-textM);
     letter-spacing: 0.01em;
     text-decoration: none;
     color: var(--kolibri--light---black--500);
 }
 
-.dashboard-refined-nav .detail .content .row a:hover {
+.dashboard-refined-nav .tree-node > .tree-node > span > a.active {
+    font-style: var(--kb-font-rubik-light-medium);
+    color: var(--kb-color-hsl-bg-dark);
+}
+
+.dashboard-refined-nav .tree-node > .tree-node > span > a:hover {
     color: var(--kb-color-hsl-pink-500);
 }
 

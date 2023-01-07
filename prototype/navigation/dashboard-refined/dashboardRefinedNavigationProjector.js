@@ -56,6 +56,10 @@ const NavigationProjector = (controller, pinToElement) => {
             </div>
         `);
 
+    // create detail content div for tree
+    const tree = document.createElement('div');
+    tree.classList.add('tree');
+
     // create detail content wrapper
     const detailWrapper = document.createElement('div');
     detailWrapper.classList.add('detail');
@@ -69,59 +73,43 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !String } hash - the hash that represents the identifier of a page
      * @param { !String } pageName - the pageName that is displayed for this hash
      * @param { ?PageControllerType } parentNode - the parent of this node or null if no parent exists
-     * @param { !Boolean } isNavigational - boolean which states if it is possible to navigate to the node
      * @return { HTMLAnchorElement }
      *
      */
-    const initializeNavigationPoint = (hash, pageName, parentNode, isNavigational) => {
-        let anchor;
+    const initializeNavigationPoint = (hash, pageName, parentNode) => {
+        const idPrefix = hash.slice(1);
+        const [anchor] = dom(`<a href="${hash}">${pageName}</a>`);
 
-        // initialize if not root
-        if(isNavigational) {
-            anchor = dom(`<a href="${hash}">${pageName}</a>`);
+        const [treeNode] = dom(`
+            <div class="tree-node" id="${idPrefix}-node">
+                <span>
+                    <img id="${idPrefix}-detail-icon" src="" alt="">
+                    <!-- placeholder for anchor -->
+                </span>
+            </div>
+        `);
 
-            if(parentNode) {
-                const navPointNode = dom(`
-                    <div class="row" id="${pageName}-node">
-                        <div class="node">
-                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="15" width="2" height="32" rx="1"/>
-                            </svg>
-                        </div>
-                    </div>
-                `);
-                navPointNode[0].firstElementChild.append(...anchor);
+        treeNode.firstElementChild.append(anchor);
 
-                const parentName = parentNode.getValue();
-                appendNode(navPointNode.namedItem(pageName + '-node'), parentName);
-            }
-        // initialize node if it is root
-        } else {
-            // initialize root in detail (right sidebar, when opened)
-            const rootPointNode = dom(`
-                <div class="content">
-                    <div id="${pageName}-node">
-                        <div class="row root" id="${pageName}-root">
-                            <img class="icon ${pageName}-icon" id="${pageName}-icon" alt="${pageName}-icon">
-                            <span>${pageName}</span>
-                        </div>
-                    </div>
-                </div>
-            `);
-
-            // initialize overview anchor (left sidebar, when closed)
-            anchor = dom(`<a href="${hash}"><img class="${pageName}-icon" id="${pageName}-icon-overview" alt="${pageName}-icon"></a>`);
-            const overviewNavPointNode = dom(`
+        if (null === parentNode) {
+            // node is root
+            tree.append(treeNode);
+            const [overviewNavPointNode] = dom(`
                 <div class="row">
+                    <img id="${idPrefix}-overview-icon" src="" alt="">
                 </div>
             `);
-
-            overviewNavPointNode[0].append(...anchor);
-
-            detailWrapper.append(...rootPointNode);
-            overviewContentWrapper.append(...overviewNavPointNode);
+            overviewContentWrapper.append(overviewNavPointNode);
+        } else {
+            const parentNodeInTree = findElementById(tree, parentNode.getHash() +'-node');
+            if (null === parentNodeInTree) {
+                // if parent is not yet element of the tree we will just append the node
+                tree.append(treeNode);
+            } else {
+                // node is child of an existing parent node in the tree
+                parentNodeInTree.append(treeNode);
+            }
         }
-
         return anchor;
     };
 
@@ -140,6 +128,8 @@ const NavigationProjector = (controller, pinToElement) => {
         overviewWrapper.append(overviewContentWrapper);
         overviewWrapper.append(...overviewToggle);
 
+        // TODO check if append would work
+        detailWrapper.prepend(tree);
         detailWrapper.prepend(...detailHeader);
 
         navigationDiv.append(overviewWrapper, detailWrapper);
@@ -156,7 +146,7 @@ const NavigationProjector = (controller, pinToElement) => {
             initializeBaseStructure();
         }
 
-        replaceRootNodeHashesWithFirstChildHashes();
+        // replaceRootNodeHashesWithFirstChildHashes();
 
         if (null === positionWrapper.firstChild) {
             positionWrapper.appendChild(navigationDiv)
@@ -215,11 +205,11 @@ const NavigationProjector = (controller, pinToElement) => {
      *
      * @function
      * @param { !HTMLElement } node
-     * @param { !String } parentName
+     * @param { !String } parentIdPrefix
      * @return { void }
      */
-    const appendNode = (node, parentName) => {
-        const parentNode = findElementById(detailWrapper, parentName + '-node');
+    const appendNode = (node, parentIdPrefix) => {
+        const parentNode = findElementById(tree, parentIdPrefix + '-node');
         if (null !== parentNode) {
             parentNode.append(node);
         }
@@ -235,17 +225,18 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const moveChildNode = (childNode, oldParent, newParent) => {
         if (null === newParent) { // append node to root if newParent is null
-            detailWrapper.append(childNode);
+            tree.append(childNode);
         } else if (null === oldParent) { // check if old parent is root and move node from root to newParent
-            detailWrapper.removeChild(childNode);
-            const parentName = newParent.getValue();
-            appendNode(childNode, parentName);
+            console.log(childNode);
+            tree.removeChild(childNode);
+            const newParentIdPrefix = newParent.getHash().slice(1);
+            appendNode(childNode, newParentIdPrefix);
         } else { // if new parent and old parent are not root, move node from oldParent to newParent
-            const oldParentName = oldParent.getValue();
-            const oldParentChildrenNodeList = findElementById(detailWrapper, oldParentName + '-node');
+            const oldParentIdPrefix = oldParent.getHash().slice(1);
+            const oldParentChildrenNodeList = findElementById(tree, oldParentIdPrefix + '-node');
             oldParentChildrenNodeList.removeChild(childNode);
-            const parentName = newParent.getValue();
-            appendNode(childNode, parentName);
+            const newParentIdPrefix = newParent.getHash().slice(1);
+            appendNode(childNode, newParentIdPrefix);
         }
     };
 
@@ -302,14 +293,15 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { ?PageControllerType } oldParent
      */
     const addNodeToTree = (hash, newParent, oldParent) => {
+        const idPrefix = hash.slice(1);
         const pageName = controller.getPageController(hash).getValue();
-        const isNavigational = controller.getPageController(hash).isNavigational();
-        const thisNode = findElementById(detailWrapper, pageName + '-node');
+        const thisNode = findElementById(tree, idPrefix + '-node');
         if (null === thisNode) { // check if this node has not been initialized yet
-            const newNavPoint = initializeNavigationPoint(hash, pageName, newParent, isNavigational);
+            const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
             observableNavigationAnchors.add(newNavPoint);
         } else {
             // relocate node
+            console.log(thisNode);
             moveChildNode(thisNode, oldParent, newParent);
         }
     };
@@ -324,18 +316,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !Boolean } oldActive
      */
     const setActiveCSSClass = (hash, newActive, oldActive) => {
-        const pageController = controller.getPageController(hash);
-        const pageName = pageController.getValue();
-        const pageNode = findElementById(detailWrapper, pageName + '-node');
-        if (null !== pageNode) {
-            if (newActive) {
-                pageNode.getElementsByTagName('svg')[0].classList.add('active');
-                pageNode.getElementsByTagName('a')[0].classList.add('active');
-            } else if (newActive !== oldActive) {
-                pageNode.getElementsByTagName('svg')[0].classList.remove('active');
-                pageNode.getElementsByTagName('a')[0].classList.remove('active');
-            }
-        }
+
     };
 
     /**
@@ -347,18 +328,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !Boolean } newActive
      */
     const setParentActiveCSSClass = (hash, newActive) => {
-        const parentNode = getRootParentNode(hash);
-        if (null !== parentNode) {
-            const parentName = parentNode.getValue();
-            const detailParent = findElementById(detailWrapper, parentName + '-icon');
-            const overviewParent = findElementById(overviewContentWrapper, parentName + '-icon-overview');
-            if (null !== detailParent) {
-                toggleCSSClass(detailParent, 'active', newActive);
-            }
-            if (null !== overviewParent) {
-                toggleCSSClass(overviewParent, 'active', newActive);
-            }
-        }
+
     };
 
     /**
@@ -418,15 +388,6 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !String } newIcon
      */
     const setIconSource = (hash, newIcon) => {
-        const pageController = controller.getPageController(hash);
-        const pageName = pageController.getValue();
-        const imageToReplaceOverview = findElementById(overviewContentWrapper, pageName + '-icon-overview');
-        const imageToReplaceDetail = findElementById(detailWrapper, pageName + '-icon');
-        if (null !== imageToReplaceOverview) {
-            imageToReplaceOverview.setAttribute('src', newIcon);
-        }
-        if (null !== imageToReplaceDetail) {
-            imageToReplaceDetail.setAttribute('src', newIcon);
-        }
+
     }
 };
