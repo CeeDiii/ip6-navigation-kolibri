@@ -216,6 +216,28 @@ const NavigationProjector = (controller, pinToElement) => {
     };
 
     /**
+     * A function that adds the given hash as a node the newParent
+     * and removes it from the oldParent.
+     *
+     * @param { !String } hash
+     * @param { ?PageControllerType } newParent
+     * @param { ?PageControllerType } oldParent
+     */
+    const addNodeToTree = (hash, newParent, oldParent) => {
+        const idPrefix = hash.slice(1);
+        const pageName = controller.getPageController(hash).getValue();
+        const thisNode = findElementById(tree, idPrefix + '-node');
+        if (null === thisNode) { // check if this node has not been initialized yet
+            const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
+            observableNavigationAnchors.add(newNavPoint);
+        } else {
+            // relocate node
+            console.log(thisNode);
+            moveChildNode(thisNode, oldParent, newParent);
+        }
+    };
+
+    /**
      * A function that moves childNode from oldParent to newParent.
      *
      * @param { !HTMLElement } childNode
@@ -266,45 +288,27 @@ const NavigationProjector = (controller, pinToElement) => {
     });
 
     controller.onNavigationHashAdd(hash => {
+        const pageController = controller.getPageController(hash);
+
+
 
         // CREATE BINDINGS
-        controller.getPageController(hash).onParentChanged((newParent, oldParent) => {
+        pageController.onParentChanged((newParent, oldParent) => {
             addNodeToTree(hash, newParent, oldParent);
             projectNavigation();
         });
 
-        controller.getPageController(hash).onActiveChanged((newActive, oldActive) => {
+        pageController.onActiveChanged((newActive, oldActive) => {
             setActiveCSSClass(hash, newActive, oldActive);
             setParentActiveCSSClass(hash, newActive);
             setPageTitle(hash, newActive);
         });
 
-        controller.getPageController(hash).onIconChanged(newIcon => setIconSource(hash, newIcon));
+        pageController.onIconChanged(newIcon => setIconSource(pageController, newIcon));
         // END
     });
 
     /* ********************* Utility functions for bindings ***************************** */
-    /**
-     * A utility function that adds the given hash as a node the newParent
-     * and removes it from the oldParent.
-     *
-     * @param { !String } hash
-     * @param { ?PageControllerType } newParent
-     * @param { ?PageControllerType } oldParent
-     */
-    const addNodeToTree = (hash, newParent, oldParent) => {
-        const idPrefix = hash.slice(1);
-        const pageName = controller.getPageController(hash).getValue();
-        const thisNode = findElementById(tree, idPrefix + '-node');
-        if (null === thisNode) { // check if this node has not been initialized yet
-            const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
-            observableNavigationAnchors.add(newNavPoint);
-        } else {
-            // relocate node
-            console.log(thisNode);
-            moveChildNode(thisNode, oldParent, newParent);
-        }
-    };
 
     /**
      * A utility function that sets the active CSS class for the given hash
@@ -384,10 +388,18 @@ const NavigationProjector = (controller, pinToElement) => {
      * A utility function that sets the icon source for the given hash to newIcon.
      *
      * @function
-     * @param { !String } hash
+     * @param { !PageControllerType } pageController
      * @param { !String } newIcon
      */
-    const setIconSource = (hash, newIcon) => {
-
+    const setIconSource = (pageController, newIcon) => {
+        const idPrefix = pageController.getHash().slice(1);
+        const overviewIcon = findElementById(overviewContentWrapper, idPrefix + '-overview-icon');
+        const detailIcon   = findElementById(tree, idPrefix + '-detail-icon');
+        if (null === pageController.getParent() && null !== overviewIcon) {
+            overviewIcon.src = newIcon;
+            detailIcon.src = newIcon;
+        } else if (null !== detailIcon) {
+            detailIcon.src = './navigation/icons/line.png';
+        }
     }
 };
