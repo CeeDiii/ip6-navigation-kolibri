@@ -9,7 +9,6 @@ export { NavigationController }
  * The controller passes the website logo path, the homepage, the websites name and the page controllers to the {@link NavigationModel}.
  * @typedef NavigationControllerType
  * @property { (pageController: PageControllerType) => Boolean }                   addPageController        - a function that adds a page controller to the navigation controller and adds the page hash to the {@link NavigationModel}.
- * @property { (errorKey: String, pageController: PageControllerType) => Boolean } addErrorPageController   - a function that adds an error page controller and adds the error key as a hash to the {@link NavigationModel}. this type of page controller is used to customize http error handling.
  * @property { (pageHash: String) => PageControllerType }                          getPageController        - a function that returns the page controller of a specific hash.
  * @property { (pageHash: String) => void }                                        deletePageController     - a function that deletes the page controller of a specific hash.
  * @property { (newHomepage: String) => void }      setHomePage      - a function that sets the homepage in the {@link NavigationModel}. the homepage is the fallback page which gets opened when no hash is provided in the request url.
@@ -116,15 +115,6 @@ const NavigationController = () => {
                 const hash = pageController.getHash();
                 pageControllers[hash] = pageController;
                 navigationModel.addNavigationHash(hash);
-                return true;
-            } else {
-                return false;
-            }
-        },
-        addErrorPageController: (errorKey, pageController) => {
-            if (pageController && pageControllers[pageController.getHash()] === undefined) {
-                pageControllers['#' + errorKey] = pageController;
-                navigationModel.addNavigationHash('#' + errorKey);
                 return true;
             } else {
                 return false;

@@ -52,7 +52,7 @@ formsPageController.setIcon('./navigation/icons/forms.svg');
 formsPageController.setNavigational(false);
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
-const welcomePageController = PageController("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", null);
+const welcomePageController = PageController("welcome", null);
 welcomePageController.setIcon('./navigation/icons/cute-robot.svg');
 WelcomePageProjector(welcomePageController, pinToContentElement, './pages/welcome/welcome.html');
 
@@ -81,7 +81,7 @@ const formStructure = [
     {value: "",           label: "Color",  name: "color",  type: COLOR    }
 ];
 const simpleFormController = SimpleFormController(formStructure);
-const simpleFormPageController = PageController("simpleForm", [simpleFormController]);
+const simpleFormPageController = PageController("simpleform", [simpleFormController]);
 simpleFormPageController.setIcon('./navigation/icons/simpleform.svg');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
@@ -105,10 +105,6 @@ debugController.setVisible(false);
 const pinToDebugElement = document.getElementById('debug');
 debugController.setIcon('./navigation/icons/bug.svg');
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
-
-// navigationController.addErrorPageController('E403', errorForbiddenController);
-// navigationController.addErrorPageController('E404', errorNotFoundController);
-
 
 navigationController.addPageController(errorForbiddenController);
 navigationController.addPageController(errorNotFoundController);

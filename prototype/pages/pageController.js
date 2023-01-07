@@ -24,7 +24,8 @@ export { PageController }
  * @property { () => String } getHash - a getter function that returns the hash of the page.
  * @property { (newValue: String) => void } setValue - a setter function that sets the newValue of the page.
  * @property { () => String } getValue - a getter function that returns the value of the page.
- * @property { (iconPathOrName: String) => void } setIcon - a setter function that sets the newValue of the page.
+ * @property { (iconPath: String) => void } setIcon - a setter function that sets the newValue of the page.
+ * @property { () => String } getIcon - a setter function that sets the newValue of the page.
  * @property { (isActive: Boolean) => void } setActive - a setter function that sets the active state of the page.
  * @property { () => Boolean } isActive - a getter function that returns the active state of the page.
  * @property { (isVisited: Boolean) => void } setVisited - a setter function that sets the visitedState of the page.

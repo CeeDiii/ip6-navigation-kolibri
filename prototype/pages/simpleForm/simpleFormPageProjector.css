@@ -1,10 +1,10 @@
-#content .simpleForm {
+#content .simpleform {
     background-color: white; /*only needed for chrome :-(*/
     max-width: 42em;
     margin:    3em auto 3em auto;
 }
 
-#content .simpleForm fieldset {
+#content .simpleform fieldset {
     padding: 2em;
     display: grid;
     grid-template-columns: max-content max-content;

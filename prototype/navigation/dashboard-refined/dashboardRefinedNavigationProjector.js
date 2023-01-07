@@ -151,6 +151,33 @@ const NavigationProjector = (controller, pinToElement) => {
         replaceRootNodeHashesWithFirstChildHashes(overviewContentWrapper);
     };
 
+
+    /**
+     * A function that projects a overview node to the overview content wrapper if a node is root.
+     *
+     * @function
+     * @param { !PageControllerType } pageController - the pageController for which you want to render a overview node - mandatory
+     * @return { void }
+     */
+    const projectOverviewNode = pageController => {
+        const idPrefix = pageController.getHash().slice(1);
+
+        const overviewNode = findElementById(overviewContentWrapper, idPrefix + '-overview-node');
+
+        if (null === pageController.getParent() && null === overviewNode) {
+            const [overviewNavPointNode] = dom(`
+                <div class="row" id="${idPrefix}-overview-node" >
+                    <a><img id="${idPrefix}-overview-icon" src="${pageController.getIcon()}" alt="${pageController.getValue()}-icon"></a>
+                </div>
+            `);
+            overviewContentWrapper.append(overviewNavPointNode);
+        } else if (null === pageController.getParent() && null !== overviewNode) {
+            overviewNode.src = pageController.getIcon();
+        } else if (null !== pageController.getParent() && null !== overviewNode) {
+            overviewContentWrapper.removeChild(overviewNode);
+        }
+    };
+
     /**
      * A helper function that replaces the navigation hashes for root nodes
      * with the hash of their first child.
@@ -162,13 +189,13 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const replaceRootNodeHashesWithFirstChildHashes = overviewContentWrapper => {
         // change navigation hash for root
-        for(const rootNode of overviewWrapper.getElementsByClassName('row')) {
+        for(const rootNode of overviewContentWrapper.getElementsByClassName('row')) {
             if(undefined !== rootNode) {
                 const rootNodeId = rootNode.id;
                 const rootIdPrefix = rootNodeId.substring(0, rootNodeId.indexOf('-'));
                 const rootNodeInDetailWrapper = findElementById(tree, rootIdPrefix + '-node');
-                if(null !== rootNodeInDetailWrapper && 1 === rootNodeInDetailWrapper.children.length) {
-                    const firstNavigationalChild = rootNodeInDetailWrapper.getElementsByTagName('a')[0];
+                if(null !== rootNodeInDetailWrapper && 1 < rootNodeInDetailWrapper.children.length) {
+                    const firstNavigationalChild = rootNodeInDetailWrapper.getElementsByTagName('a')[1];
                     rootNode.firstElementChild.href = firstNavigationalChild.hash;
 
                 }
@@ -257,25 +284,6 @@ const NavigationProjector = (controller, pinToElement) => {
         }
     };
 
-    const projectOverviewNode = pageController => {
-        const idPrefix = pageController.getHash().slice(1);
-
-        const overviewNode = findElementById(overviewContentWrapper, idPrefix + '-overview-node');
-
-        if (null === pageController.getParent() && null === overviewNode) {
-            const [overviewNavPointNode] = dom(`
-                <div class="row" id="${idPrefix}-overview-node" >
-                    <a><img id="${idPrefix}-overview-icon" src="${pageController.getIcon()}" alt="${pageController.getValue()}-icon"></a>
-                </div>
-            `);
-            overviewContentWrapper.append(overviewNavPointNode);
-        } else if (null === pageController.getParent() && null !== overviewNode) {
-            overviewNode.src = pageController.getIcon();
-        } else if (null !== pageController.getParent() && null !== overviewNode) {
-            overviewContentWrapper.removeChild(overviewNode);
-        }
-    };
-
     observableNavigationAnchors.onAdd(anchor => controller.registerAnchorClickListener(anchor));
 
     controller.onWebsiteNameChanged(newWebsiteName => {
@@ -303,8 +311,6 @@ const NavigationProjector = (controller, pinToElement) => {
 
     controller.onNavigationHashAdd(hash => {
         const pageController = controller.getPageController(hash);
-
-
 
         // CREATE BINDINGS
         pageController.onParentChanged((newParent, oldParent) => {
@@ -364,7 +370,7 @@ const NavigationProjector = (controller, pinToElement) => {
         const rootParent = getRootParentNode(hash);
         if (null !== rootParent) {
             const idPrefix = rootParent.getHash().slice(1);
-            setActiveCSSClass(rootParent.getHash(), newActive, oldActive)
+            setActiveCSSClass(rootParent.getHash(), newActive, oldActive);
             const overviewRootNode = findElementById(overviewContentWrapper, idPrefix+'-overview-node');
             const overviewIcon = overviewRootNode.getElementsByTagName('img')[0];
             toggleCSSClass(overviewIcon, 'active', newActive);
@@ -436,10 +442,17 @@ const NavigationProjector = (controller, pinToElement) => {
         } else if (null !== detailIcon) {
             detailIcon.src = './navigation/icons/line.png';
         }
-    }
+    };
 
+    /**
+     * A utility function that adds or removes the invisible CSS class to a given node with the hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } isVisible
+     * @return { void }
+     */
     const handleVisibleChange = (hash, isVisible) => {
-        console.log(hash)
         const idPrefix = hash.slice(1);
         const overviewNode = findElementById(overviewContentWrapper, idPrefix + '-overview-node');
         const detailNode   = findElementById(tree, idPrefix + '-node');
