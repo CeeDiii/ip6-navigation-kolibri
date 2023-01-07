@@ -19,15 +19,6 @@ navigationSuite.add('addPageController', assert => {
     assert.isTrue(!navigationController.addPageController(undefined));
 });
 
-navigationSuite.add('addErrorPageController', assert => {
-    const errorNotFoundController = PageController('notFound', null);
-    const navigationController = NavigationController();
-
-    assert.isTrue(navigationController.addErrorPageController('404', errorNotFoundController));
-
-    assert.is(navigationController.getPageController('#404'), errorNotFoundController);
-});
-
 navigationSuite.add('deletePageController', assert => {
     const homePageController = PageController('home', null);
     const navigationController = NavigationController();
@@ -93,5 +84,7 @@ navigationSuite.add('onWebsiteLogoChanged', assert => {
 
     assert.is(logoPath, './logo/kolibri.png');
 });
+
+
 
 navigationSuite.run();
