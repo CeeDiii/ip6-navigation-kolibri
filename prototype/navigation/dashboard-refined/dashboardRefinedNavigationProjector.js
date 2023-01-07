@@ -24,46 +24,40 @@ const NavigationProjector = (controller, pinToElement) => {
 
     // ************** Create overview and detail wrapper *******************
 
-    const overviewWrapper = document.createElement('div');
-    overviewWrapper.classList.add('overview');
-
-    // create overview header
-    const overviewLogo = dom(`
-            <div class="logo">
-                <img src="" alt="website-logo">
-            </div>
-        `);
-
-    // create overview content wrapper
-    const overviewContentWrapper = document.createElement('div');
-    overviewContentWrapper.classList.add('content');
-    overviewContentWrapper.id = 'overview-content-wrapper';
-
     const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
 
-    // create overview footer
-    const overviewToggle = dom(`
-            <div class="toggle" onclick="document.getElementById('dashboard-refined-nav').classList.toggle('open')">
-                <img src="${arrowSVGPathRelativeIndex}" alt="arrow">
-            </div>
-        `);
+    const [overviewWrapper,  overviewLogo, overviewContentWrapper, overviewToggle] = dom(`
+        <!-- create overview wrapper -->
+        <div class="overview"></div>
+        
+        <!-- create overview header -->
+        <div class="logo">
+            <img src="" alt="website-logo">
+        </div>
+        
+        <!-- create overview content wrapper -->
+        <div class="content" id="overview-content-wrapper"></div>
+        
+        <!-- create overview footer -->
+        <div class="toggle" onclick="document.getElementById('dashboard-refined-nav').classList.toggle('open')">
+            <img src="${arrowSVGPathRelativeIndex}" alt="arrow">
+        </div>
+    `);
 
-    // create detail header
-    const detailHeader = dom(`
+    const [detailWrapper, detailHeader, detailTree] = dom(`
+            <!-- Create wrapper for detail -->
+            <div class="detail"></div>
+
+            <!-- Create header -->
             <div class="header">
                 <div>
                     Website Title
                 </div>
             </div>
+            
+            <!-- Create wrapper for content -->
+            <div class="tree"></div>
         `);
-
-    // create detail content div for tree
-    const tree = document.createElement('div');
-    tree.classList.add('tree');
-
-    // create detail content wrapper
-    const detailWrapper = document.createElement('div');
-    detailWrapper.classList.add('detail');
 
     // ************** END overview and detail wrapper ********************
 
@@ -94,12 +88,12 @@ const NavigationProjector = (controller, pinToElement) => {
 
         if (null === parentNode) {
             // node is root
-            tree.append(treeNode);
+            detailTree.append(treeNode);
         } else {
-            const parentNodeInTree = findElementById(tree, parentNode.getHash() +'-node');
+            const parentNodeInTree = findElementById(detailTree, parentNode.getHash() +'-node');
             if (null === parentNodeInTree) {
                 // if parent is not yet element of the tree we will just append the node
-                tree.append(treeNode);
+                detailTree.append(treeNode);
             } else {
                 // node is child of an existing parent node in the tree
                 parentNodeInTree.append(treeNode);
@@ -119,13 +113,12 @@ const NavigationProjector = (controller, pinToElement) => {
         navigationDiv.id = 'dashboard-refined-nav';
         navigationDiv.classList.add('dashboard-refined-nav');
 
-        overviewWrapper.append(...overviewLogo);
+        overviewWrapper.append(overviewLogo);
         overviewWrapper.append(overviewContentWrapper);
-        overviewWrapper.append(...overviewToggle);
+        overviewWrapper.append(overviewToggle);
 
-        // TODO check if append would work
-        detailWrapper.prepend(tree);
-        detailWrapper.prepend(...detailHeader);
+        detailWrapper.append(detailHeader);
+        detailWrapper.append(detailTree);
 
         navigationDiv.append(overviewWrapper, detailWrapper);
     };
@@ -150,7 +143,6 @@ const NavigationProjector = (controller, pinToElement) => {
         const overviewContentWrapper = document.getElementById('overview-content-wrapper');
         replaceRootNodeHashesWithFirstChildHashes(overviewContentWrapper);
     };
-
 
     /**
      * A function that projects a overview node to the overview content wrapper if a node is root.
@@ -193,7 +185,7 @@ const NavigationProjector = (controller, pinToElement) => {
             if(undefined !== rootNode) {
                 const rootNodeId = rootNode.id;
                 const rootIdPrefix = rootNodeId.substring(0, rootNodeId.indexOf('-'));
-                const rootNodeInDetailWrapper = findElementById(tree, rootIdPrefix + '-node');
+                const rootNodeInDetailWrapper = findElementById(detailTree, rootIdPrefix + '-node');
                 if(null !== rootNodeInDetailWrapper && 1 < rootNodeInDetailWrapper.children.length) {
                     const firstNavigationalChild = rootNodeInDetailWrapper.getElementsByTagName('a')[1];
                     rootNode.firstElementChild.href = firstNavigationalChild.hash;
@@ -233,7 +225,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * @return { void }
      */
     const appendNode = (node, parentIdPrefix) => {
-        const parentNode = findElementById(tree, parentIdPrefix + '-node');
+        const parentNode = findElementById(detailTree, parentIdPrefix + '-node');
         if (null !== parentNode) {
             parentNode.append(node);
         }
@@ -250,7 +242,7 @@ const NavigationProjector = (controller, pinToElement) => {
     const addNodeToTree = (hash, newParent, oldParent) => {
         const idPrefix = hash.slice(1);
         const pageName = controller.getPageController(hash).getValue();
-        const thisNode = findElementById(tree, idPrefix + '-node');
+        const thisNode = findElementById(detailTree, idPrefix + '-node');
         if (null === thisNode) { // check if this node has not been initialized yet
             const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
             observableNavigationAnchors.add(newNavPoint);
@@ -270,14 +262,14 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const moveChildNode = (childNode, oldParent, newParent) => {
         if (null === newParent) { // append node to root if newParent is null
-            tree.append(childNode);
+            detailTree.append(childNode);
         } else if (null === oldParent) { // check if old parent is root and move node from root to newParent
-            tree.removeChild(childNode);
+            detailTree.removeChild(childNode);
             const newParentIdPrefix = newParent.getHash().slice(1);
             appendNode(childNode, newParentIdPrefix);
         } else { // if new parent and old parent are not root, move node from oldParent to newParent
             const oldParentIdPrefix = oldParent.getHash().slice(1);
-            const oldParentChildrenNodeList = findElementById(tree, oldParentIdPrefix + '-node');
+            const oldParentChildrenNodeList = findElementById(detailTree, oldParentIdPrefix + '-node');
             oldParentChildrenNodeList.removeChild(childNode);
             const newParentIdPrefix = newParent.getHash().slice(1);
             appendNode(childNode, newParentIdPrefix);
@@ -288,16 +280,14 @@ const NavigationProjector = (controller, pinToElement) => {
 
     controller.onWebsiteNameChanged(newWebsiteName => {
         if (null !== newWebsiteName) {
-            const detailHeaderWrapper = detailHeader[0];
-            const detailHeaderText = detailHeaderWrapper.firstElementChild;
+            const detailHeaderText = detailHeader.firstElementChild;
             detailHeaderText.innerHTML = newWebsiteName;
         }
     });
 
     controller.onWebsiteLogoChanged(newWebsiteLogoSrc => {
         if (null !== newWebsiteLogoSrc) {
-            const logoWrapper = overviewLogo[0];
-            const logoImg = logoWrapper.getElementsByTagName('img')[0];
+            const logoImg = overviewLogo.getElementsByTagName('img')[0];
             logoImg.src = newWebsiteLogoSrc;
         }
     });
@@ -345,7 +335,7 @@ const NavigationProjector = (controller, pinToElement) => {
      */
     const setActiveCSSClass = (hash, newActive, oldActive) => {
         const idPrefix = hash.slice(1);
-        const activeElement = findElementById(tree, idPrefix + '-node');
+        const activeElement = findElementById(detailTree, idPrefix + '-node');
         const img = activeElement.getElementsByTagName('img')[0];
         const a   = activeElement.getElementsByTagName('a')[0];
         if (newActive && newActive !== oldActive) {
@@ -400,7 +390,6 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { HTMLElement } element
      * @param { String } cssClass
      * @param { Boolean } condition
-     * @return { void }
      */
     const toggleCSSClass = (element, cssClass, condition) => {
         if (condition) {
@@ -435,7 +424,7 @@ const NavigationProjector = (controller, pinToElement) => {
     const setIconSource = (pageController, newIcon) => {
         const idPrefix = pageController.getHash().slice(1);
         const overviewIcon = findElementById(overviewContentWrapper, idPrefix + '-overview-icon');
-        const detailIcon   = findElementById(tree, idPrefix + '-detail-icon');
+        const detailIcon   = findElementById(detailTree, idPrefix + '-detail-icon');
         if (null === pageController.getParent() && null !== overviewIcon && null !== detailIcon) {
             overviewIcon.src = newIcon;
             detailIcon.src = newIcon;
@@ -450,12 +439,11 @@ const NavigationProjector = (controller, pinToElement) => {
      * @function
      * @param { !String } hash
      * @param { !Boolean } isVisible
-     * @return { void }
      */
     const handleVisibleChange = (hash, isVisible) => {
         const idPrefix = hash.slice(1);
         const overviewNode = findElementById(overviewContentWrapper, idPrefix + '-overview-node');
-        const detailNode   = findElementById(tree, idPrefix + '-node');
+        const detailNode   = findElementById(detailTree, idPrefix + '-node');
         if (null !== overviewNode) {
             toggleCSSClass(overviewNode, 'invisible', !isVisible);
         }
