@@ -28,12 +28,12 @@ import { SimpleFormPageProjector }                         from "./pages/simpleF
 const pinToContentElement = document.getElementById("content");
 
 // Assembling 403 error page as example. Can be modified
-const errorForbiddenController = PageController("forbidden", null);
+const errorForbiddenController = PageController("E403", null);
 errorForbiddenController.setVisible(false);
 ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
 
 // Assembling 404 error page as example. Can be modified
-const errorNotFoundController = PageController("pagenotfound", null);
+const errorNotFoundController = PageController("E404", null);
 errorNotFoundController.setVisible(false);
 PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
 
@@ -52,7 +52,7 @@ formsPageController.setIcon('./navigation/icons/forms.svg');
 formsPageController.setNavigational(false);
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
-const welcomePageController = PageController("welcome", null);
+const welcomePageController = PageController("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", null);
 welcomePageController.setIcon('./navigation/icons/cute-robot.svg');
 WelcomePageProjector(welcomePageController, pinToContentElement, './pages/welcome/welcome.html');
 
@@ -106,8 +106,12 @@ const pinToDebugElement = document.getElementById('debug');
 debugController.setIcon('./navigation/icons/bug.svg');
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
 
-navigationController.addErrorPageController('E403', errorForbiddenController);
-navigationController.addErrorPageController('E404', errorNotFoundController);
+// navigationController.addErrorPageController('E403', errorForbiddenController);
+// navigationController.addErrorPageController('E404', errorNotFoundController);
+
+
+navigationController.addPageController(errorForbiddenController);
+navigationController.addPageController(errorNotFoundController);
 navigationController.addPageController(debugController);
 navigationController.addPageController(homePageController);
 navigationController.addPageController(masterDetailViewsPageController);
@@ -125,3 +129,4 @@ carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
 
+navigationController.setDebugMode(true);
