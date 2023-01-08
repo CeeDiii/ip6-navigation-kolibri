@@ -25,31 +25,36 @@ export { DebugPageProjector }
  */
 const DebugPageProjector = (navigationController, pageController, pinToElement) => {
     const pageWrapper    = pinToElement;
-    const contentWrapper = document.createElement('div');
 
-
-    const debugTable      = document.createElement('table');
-    debugTable.id         = 'debug-table';
-    const thead           = document.createElement('thead');
-    const tbody           = document.createElement('tbody');
-    const bubble          = document.createElement('div');
-    bubble.classList.add('closed-debug-bubble');
-    bubble.onclick = () => contentWrapper.classList.toggle('open');
     const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
-    const closeButton = dom(`
-            <div class="close-button">
-                <img src="${arrowSVGPathRelativeIndex}" alt="arrow">
-            </div>
-        `);
-    closeButton[0].onclick = () => contentWrapper.classList.toggle('open');
-    const headerRow       = document.createElement('tr');
-    const nameHeader      = document.createElement('th');
-    nameHeader.innerText  = 'Observable Name';
-    const valueHeader     = document.createElement('th');
-    valueHeader.innerText = 'Observable Value';
-    thead.append(nameHeader, valueHeader, ...closeButton);
-    debugTable.append(thead, tbody);
-    debugTable.append(headerRow);
+    const [contentWrapper, debugTable, bubble, closeButton] = dom(`
+        <!-- Create content wrapper -->
+        <div></div>
+
+        <!-- Create debug table -->
+        <table id="debug-table">
+            <thead>
+                <tr>
+                    <td>Observable Name</td>
+                    <td>Observable Value</td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        
+        <!-- Create bubble -->
+        <div class="closed-debug-bubble"></div>
+        
+        <!-- Create close button -->
+        <div class="close-button">
+            <img src="${arrowSVGPathRelativeIndex}" alt="arrow">
+        </div>
+    `);
+
+    const tbody           = debugTable.getElementsByTagName('tbody')[0];
+    bubble.onclick        = () => contentWrapper.classList.toggle('open');
+    closeButton.onclick = () => contentWrapper.classList.toggle('open');
+
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.
