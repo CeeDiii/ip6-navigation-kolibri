@@ -27,6 +27,8 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
     const pageWrapper    = pinToElement;
 
     const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
+
+    // Initialize the dom components used on this page
     const [contentWrapper, debugTable, bubble, closeButton] = dom(`
         <!-- Create content wrapper -->
         <div></div>
@@ -51,9 +53,7 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
         </div>
     `);
 
-    const tbody           = debugTable.getElementsByTagName('tbody')[0];
-    bubble.onclick        = () => contentWrapper.classList.toggle('open');
-    closeButton.onclick = () => contentWrapper.classList.toggle('open');
+    const tbody = debugTable.getElementsByTagName('tbody')[0];
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.
@@ -61,7 +61,11 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      * @function
      * @return { void }
      */
-    const initialize = () => contentWrapper.append(debugTable, bubble);
+    const initialize = () => {
+        bubble.onclick        = () => contentWrapper.classList.toggle('open');
+        closeButton.onclick = () => contentWrapper.classList.toggle('open');
+        contentWrapper.append(debugTable, bubble);
+    };
 
     /**
      * A function that creates the DOM binding and initializes the page on first activation.
@@ -86,37 +90,52 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
         tbody.innerHTML = '';
         if (null !== debugController) {
             for (const property in debugController) {
-                if ((property.startsWith('get') || property.startsWith('is')) && property !== 'getPageContentControllers') {
-                    let observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
-                    let observableValue = eval(`debugController.${property}()`);
+                if (property.startsWith('get') || property.startsWith('is')) {
+                    // add the properties of the controller that we want to ignore
+                    const ignoreProperties = ['getPageContentControllers'];
+                    bindProperty(property, debugController, ignoreProperties);
 
-                    if (typeof eval(observableValue.getHash) === 'function') {
-                        observableName = observableName + '_Controller';
-                        observableValue = observableValue.getHash();
-                    }
-
-                    addListItem(observableName, observableValue, debugController);
                 } else if (property.startsWith('on') && property.endsWith('Changed')) {
-                    let observableName = property.slice(2, property.length-7);
-                    let observableValue = null;
-
-                    if (typeof eval(`debugController.get${observableName}`) === 'function' ) {
-                        observableValue = eval(`debugController.get${observableName}()`)
-                    } else if (typeof eval(`debugController.is${observableName}`) === 'function' ) {
-                        observableValue = eval(`debugController.is${observableName}()`)
-                    }
-
-                    if (null !== observableValue && typeof eval(observableValue.getHash) === 'function') {
-                        observableName = observableName + '_Controller';
-                        observableValue = observableValue.getHash();
-                    }
-
-                    eval(`debugController.${property}(val => {
-                        updateListItem(observableName, val);
-                    })`);
+                    registerPropertyUpdateHandler(property, debugController);
                 }
             }
         }
+    };
+
+    /**
+     * A function that binds properties from the given debug controller,
+     * so they can be observed and changed in the debugger while ignoring the given ignoreProperties.
+     *
+     * @param { String } property - the property that should be updated onChange
+     * @param { PageControllerType } debugController - the page controller you want to debug
+     * @param { String[] } ignoreProperties - the properties you want to ignore in the debugger
+     */
+    const bindProperty = (property, debugController, ignoreProperties) => {
+        if (!ignoreProperties.includes(property)) {
+            let observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
+            let observableValue = eval(`debugController.${property}()`);
+
+            if (typeof eval(observableValue.getHash) === 'function') {
+                observableName = observableName + '_Controller';
+                observableValue = observableValue.getHash();
+            }
+            addListItem(observableName, observableValue, debugController);
+        }
+    };
+
+    /**
+     * A function that registers an update handler on the property via the onChange callback from Kolibri.
+     *
+     * @function
+     * @param { String } property - the property that should be updated onChange
+     * @param { PageControllerType } debugController - the page controller you want to debug
+     */
+    const registerPropertyUpdateHandler = (property, debugController) => {
+        const observableName = property.slice(2, property.length-7);
+
+        eval(`debugController.${property}(val => {
+            updateListItem(observableName, val);
+        })`);
     };
 
     pageController.onValueChanged(newValue => {
