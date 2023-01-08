@@ -140,6 +140,7 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
             observableValue = eval(`debugController.is${observableName}()`)
         }
 
+        // do not remove this code snippet as it is used by the updateListItem function to properly work
         if (null !== observableValue && typeof eval(observableValue.getHash) === 'function') {
             observableName = observableName + '_Controller';
             observableValue = observableValue.getHash();
