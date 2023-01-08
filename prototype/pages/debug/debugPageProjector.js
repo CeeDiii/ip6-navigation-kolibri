@@ -131,7 +131,19 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      * @param { PageControllerType } debugController - the page controller you want to debug
      */
     const registerPropertyUpdateHandler = (property, debugController) => {
-        const observableName = property.slice(2, property.length-7);
+        let observableName = property.slice(2, property.length-7);
+        let observableValue = null;
+
+        if (typeof eval(`debugController.get${observableName}`) === 'function' ) {
+            observableValue = eval(`debugController.get${observableName}()`)
+        } else if (typeof eval(`debugController.is${observableName}`) === 'function' ) {
+            observableValue = eval(`debugController.is${observableName}()`)
+        }
+
+        if (null !== observableValue && typeof eval(observableValue.getHash) === 'function') {
+            observableName = observableName + '_Controller';
+            observableValue = observableValue.getHash();
+        }
 
         eval(`debugController.${property}(val => {
             updateListItem(observableName, val);
