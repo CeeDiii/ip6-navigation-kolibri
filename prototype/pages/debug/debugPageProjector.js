@@ -55,7 +55,6 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
     bubble.onclick        = () => contentWrapper.classList.toggle('open');
     closeButton.onclick = () => contentWrapper.classList.toggle('open');
 
-
     /**
      * A function that initializes the content and stores it in the pageWrapper.
      *
@@ -68,10 +67,10 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      * A function that creates the DOM binding and initializes the page on first activation.
      *
      * @function
-     * @param { ?PageControllerType } parent - the page controller we want to debug
+     * @param { ?PageControllerType } debugController - the page controller we want to debug
      * @return { void }
      */
-    const projectPage = parent => {
+    const projectPage = debugController => {
         // initialize content on first call
         if (contentWrapper.firstChild === null) {
             initialize();
@@ -85,26 +84,26 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
         }
 
         tbody.innerHTML = '';
-        if (null !== parent) {
-            for (const property in parent) {
+        if (null !== debugController) {
+            for (const property in debugController) {
                 if ((property.startsWith('get') || property.startsWith('is')) && property !== 'getPageContentControllers') {
                     let observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
-                    let observableValue = eval(`parent.${property}()`);
+                    let observableValue = eval(`debugController.${property}()`);
 
                     if (typeof eval(observableValue.getHash) === 'function') {
                         observableName = observableName + '_Controller';
                         observableValue = observableValue.getHash();
                     }
 
-                    addListItem(observableName, observableValue, parent);
+                    addListItem(observableName, observableValue, debugController);
                 } else if (property.startsWith('on') && property.endsWith('Changed')) {
                     let observableName = property.slice(2, property.length-7);
                     let observableValue = null;
 
-                    if (typeof eval(`parent.get${observableName}`) === 'function' ) {
-                        observableValue = eval(`parent.get${observableName}()`)
-                    } else if (typeof eval(`parent.is${observableName}`) === 'function' ) {
-                        observableValue = eval(`parent.is${observableName}()`)
+                    if (typeof eval(`debugController.get${observableName}`) === 'function' ) {
+                        observableValue = eval(`debugController.get${observableName}()`)
+                    } else if (typeof eval(`debugController.is${observableName}`) === 'function' ) {
+                        observableValue = eval(`debugController.is${observableName}()`)
                     }
 
                     if (null !== observableValue && typeof eval(observableValue.getHash) === 'function') {
@@ -112,7 +111,7 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
                         observableValue = observableValue.getHash();
                     }
 
-                    eval(`parent.${property}(val => {
+                    eval(`debugController.${property}(val => {
                         updateListItem(observableName, val);
                     })`);
                 }
@@ -137,6 +136,15 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
         }
     });
 
+
+    // **************************** UTILITY FUNCTIONS ************************************************ /
+
+    /**
+     * A function that updates an existing list entry in the debug table
+     *
+     * @param { String } observableName - the name of the observable that should be updated
+     * @param { Boolean | String | PageControllerType } observableValue - the new value
+     */
     const updateListItem = (observableName, observableValue) => {
         if(typeof observableValue === "boolean") {
             const input = tbody.querySelector('#' + observableName + '-checkbox');
@@ -151,68 +159,107 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
         }
     };
 
-    const addListItem = (observableName, observableValue, parent) => {
-        const row = document.createElement('tr');
-        row.id = observableName+'-row';
-        const header = document.createElement('td');
-        header.id = observableName + '-row-header';
-        header.innerHTML = observableName;
-        const value = document.createElement('td');
-        value.id = observableName + '-row-value';
+    /**
+     * A function that adds a list entry to the debug table.
+     *
+     * @param { String } observableName - the name of the observable that should be created
+     * @param { Boolean | String } observableValue - the initial value
+     * @param { PageControllerType } debugController - the page controller that will be updated onchange
+     */
+    const addListItem = (observableName, observableValue, debugController) => {
+
+        // we have to create an intermediate table because the dom function creates a holder <div></div> and divs do not take table-rows as direct children.
+        const [table] = dom(`
+            <table>
+                <tr id="${observableName}-row">
+                    <td id="${observableName}-row-header">${observableName}</td>
+                    <td id="${observableName}-row-value"></td>
+                </tr>
+            </table>
+        `);
+
+        const row = table.querySelector('#' + observableName + '-row');
+        const value = row.querySelector('#' + observableName + '-row-value');
 
         if(typeof observableValue === "boolean") {
-            const toggle = document.createElement('div');
-            toggle.id    = observableName + '-toggle';
-            toggle.classList.add('toggle-switch');
-            toggle.onclick = () => {
-                if (!toggle.classList.contains('disabled')) {
-                    row.querySelector('#' + observableName + '-checkbox').click();
-                    toggle.classList.toggle('selected');
-                }
-            };
-            if(observableValue) {
-                toggle.classList.add('selected');
-            }
-            const toggleHead  = document.createElement('div');
-            const checkbox    = document.createElement('input');
-            checkbox.id       = observableName + '-checkbox';
-            checkbox.classList.add('toggle-checkbox');
-            checkbox.type     = 'checkbox';
-            checkbox.checked  = observableValue;
-            toggle.append(toggleHead);
-            if (typeof eval(`parent.set${observableName}`) === 'function') {
-                checkbox.onchange = e => eval(`parent.set${observableName}(e.target.checked)`);
-            } else {
-                toggle.classList.add('disabled');
-                checkbox.disabled = true;
-            }
-            value.append(toggle, checkbox);
+            handleBooleanObservable(observableName, observableValue, debugController, row, value);
         } else {
-            const input    = document.createElement('input');
-            input.id       = observableName + '-input';
-            input.type     = 'text';
-            input.value    = observableValue;
-            if (observableName.includes('_Controller')) {
-                observableName = observableName.substring(0, observableName.indexOf('_Controller'));
-                if (typeof eval(`parent.set${observableName}`) === 'function') {
-                    input.onchange = e => eval(`parent.set${observableName}(navigationController.getPageController(e.target.value))`);
-                } else {
-                    input.disabled = true;
-                }
-                value.append(input);
-            } else {
-                if (typeof eval(`parent.set${observableName}`) === 'function') {
-                    input.onchange = e => eval(`parent.set${observableName}(e.target.value)`);
-                } else {
-                    input.disabled = true;
-                }
-                value.append(input);
-            }
+            handleStringOrPageControllerObservable(observableName, observableValue, debugController, row, value);
         }
 
-        row.append(header);
         row.append(value);
         tbody.append(row);
-    }
+    };
+
+    /**
+     * A utility function that creates a switch for boolean observable values and adds it to the debug table.
+     *
+     * @function
+     * @param { String } observableName - the name of the observable you need to handle
+     * @param { Boolean } observableValue - the value of the observable you need to handle
+     * @param { PageControllerType } debugController - the controller that will be bound to changes
+     * @param { HTMLTableRowElement } row - the row in which the name and value are displayed
+     * @param { HTMLTableDataCellElement } value - the cell in which the value is displayed
+     */
+    const handleBooleanObservable = (observableName, observableValue, debugController, row, value) => {
+        const [toggle, checkbox] = dom(`
+            <div id="${observableName}-toggle" class="toggle-switch">
+                <div></div>
+            </div>
+            
+            <input id="${observableName}-checkbox" type="checkbox" class="toggle-checkbox" checked="${observableValue}">
+        `);
+
+        toggle.onclick = () => {
+            if (!toggle.classList.contains('disabled')) {
+                row.querySelector('#' + observableName + '-checkbox').click();
+                toggle.classList.toggle('selected');
+            }
+        };
+        if(observableValue) {
+            toggle.classList.add('selected');
+        }
+
+        if (typeof eval(`debugController.set${observableName}`) === 'function') {
+            checkbox.onchange = e => eval(`debugController.set${observableName}(e.target.checked)`);
+        } else {
+            toggle.classList.add('disabled');
+            checkbox.disabled = true;
+        }
+        value.append(toggle, checkbox);
+    };
+
+    /**
+     * A utility function that creates a text input for string or PageControllerType observable values and adds it to the debug table.
+     *
+     * @function
+     * @param { String } observableName - the name of the observable you need to handle
+     * @param { String } observableValue - the value of the observable you need to handle
+     * @param { PageControllerType } debugController - the controller that will be bound to changes
+     * @param { HTMLTableRowElement } row - the row in which the name and value are displayed
+     * @param { HTMLTableDataCellElement } value - the cell in which the value is displayed
+     */
+    const handleStringOrPageControllerObservable = (observableName, observableValue, debugController, row, value) => {
+        const [input] = dom(`
+            <input id="${observableName}-input" type="text" value="${observableValue}">
+        `);
+
+        if (observableName.includes('_Controller')) {
+            observableName = observableName.substring(0, observableName.indexOf('_Controller'));
+            if (typeof eval(`debugController.set${observableName}`) === 'function') {
+                input.onchange = e => eval(`debugController.set${observableName}(navigationController.getPageController(e.target.value))`);
+            } else {
+                input.disabled = true;
+            }
+            value.append(input);
+        } else {
+            if (typeof eval(`debugController.set${observableName}`) === 'function') {
+                input.onchange = e => eval(`debugController.set${observableName}(e.target.value)`);
+            } else {
+                input.disabled = true;
+            }
+            value.append(input);
+        }
+    };
 };
 
