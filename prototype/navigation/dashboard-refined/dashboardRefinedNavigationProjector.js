@@ -84,6 +84,7 @@ const NavigationProjector = (controller, pinToElement) => {
             </div>
         `);
 
+        // append anchor to span
         treeNode.firstElementChild.append(anchor);
 
         if (null === parentNode) {
@@ -187,9 +188,19 @@ const NavigationProjector = (controller, pinToElement) => {
                 const rootIdPrefix = rootNodeId.substring(0, rootNodeId.indexOf('-'));
                 const rootNodeInDetailWrapper = findElementById(detailTree, rootIdPrefix + '-node');
                 if(null !== rootNodeInDetailWrapper && 1 < rootNodeInDetailWrapper.children.length) {
-                    const firstNavigationalChild = rootNodeInDetailWrapper.getElementsByTagName('a')[1];
-                    rootNode.firstElementChild.href = firstNavigationalChild.hash;
-
+                    const navigationalChildren = rootNodeInDetailWrapper.getElementsByTagName('a');
+                    // ignore that first child because it is the node itself
+                    for (let i = 1; i < navigationalChildren.length; i++) {
+                        const childHash = navigationalChildren[i].hash;
+                        const childPageController = controller.getPageController(childHash);
+                        if (childPageController.isNavigational() && childPageController.isVisible()) {
+                            rootNode.firstElementChild.href = childHash;
+                            break;
+                        } else {
+                            // if not child is navigational or visible reroute to 403 - forbidden
+                            rootNode.firstElementChild.href = '#E403';
+                        }
+                    }
                 }
             }
         }
@@ -318,7 +329,14 @@ const NavigationProjector = (controller, pinToElement) => {
 
         pageController.onIconChanged(newIcon => setIconSource(pageController, newIcon));
 
-        pageController.onVisibleChanged(isVisible => handleVisibleChange(hash, isVisible));
+        pageController.onVisibleChanged(isVisible => {
+            handleVisibleChange(hash, isVisible);
+            projectNavigation();
+        });
+
+        pageController.onNavigationalChanged(() => {
+            projectNavigation();
+        });
         // END
     });
 
