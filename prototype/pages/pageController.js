@@ -75,7 +75,7 @@ const PageController = (pageName, contentControllers) => {
                 let canAddParent = true;
                 // iterate through all parents and check if thisNode is already a parent in the hierarchy
                 while (null !== parent) {
-                    if (parent.getValue() === pageName) {
+                    if (parent.getHash() === pageModel.getPageObs(HASH).getValue()) {
                         console.error('Parent of a node cannot be a child of a node or the node itself.');
                         canAddParent = false;
                         break;
