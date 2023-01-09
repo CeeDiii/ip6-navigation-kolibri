@@ -23,19 +23,21 @@ const pinToContentElement = document.getElementById("content");
  As seen in the README.md we can do that by creating a PageController.
  The code below will give us a PageController, but we need a name for our homepage.
  */
-const homePageController = PageController("", null); //@TODO remove "home"
+const homePageController = PageController("home", null); //@TODO remove "home"
 
 /*
  Now we want to set an icon for our homePageController. A fitting icon would be a house icon which can be found under
  the following path: './pages/icons/house.svg'
  */
 // your code here
+homePageController.setIcon('./pages/icons/house.svg'); //@TODO remove
 
 /*
  The last step to get our page would be to call a PageProjector with our PageController, a PinToElement and the path
  to the HTML of our page. We have already created an HTML file for you under './pages/home.html' which you can use.
  */
 // your code here
+PageProjector(homePageController, pinToContentElement, './pages/home.html'); //@TODO remove
 
 
 /**
@@ -47,11 +49,13 @@ const homePageController = PageController("", null); //@TODO remove "home"
  navigation to as well. Go to the 'index.html' file and check if you can find a div we could use for that.
  */
 // your code here
+const pinToNavElement = document.getElementById("nav"); //@TODO remove
 
 /*
  Now we want to create our NavigationController for our SPA.
  */
 // your code here
+const navigationController = NavigationController(); //@TODO remove
 
 /*
  To add our navigation to our SPA we need to give our NavigationController and the pinToElement to our NavigationProjector.
@@ -59,6 +63,10 @@ const homePageController = PageController("", null); //@TODO remove "home"
  have to do that.
  */
 // your code here
+NavigationProjector(navigationController, pinToNavElement); //@TODO remove
+
+const pinToBreadCrumbElement = document.getElementById('bread-crumbs'); //@TODO remove
+BreadCrumbProjector(navigationController, pinToBreadCrumbElement); //@TODO remove
 
 /**
  * 3. Add your homepage to your navigation
@@ -69,6 +77,7 @@ const homePageController = PageController("", null); //@TODO remove "home"
  achievable by adding your PageController to your NavigationController.
  */
 // your code here
+navigationController.addPageController(homePageController); // @TODO remove
 
 /**
  * 4. More content is needed
@@ -82,6 +91,12 @@ const homePageController = PageController("", null); //@TODO remove "home"
  page to your existing SPA. We have prepared an 'about.html' file for you which you can add.
  */
 // your code here
+
+const aboutPageController = PageController("about", null); //@TODO remove
+aboutPageController.setIcon('./pages/icons/cute-robot.svg'); //@TODO remove
+PageProjector(aboutPageController, pinToContentElement, './pages/about.html'); //@TODO remove
+
+navigationController.addPageController(aboutPageController); //@TODO remove
 
 /**
  * 5. Wouldn't it be fun to add a breadcrumb feature to our SPA now?
@@ -98,6 +113,7 @@ const homePageController = PageController("", null); //@TODO remove "home"
  * The bubble state navigation is fun and all but we have seen it now, and we would like to exchange the navigation
  * to a new one. Can you exchange the BubbleStateNavigationProjector with the projector from the kolibi-flower?
  */
+// @TODO add Kolibri Flower to new architecture
 
 /**
  * 7. Create a page on your own
