@@ -93,17 +93,52 @@ const BreadCrumbProjector = (controller, pinToElement) => {
     controller.onNavigationHashAdd(hash => {
         const pageName = controller.getPageController(hash).getValue();
         const newNavPoint = initializeNavigationPoint(hash, pageName);
-        anchorMap[hash] = newNavPoint;
+        const pageController = controller.getPageController(hash);
+        const idPrefix       = hash.slice(1);
+        anchorMap[idPrefix]  = newNavPoint;
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS
-        controller.getPageController(hash).onActiveChanged(active => {
+        pageController.onActiveChanged(active => {
             const pageController = controller.getPageController(hash);
             if (active && pageController.isVisible()) {
-                navigationAnchors.push(anchorMap[hash]);
+                navigationAnchors.push(anchorMap[idPrefix]);
                 projectNavigation();
             }
         });
+
+        pageController.onValueChanged(newValue => {
+            setNavpointName(hash, newValue);
+            setPageTitle(hash, pageController.isActive());
+        });
         // END
     });
+
+    /**
+     * A utility function that sets the HTML title attribute to the value of the page identified by hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } active
+     */
+    const setPageTitle = (hash, active) => {
+        const pageName = controller.getPageController(hash).getValue();
+        if (active) {
+            const title = document.getElementsByTagName("title")[0];
+            title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+        }
+    };
+
+    /**
+     * A utility function that sets the displayed name of a nav-point to the current page-name value.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !String } newValue
+     */
+    const setNavpointName = (hash, newValue) => {
+        const idPrefix         = hash.slice(1);
+        const navigationNode   = anchorMap[idPrefix];
+        navigationNode.innerText = newValue;
+    };
 };
