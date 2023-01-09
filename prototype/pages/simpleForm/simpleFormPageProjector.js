@@ -43,6 +43,9 @@ const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) 
             const form = projectForm(pageController.getPageContentControllers()[0]);
             formHolder.append(...form);
         });
+
+        const pageClass = pageController.getHash().slice(1);
+        contentWrapper.classList.add(pageClass);
     };
 
     /**
@@ -89,11 +92,6 @@ const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) 
             console.error(e);
         }
     };
-
-    pageController.onValueChanged(newValue => {
-        // add class for specific page styling
-        contentWrapper.classList.add(newValue);
-    });
 
     pageController.onActiveChanged(active => {
         if (active) {

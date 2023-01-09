@@ -55,6 +55,9 @@ const CarPageProjector = (pageController, pinToElement, contentFilePath) => {
             // binding of the main view
             plusButton.onclick = _ => listController.addModel();
         });
+
+        const pageClass = pageController.getHash().slice(1);
+        contentWrapper.classList.add(pageClass);
     };
 
     /**
@@ -101,11 +104,6 @@ const CarPageProjector = (pageController, pinToElement, contentFilePath) => {
             console.error(e);
         }
     };
-
-    pageController.onValueChanged(newValue => {
-        // add class for specific page styling
-        contentWrapper.classList.add(newValue);
-    });
 
     pageController.onActiveChanged(active => {
         if (active) {

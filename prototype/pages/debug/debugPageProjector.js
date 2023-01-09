@@ -62,9 +62,12 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      * @return { void }
      */
     const initialize = () => {
-        bubble.onclick        = () => contentWrapper.classList.toggle('open');
+        bubble.onclick      = () => contentWrapper.classList.toggle('open');
         closeButton.onclick = () => contentWrapper.classList.toggle('open');
         contentWrapper.append(debugTable, bubble);
+
+        const pageClass = pageController.getHash().slice(1);
+        contentWrapper.classList.add(pageClass);
     };
 
     /**
@@ -112,11 +115,11 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      */
     const bindProperty = (property, debugController, ignoreProperties) => {
         if (!ignoreProperties.includes(property)) {
-            let observableName = property.startsWith('get') ? property.slice(3) : property.slice(2);
+            let observableName  = property.startsWith('get') ? property.slice(3) : property.slice(2);
             let observableValue = eval(`debugController.${property}()`);
 
             if (typeof eval(observableValue.getHash) === 'function') {
-                observableName = observableName + '_Controller';
+                observableName  = observableName + '_Controller';
                 observableValue = observableValue.getHash();
             }
             addListItem(observableName, observableValue, debugController);
@@ -131,18 +134,18 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      * @param { PageControllerType } debugController - the page controller you want to debug
      */
     const registerPropertyUpdateHandler = (property, debugController) => {
-        let observableName = property.slice(2, property.length-7);
+        let observableName  = property.slice(2, property.length-7);
         let observableValue = null;
 
         if (typeof eval(`debugController.get${observableName}`) === 'function' ) {
-            observableValue = eval(`debugController.get${observableName}()`)
+            observableValue = eval(`debugController.get${observableName}()`);
         } else if (typeof eval(`debugController.is${observableName}`) === 'function' ) {
-            observableValue = eval(`debugController.is${observableName}()`)
+            observableValue = eval(`debugController.is${observableName}()`);
         }
 
         // do not remove this code snippet as it is used by the updateListItem function to properly work
         if (null !== observableValue && typeof eval(observableValue.getHash) === 'function') {
-            observableName = observableName + '_Controller';
+            observableName  = observableName + '_Controller';
             observableValue = observableValue.getHash();
         }
 
@@ -150,11 +153,6 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
             updateListItem(observableName, val);
         })`);
     };
-
-    pageController.onValueChanged(newValue => {
-        // add class for specific page styling
-        contentWrapper.classList.add(newValue);
-    });
 
     pageController.onIconChanged(iconPath => {
        if (null !== iconPath && undefined !== iconPath) {

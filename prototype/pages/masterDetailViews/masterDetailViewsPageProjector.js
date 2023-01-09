@@ -42,6 +42,9 @@ const MasterDetailViewsPageProjector = (pageController, pinToElement, contentFil
                 pageWrapper.replaceChild(contentWrapper, pageWrapper.firstChild);
             }
         });
+
+        const pageClass = pageController.getHash().slice(1);
+        contentWrapper.classList.add(pageClass);
     };
 
     /**
@@ -88,11 +91,6 @@ const MasterDetailViewsPageProjector = (pageController, pinToElement, contentFil
             console.error(e);
         }
     };
-
-    pageController.onValueChanged(newValue => {
-        // add class for specific page styling
-        contentWrapper.classList.add(newValue);
-    });
 
     pageController.onActiveChanged(active => {
         if (active) {
