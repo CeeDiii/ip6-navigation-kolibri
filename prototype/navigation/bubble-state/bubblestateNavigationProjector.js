@@ -36,28 +36,21 @@ const NavigationProjector = (controller, pinToElement) => {
     const initializeNavigationPoint = (hash, pageName) => {
         const nodeIdPrefix = hash.slice(1);
         // initialize anchor
-        const anchorDom = dom(`
-            <a href="${hash}">
-                <span class="icon" id="${nodeIdPrefix}-icon-wrapper">
-                    <img class="icon" id="${nodeIdPrefix}-icon" alt="${nodeIdPrefix}-icon">
-                </span>
-                <span class="text" id="${nodeIdPrefix}-name">${pageName}</span>
-            </a>
-        `);
-
-        // initialize li wrapper for styling purposes
-        const navPointDom = dom(`
-                <li class="list" id="${nodeIdPrefix}">
-                    <!-- Placeholder for anchor tag -->
-                </li>
+        const [navPoint] = dom(`
+            <li class="list" id="${nodeIdPrefix}">
+                <a href="${hash}">
+                    <span class="icon" id="${nodeIdPrefix}-icon-wrapper">
+                        <img class="icon" id="${nodeIdPrefix}-icon" alt="${nodeIdPrefix}-icon">
+                    </span>
+                    <span class="text" id="${nodeIdPrefix}-name">${pageName}</span>
+                </a>
+            </li>
         `);
 
         // get anchor from collection
-        const anchor = anchorDom[0];
+        const anchor = navPoint.getElementsByTagName('a')[0];
 
-        // append anchor to li tag
-        navPointDom[nodeIdPrefix].append(anchor);
-        anchorListWrappers[nodeIdPrefix] = navPointDom[0];
+        anchorListWrappers[nodeIdPrefix] = navPoint;
 
         return anchor;
     };
@@ -69,10 +62,8 @@ const NavigationProjector = (controller, pinToElement) => {
      * @return void
      */
     const projectNavigation = () => {
-        const styleTag = document.createElement('style');
-        styleTag.id = 'bubble-state-nav-styles';
-
-        const navigation = dom(`
+        const [styleTag, navigation] = dom(`
+            <style id="bubble-state-nav-styles"></style>
             <div id="bubble-state-nav-wrapper">
                 <div id="bubbleStateWrapper" class="bubble-state-nav">
                     <ul id="bubbleStateNavPointWrapper">
@@ -97,7 +88,7 @@ const NavigationProjector = (controller, pinToElement) => {
                     }
                 `;
                 styleTag.append(dynamicIndicatorStyle);
-                navigation['bubble-state-nav-wrapper'].children['bubbleStateWrapper'].children['bubbleStateNavPointWrapper'].append(navPoint);
+                navigation.querySelector('#bubbleStateNavPointWrapper').append(navPoint);
                 i++;
             }
         });
@@ -111,9 +102,9 @@ const NavigationProjector = (controller, pinToElement) => {
             head.replaceChild(styleTag, documentStyles);
         }
 
-        const indicator = dom(`<div class="indicator"></div>`);
-        navigation['bubble-state-nav-wrapper'].children['bubbleStateWrapper'].children['bubbleStateNavPointWrapper'].append(...indicator);
-        positionWrapper.replaceChildren(...navigation);
+        const [indicator] = dom(`<div class="indicator"></div>`);
+        navigation.querySelector('#bubbleStateNavPointWrapper').append(indicator);
+        positionWrapper.replaceChildren(navigation);
     };
 
     observableNavigationAnchors.onAdd(anchor => {

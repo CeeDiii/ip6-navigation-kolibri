@@ -34,14 +34,11 @@ const BreadCrumbProjector = (controller, pinToElement) => {
      */
     const initializeNavigationPoint = (hash, pageName) => {
         // initialize anchor
-        const anchorDom = dom(`
+        const [anchorDom] = dom(`
             <a href="${hash}">${pageName}</a>
         `);
 
-        // get anchor from collection, directly returning anchorDom[0] does not work because of reasons unknown to the author
-        const anchor = anchorDom[0];
-
-        return anchor;
+        return anchorDom;
     };
 
     /**
@@ -51,8 +48,10 @@ const BreadCrumbProjector = (controller, pinToElement) => {
      * @return void
      */
     const projectNavigation = () => {
-        const navigationDiv = document.createElement("div");
-        navigationDiv.classList.add("bread-crumbs");
+        const [navigationDiv] = dom(`
+            <div class="bread-crumbs"></div>
+        `);
+
         const breadCrumbs = [];
 
         // iterate through history in reverse and add breadcrumbs until DEPTH is reached if they do not exist already
