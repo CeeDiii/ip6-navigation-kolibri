@@ -41,7 +41,7 @@ const NavigationProjector = (controller, pinToElement) => {
                 <span class="icon" id="${nodeIdPrefix}-icon-wrapper">
                     <img class="icon" id="${nodeIdPrefix}-icon" alt="${nodeIdPrefix}-icon">
                 </span>
-                <span class="text">${pageName}</span>
+                <span class="text" id="${nodeIdPrefix}-name">${pageName}</span>
             </a>
         `);
 
@@ -124,26 +124,32 @@ const NavigationProjector = (controller, pinToElement) => {
     controller.onNavigationHashAdd(hash => {
         const pageName = controller.getPageController(hash).getValue();
         const newNavPoint = initializeNavigationPoint(hash, pageName);
+        const pageController = controller.getPageController(hash);
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS TO MODEL
-        controller.getPageController(hash).onActiveChanged(active => {
+        pageController.onActiveChanged(active => {
            setActiveCSSClass(hash, active);
            setPageTitle(hash, active);
            handleIndicatorVisibility(hash, active);
         });
 
-        controller.getPageController(hash).onVisitedChanged(visited => {
+        pageController.onVisitedChanged(visited => {
             setVisitedCSSClass(hash, visited);
             projectNavigation();
         });
 
-        controller.getPageController(hash).onNavigationalChanged(() => projectNavigation());
+        pageController.onNavigationalChanged(() => projectNavigation());
 
-        controller.getPageController(hash).onVisibleChanged(() => projectNavigation());
+        pageController.onVisibleChanged(() => projectNavigation());
 
-        controller.getPageController(hash).onIconChanged(newIcon => {
+        pageController.onIconChanged(newIcon => {
             setIconSource(hash, newIcon);
+        });
+
+        pageController.onValueChanged(newValue => {
+            setNavpointName(hash, newValue);
+            setPageTitle(hash, pageController.isActive());
         });
         // END
 
@@ -240,5 +246,19 @@ const NavigationProjector = (controller, pinToElement) => {
         } else {
             positionWrapper.classList.remove('invisiblePage');
         }
+    };
+
+    /**
+     * A utility function that sets the displayed name of a nav-point to the current page-name value.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !String } newValue
+     */
+    const setNavpointName = (hash, newValue) => {
+        const idPrefix           = hash.slice(1);
+        const navigationNode     = anchorListWrappers[idPrefix];
+        const navigationNameSpan = navigationNode.querySelector(`#${idPrefix}-name`);
+        navigationNameSpan.innerText = newValue;
     };
 };
