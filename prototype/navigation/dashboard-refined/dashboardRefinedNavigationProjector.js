@@ -334,9 +334,12 @@ const NavigationProjector = (controller, pinToElement) => {
             projectNavigation();
         });
 
-        pageController.onNavigationalChanged(() => {
-            projectNavigation();
-        });
+        pageController.onNavigationalChanged(() => projectNavigation());
+
+        pageController.onValueChanged(newValue => {
+            setNavpointName(hash, newValue);
+            setPageTitle(hash, pageController.isActive());
+        })
         // END
     });
 
@@ -468,5 +471,19 @@ const NavigationProjector = (controller, pinToElement) => {
         if (null !== detailNode) {
             toggleCSSClass(detailNode, 'invisible', !isVisible);
         }
-    }
+    };
+
+    /**
+     * A utility function that sets the displayed name of a nav-point to the current page-name value.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !String } newValue
+     */
+    const setNavpointName = (hash, newValue) => {
+        const idPrefix         = hash.slice(1);
+        const navigationNode   = document.getElementById(`${idPrefix}-node`);
+        const navigationAnchor = navigationNode.getElementsByTagName('a')[0];
+        navigationAnchor.innerText = newValue;
+    };
 };
