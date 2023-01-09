@@ -34,11 +34,12 @@ const NavigationProjector = (controller, pinToElement) => {
      *
      */
     const initializeNavigationPoint = (hash, pageName) => {
+        const nodeIdPrefix = hash.slice(1);
         // initialize anchor
         const anchorDom = dom(`
             <a href="${hash}">
-                <span class="icon" id="${pageName}-icon-wrapper">
-                    <img class="icon" id="${pageName}-icon" alt="${pageName}-icon">
+                <span class="icon" id="${nodeIdPrefix}-icon-wrapper">
+                    <img class="icon" id="${nodeIdPrefix}-icon" alt="${nodeIdPrefix}-icon">
                 </span>
                 <span class="text">${pageName}</span>
             </a>
@@ -46,7 +47,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
         // initialize li wrapper for styling purposes
         const navPointDom = dom(`
-                <li class="list" id="${pageName}">
+                <li class="list" id="${nodeIdPrefix}">
                     <!-- Placeholder for anchor tag -->
                 </li>
         `);
@@ -55,8 +56,8 @@ const NavigationProjector = (controller, pinToElement) => {
         const anchor = anchorDom[0];
 
         // append anchor to li tag
-        navPointDom[pageName].append(anchor);
-        anchorListWrappers[pageName] = navPointDom[0];
+        navPointDom[nodeIdPrefix].append(anchor);
+        anchorListWrappers[nodeIdPrefix] = navPointDom[0];
 
         return anchor;
     };
@@ -159,14 +160,14 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !Boolean } active
      */
     const setActiveCSSClass = (hash, active) => {
-        const pageName = controller.getPageController(hash).getValue();
+        const nodeIdPrefix = hash.slice(1);
         if (active) {
-            if (undefined !== anchorListWrappers[pageName]) {
-                anchorListWrappers[pageName].classList.add("active");
+            if (undefined !== anchorListWrappers[nodeIdPrefix]) {
+                anchorListWrappers[nodeIdPrefix].classList.add("active");
             }
         } else {
-            if (undefined !== anchorListWrappers[pageName]) {
-                anchorListWrappers[pageName].classList.remove("active");
+            if (undefined !== anchorListWrappers[nodeIdPrefix]) {
+                anchorListWrappers[nodeIdPrefix].classList.remove("active");
             }
         }
     };
