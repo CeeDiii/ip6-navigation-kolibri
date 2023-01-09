@@ -1,4 +1,5 @@
-import { dom } from "../../kolibri/util/dom.js";
+import { dom } from "../../../../prototype/kolibri/util/dom.js";
+
 
 export { DebugPageProjector }
 
@@ -26,7 +27,7 @@ export { DebugPageProjector }
 const DebugPageProjector = (navigationController, pageController, pinToElement) => {
     const pageWrapper    = pinToElement;
 
-    const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
+    const arrowSVGPathRelativeIndex = "./pages/icons/right-arrow-gradient.svg";
 
     // Initialize the dom components used on this page
     const [contentWrapper, debugTable, bubble, closeButton] = dom(`
