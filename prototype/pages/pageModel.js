@@ -32,7 +32,7 @@ export { PageModel }
 const PageModel = pageName => {
     const pageAttr = Attribute(pageName);
     pageAttr.getObs(ACTIVE).setValue(false);
-    pageAttr.getObs(HASH).setValue('#' + pageName);
+    pageAttr.getObs(HASH).setValue('#' + pageName.replace(' ', '')); //Converter is not used because it should only apply for the hash
     pageAttr.getObs(VISITED).setValue(false);
     pageAttr.getObs(ICON).setValue('./navigation/icons/placeholder.svg');
     pageAttr.getObs(VISIBLE).setValue(true);
