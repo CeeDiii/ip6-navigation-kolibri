@@ -21,6 +21,7 @@ export { PageController }
  * @property { () => void } activate - a lifecycle function that allows a page to do initialization before displaying. this function will be called by a NavigationController on activation of this page.
  * @property { () => void } passivate - a lifecycle function that allows page to clean up before removing it from displaying. this function will be called by a NavigationController on passivation of this page.
  * @property { () => ?[T] } getPageContentControllers - a getter function that returns the controllers that are responsible for the content of this page or null.
+ * @property { (setConfObj: Object) => boolean } setConfiguration - a function that sets the attributes of this page for all keys in object to their value.
  * @property { () => String } getQualifier - a function that returns the qualifier for this page.
  * @property { () => String } getHash - a getter function that returns the hash of the page.
  * @property { (newValue: String) => void } setValue - a setter function that sets the newValue of the page.
@@ -33,7 +34,7 @@ export { PageController }
  * @property { () => Boolean } getVisited - a getter function that returns the visited state of the page.
  * @property { (isVisible: Boolean) => void } setVisible - a setter function that sets the isVisible state of the page.
  * @property { () => Boolean } isVisible - a getter function that returns the isVisible state of the page.
- * @property { (newParent: ?PageControllerType) => void } setParent - a setter function that sets the newParent that is given, if null is set, the parent is root
+ * @property { (newParent: ?PageControllerType) => void } setParent - a setter function that sets the newParent that is given, if null is set, the parent is root. Warning: if you call this method before the parent and this node have been added to the navigationController, unexpected behaviour will happen.
  * @property { () => ?PageControllerType } getParent - a getter function that returns the parent of the page or null.
  * @property { (isNavigational: Boolean) => void } setNavigational - a setter function
  * @property { () => Boolean } isNavigational - a getter function that returns the isNavigational state of the page.
@@ -90,6 +91,20 @@ const PageController = (pageName, contentControllers) => {
                 // allow null as parent
                 pageModel.getPageObs(PARENT).setValue(newParent);
             }
+        },
+        setConfiguration:        confObj => {
+            for (const [key, value] of Object.entries(confObj)) {
+                if (HASH === key){
+                    console.error('You cannot change that hash');
+                    return false;
+                } else if (PARENT === key){
+                    console.error('You can only call setParent() after this PageController has successfully been added to the NavigationController');
+                    return false;
+                } else {
+                    pageModel.getPageObs(key).setValue(value);
+                }
+            }
+            return true;
         },
         getQualifier:            pageModel.getQualifier,
         getHash:                 pageModel.getPageObs(HASH).getValue,

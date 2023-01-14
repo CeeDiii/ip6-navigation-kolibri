@@ -29,47 +29,66 @@ const pinToContentElement = document.getElementById("content");
 
 // Assembling 403 error page as example. Can be modified
 const errorForbiddenController = PageController("E403", null);
-errorForbiddenController.setVisible(false);
+errorForbiddenController.setConfiguration({
+    visible: false
+});
 ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
 
 // Assembling 404 error page as example. Can be modified
 const errorNotFoundController = PageController("E404", null);
-errorNotFoundController.setVisible(false);
+errorNotFoundController.setConfiguration({
+    visible: false
+});
 PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
 
 const homePageController = PageController("home", null);
-homePageController.setIcon('./navigation/icons/house.svg');
-homePageController.setNavigational(false);
+homePageController.setConfiguration({
+    icon: './navigation/icons/house.svg',
+    navigational: false
+});
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
-masterDetailViewsPageController.setIcon('./navigation/icons/masterdetail.svg');
-masterDetailViewsPageController.setNavigational(false);
+masterDetailViewsPageController.setConfiguration({
+    icon: './navigation/icons/masterdetail.svg',
+    navigational: false
+});
 MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
 
 const formsPageController = PageController("forms", null);
-formsPageController.setIcon('./navigation/icons/forms.svg');
-formsPageController.setNavigational(false);
+formsPageController.setConfiguration({
+    icon: './navigation/icons/forms.svg',
+    navigational: false
+});
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
 const welcomePageController = PageController("welcome", null);
-welcomePageController.setIcon('./navigation/icons/cute-robot.svg');
+welcomePageController.setConfiguration({
+    icon: './navigation/icons/cute-robot.svg',
+});
 WelcomePageProjector(welcomePageController, pinToContentElement, './pages/welcome/welcome.html');
+
 
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
-personPageController.setIcon('./navigation/icons/person.svg');
+personPageController.setConfiguration({
+    icon: './navigation/icons/person.svg',
+});
 PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html');
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
-carPageController.setIcon('./navigation/icons/car.svg');
+carPageController.setConfiguration({
+    icon: './navigation/icons/car.svg',
+});
 CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
-simpleWorkWeekPageController.setIcon('./navigation/icons/calendar.svg');
+simpleWorkWeekPageController.setConfiguration({
+    icon: './navigation/icons/calendar.svg',
+});
 SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
 
 const formStructure = [
@@ -82,14 +101,19 @@ const formStructure = [
 ];
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleform", [simpleFormController]);
-simpleFormPageController.setIcon('./navigation/icons/simpleform.svg');
+simpleFormPageController.setConfiguration({
+    icon: './navigation/icons/simpleform.svg',
+});
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
 const navigationController = NavigationController();
-navigationController.setWebsiteName('Kolibri');
-navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
-navigationController.setFavIcon('./img/logo/logo-new-128.svg');
-navigationController.setHomePage(welcomePageController.getHash());
+navigationController.setConfiguration({
+    name: 'Kolibri',
+    logo: './img/logo/logo-new-128.svg',
+    favicon: './img/logo/logo-new-128.svg',
+    homepage: welcomePageController.getHash(),
+    debugmode: true
+});
 
 const pinToNavElement = document.getElementById('nav');
 BubbleStateNavigationProjector(navigationController, pinToNavElement);
@@ -106,17 +130,9 @@ const pinToDebugElement = document.getElementById('debug');
 debugController.setIcon('./navigation/icons/bug.svg');
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
 
-navigationController.addPageController(errorForbiddenController);
-navigationController.addPageController(errorNotFoundController);
-navigationController.addPageController(debugController);
-navigationController.addPageController(homePageController);
-navigationController.addPageController(masterDetailViewsPageController);
-navigationController.addPageController(formsPageController);
-navigationController.addPageController(welcomePageController);
-navigationController.addPageController(personPageController);
-navigationController.addPageController(carPageController);
-navigationController.addPageController(simpleFormPageController);
-navigationController.addPageController(simpleWorkWeekPageController);
+navigationController.addPageControllers([errorForbiddenController, errorForbiddenController, debugController]);
+navigationController.addPageControllers([homePageController, masterDetailViewsPageController, formsPageController]);
+navigationController.addPageControllers([welcomePageController, personPageController, carPageController, simpleFormPageController, simpleWorkWeekPageController]);
 
 // Has to happen after adding to the navigation controller
 welcomePageController.setParent(homePageController);
@@ -125,4 +141,5 @@ carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
 
-navigationController.setDebugMode(true);
+
+
