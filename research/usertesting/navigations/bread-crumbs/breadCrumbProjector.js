@@ -1,7 +1,6 @@
 import { ObservableList } from "../../../../prototype/kolibri/observable.js";
 import { dom } from "../../../../prototype/kolibri/util/dom.js";
 
-
 export { BreadCrumbProjector }
 
 /**
@@ -91,24 +90,24 @@ const BreadCrumbProjector = (controller, pinToElement) => {
     observableNavigationAnchors.onAdd(anchor => controller.registerAnchorClickListener(anchor));
 
     controller.onNavigationHashAdd(hash => {
-        const pageName = controller.getPageController(hash).getValue();
-        const newNavPoint = initializeNavigationPoint(hash, pageName);
         const pageController = controller.getPageController(hash);
-        const idPrefix       = hash.slice(1);
-        anchorMap[idPrefix]  = newNavPoint;
+        const qualifier = pageController.getQualifier();
+        const pageName = pageController.getValue();
+        const newNavPoint = initializeNavigationPoint(hash, pageName);
+        anchorMap[qualifier]  = newNavPoint;
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS
         pageController.onActiveChanged(active => {
             const pageController = controller.getPageController(hash);
             if (active && pageController.isVisible()) {
-                navigationAnchors.push(anchorMap[idPrefix]);
+                navigationAnchors.push(anchorMap[qualifier]);
                 projectNavigation();
             }
         });
 
         pageController.onValueChanged(newValue => {
-            setNavpointName(hash, newValue);
+            setNavpointName(qualifier, hash, newValue);
             setPageTitle(hash, pageController.isActive());
         });
         // END
@@ -133,12 +132,12 @@ const BreadCrumbProjector = (controller, pinToElement) => {
      * A utility function that sets the displayed name of a nav-point to the current page-name value.
      *
      * @function
+     * @param { !String } qualifier
      * @param { !String } hash
      * @param { !String } newValue
      */
-    const setNavpointName = (hash, newValue) => {
-        const idPrefix         = hash.slice(1);
-        const navigationNode   = anchorMap[idPrefix];
+    const setNavpointName = (qualifier, hash, newValue) => {
+        const navigationNode   = anchorMap[qualifier];
         navigationNode.innerText = newValue;
     };
 };

@@ -18,6 +18,7 @@ export { PageModel }
  *
  * @typedef PageModelType
  * @template T
+ * @property { () => String } getQualifier - a function that returns the qualifier for this page.
  * @property { (obsType: ObservableTypeString) => IObservable<T> } getPageObs - a function that returns the observable stored under the given observable string.
  */
 
@@ -31,6 +32,8 @@ export { PageModel }
 
 const PageModel = pageName => {
     const pageAttr = Attribute(pageName);
+
+    pageAttr.setQualifier(pageName); // the initial pageName will uniquely identify the page and is unchangeable
     pageAttr.getObs(ACTIVE).setValue(false);
     pageAttr.getObs(HASH).setValue('#' + pageName.replace(' ', '')); //Converter is not used because it should only apply for the hash
     pageAttr.getObs(VISITED).setValue(false);
@@ -40,7 +43,8 @@ const PageModel = pageName => {
     pageAttr.getObs(NAVIGATIONAL).setValue(true);
 
     return {
-        getPageObs: obsType => pageAttr.getObs(obsType),
+        getQualifier:   () => pageAttr.getQualifier(),
+        getPageObs:     obsType => pageAttr.getObs(obsType),
     }
 };
 

@@ -28,21 +28,21 @@ const NavigationProjector = (controller, pinToElement) => {
      * Initializes a navigation anchor
      *
      * @function
+     * @param { !String } qualifier - the unique qualifier for this navigation point
      * @param { !String } hash - the hash that represents the identifier of a page
      * @param { !String } pageName - the pageName that is displayed for this hash
      * @return { HTMLAnchorElement }
      *
      */
-    const initializeNavigationPoint = (hash, pageName) => {
-        const nodeIdPrefix = hash.slice(1);
+    const initializeNavigationPoint = (qualifier, hash, pageName) => {
         // initialize anchor
         const [navPoint] = dom(`
-            <li class="list" id="${nodeIdPrefix}">
+            <li class="list" id="${qualifier}">
                 <a href="${hash}">
-                    <span class="icon" id="${nodeIdPrefix}-icon-wrapper">
-                        <img class="icon" id="${nodeIdPrefix}-icon" alt="${nodeIdPrefix}-icon">
+                    <span class="icon" id="${qualifier}-icon-wrapper">
+                        <img class="icon" id="${qualifier}-icon" alt="${qualifier}-icon">
                     </span>
-                    <span class="text" id="${nodeIdPrefix}-name">${pageName}</span>
+                    <span class="text" id="${qualifier}-name">${pageName}</span>
                 </a>
             </li>
         `);
@@ -50,7 +50,7 @@ const NavigationProjector = (controller, pinToElement) => {
         // get anchor from collection
         const anchor = navPoint.getElementsByTagName('a')[0];
 
-        anchorListWrappers[nodeIdPrefix] = navPoint;
+        anchorListWrappers[qualifier] = navPoint;
 
         return anchor;
     };
@@ -113,14 +113,15 @@ const NavigationProjector = (controller, pinToElement) => {
     });
 
     controller.onNavigationHashAdd(hash => {
-        const pageName = controller.getPageController(hash).getValue();
-        const newNavPoint = initializeNavigationPoint(hash, pageName);
         const pageController = controller.getPageController(hash);
+        const qualifier = pageController.getQualifier();
+        const pageName = pageController.getValue();
+        const newNavPoint = initializeNavigationPoint(qualifier, hash, pageName);
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS TO MODEL
         pageController.onActiveChanged(active => {
-           setActiveCSSClass(hash, active);
+           setActiveCSSClass(qualifier, hash, active);
            setPageTitle(hash, active);
            handleIndicatorVisibility(hash, active);
         });
@@ -139,7 +140,7 @@ const NavigationProjector = (controller, pinToElement) => {
         });
 
         pageController.onValueChanged(newValue => {
-            setNavpointName(hash, newValue);
+            setNavpointName(qualifier, hash, newValue);
             setPageTitle(hash, pageController.isActive());
         });
         // END
@@ -153,18 +154,18 @@ const NavigationProjector = (controller, pinToElement) => {
      * and removes the class from the old active hash.
      *
      * @function
+     * @param { !String } qualifier
      * @param { !String } hash
      * @param { !Boolean } active
      */
-    const setActiveCSSClass = (hash, active) => {
-        const nodeIdPrefix = hash.slice(1);
+    const setActiveCSSClass = (qualifier, hash, active) => {
         if (active) {
-            if (undefined !== anchorListWrappers[nodeIdPrefix]) {
-                anchorListWrappers[nodeIdPrefix].classList.add("active");
+            if (undefined !== anchorListWrappers[qualifier]) {
+                anchorListWrappers[qualifier].classList.add("active");
             }
         } else {
-            if (undefined !== anchorListWrappers[nodeIdPrefix]) {
-                anchorListWrappers[nodeIdPrefix].classList.remove("active");
+            if (undefined !== anchorListWrappers[qualifier]) {
+                anchorListWrappers[qualifier].classList.remove("active");
             }
         }
     };
@@ -243,13 +244,13 @@ const NavigationProjector = (controller, pinToElement) => {
      * A utility function that sets the displayed name of a nav-point to the current page-name value.
      *
      * @function
+     * @param { !String } qualifier
      * @param { !String } hash
      * @param { !String } newValue
      */
-    const setNavpointName = (hash, newValue) => {
-        const idPrefix           = hash.slice(1);
-        const navigationNode     = anchorListWrappers[idPrefix];
-        const navigationNameSpan = navigationNode.querySelector(`#${idPrefix}-name`);
+    const setNavpointName = (qualifier, hash, newValue) => {
+        const navigationNode     = anchorListWrappers[qualifier];
+        const navigationNameSpan = navigationNode.querySelector(`#${qualifier}-name`);
         navigationNameSpan.innerText = newValue;
     };
 };

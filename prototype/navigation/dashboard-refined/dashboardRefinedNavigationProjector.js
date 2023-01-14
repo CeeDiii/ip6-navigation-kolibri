@@ -65,20 +65,20 @@ const NavigationProjector = (controller, pinToElement) => {
      * A function that initializes a navigation anchor
      *
      * @function
+     * @param { !String } qualifier - the qualifier that uniquely
      * @param { !String } hash - the hash that represents the identifier of a page
      * @param { !String } pageName - the pageName that is displayed for this hash
      * @param { ?PageControllerType } parentNode - the parent of this node or null if no parent exists
      * @return { HTMLAnchorElement }
      *
      */
-    const initializeNavigationPoint = (hash, pageName, parentNode) => {
-        const idPrefix = hash.slice(1);
+    const initializeNavigationPoint = (qualifier, hash, pageName, parentNode) => {
         const [anchor] = dom(`<a href="${hash}">${pageName}</a>`);
 
         const [treeNode] = dom(`
-            <div class="tree-node" id="${idPrefix}-node">
+            <div class="tree-node" id="${qualifier}-node">
                 <span>
-                    <img id="${idPrefix}-detail-icon" src="" alt="">
+                    <img id="${qualifier}-detail-icon" src="" alt="">
                     <!-- placeholder for anchor -->
                 </span>
             </div>
@@ -153,14 +153,14 @@ const NavigationProjector = (controller, pinToElement) => {
      * @return { void }
      */
     const projectOverviewNode = pageController => {
-        const idPrefix = pageController.getHash().slice(1);
+        const qualifier = pageController.getQualifier();
 
-        const overviewNode = findElementById(overviewContentWrapper, idPrefix + '-overview-node');
+        const overviewNode = findElementById(overviewContentWrapper, qualifier + '-overview-node');
 
         if (null === pageController.getParent() && null === overviewNode) {
             const [overviewNavPointNode] = dom(`
-                <div class="row" id="${idPrefix}-overview-node" >
-                    <a><img id="${idPrefix}-overview-icon" src="${pageController.getIcon()}" alt="${pageController.getValue()}-icon"></a>
+                <div class="row" id="${qualifier}-overview-node" >
+                    <a><img id="${qualifier}-overview-icon" src="${pageController.getIcon()}" alt="${pageController.getValue()}-icon"></a>
                 </div>
             `);
             overviewContentWrapper.append(overviewNavPointNode);
@@ -185,8 +185,8 @@ const NavigationProjector = (controller, pinToElement) => {
         for(const rootNode of overviewContentWrapper.getElementsByClassName('row')) {
             if(undefined !== rootNode) {
                 const rootNodeId = rootNode.id;
-                const rootIdPrefix = rootNodeId.substring(0, rootNodeId.indexOf('-'));
-                const rootNodeInDetailWrapper = findElementById(detailTree, rootIdPrefix + '-node');
+                const rootQualifier = rootNodeId.substring(0, rootNodeId.indexOf('-'));
+                const rootNodeInDetailWrapper = findElementById(detailTree, rootQualifier + '-node');
                 if(null !== rootNodeInDetailWrapper && 1 < rootNodeInDetailWrapper.children.length) {
                     const navigationalChildren = rootNodeInDetailWrapper.getElementsByTagName('a');
                     // ignore that first child because it is the node itself
@@ -232,11 +232,11 @@ const NavigationProjector = (controller, pinToElement) => {
      *
      * @function
      * @param { !HTMLElement } node
-     * @param { !String } parentIdPrefix
+     * @param { !String } parentQualifier
      * @return { void }
      */
-    const appendNode = (node, parentIdPrefix) => {
-        const parentNode = findElementById(detailTree, parentIdPrefix + '-node');
+    const appendNode = (node, parentQualifier) => {
+        const parentNode = findElementById(detailTree, parentQualifier + '-node');
         if (null !== parentNode) {
             parentNode.append(node);
         }
@@ -251,11 +251,12 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { ?PageControllerType } oldParent
      */
     const addNodeToTree = (hash, newParent, oldParent) => {
-        const idPrefix = hash.slice(1);
-        const pageName = controller.getPageController(hash).getValue();
-        const thisNode = findElementById(detailTree, idPrefix + '-node');
+        const pageController = controller.getPageController(hash);
+        const qualifier = pageController.getQualifier();
+        const pageName = pageController.getValue();
+        const thisNode = findElementById(detailTree, qualifier + '-node');
         if (null === thisNode) { // check if this node has not been initialized yet
-            const newNavPoint = initializeNavigationPoint(hash, pageName, newParent);
+            const newNavPoint = initializeNavigationPoint(qualifier, hash, pageName, newParent);
             observableNavigationAnchors.add(newNavPoint);
         } else {
             // relocate node
@@ -276,14 +277,14 @@ const NavigationProjector = (controller, pinToElement) => {
             detailTree.append(childNode);
         } else if (null === oldParent) { // check if old parent is root and move node from root to newParent
             detailTree.removeChild(childNode);
-            const newParentIdPrefix = newParent.getHash().slice(1);
-            appendNode(childNode, newParentIdPrefix);
+            const newParentQualifier = newParent.getQualifier();
+            appendNode(childNode, newParentQualifier);
         } else { // if new parent and old parent are not root, move node from oldParent to newParent
-            const oldParentIdPrefix = oldParent.getHash().slice(1);
-            const oldParentChildrenNodeList = findElementById(detailTree, oldParentIdPrefix + '-node');
+            const oldParentQualifier = oldParent.getQualifier();
+            const oldParentChildrenNodeList = findElementById(detailTree, oldParentQualifier + '-node');
             oldParentChildrenNodeList.removeChild(childNode);
-            const newParentIdPrefix = newParent.getHash().slice(1);
-            appendNode(childNode, newParentIdPrefix);
+            const newParentQualifier= newParent.getQualifier();
+            appendNode(childNode, newParentQualifier);
         }
     };
 
@@ -312,6 +313,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
     controller.onNavigationHashAdd(hash => {
         const pageController = controller.getPageController(hash);
+        const qualifier = pageController.getQualifier();
 
         // CREATE BINDINGS
         pageController.onParentChanged((newParent, oldParent) => {
@@ -322,7 +324,7 @@ const NavigationProjector = (controller, pinToElement) => {
         });
 
         pageController.onActiveChanged((newActive, oldActive) => {
-            setActiveCSSClass(hash, newActive, oldActive);
+            setActiveCSSClass(qualifier, hash, newActive, oldActive);
             setParentActiveCSSClass(hash, newActive, oldActive);
             setPageTitle(hash, newActive);
         });
@@ -330,14 +332,14 @@ const NavigationProjector = (controller, pinToElement) => {
         pageController.onIconChanged(newIcon => setIconSource(pageController, newIcon));
 
         pageController.onVisibleChanged(isVisible => {
-            handleVisibleChange(hash, isVisible);
+            handleVisibleChange(qualifier, hash, isVisible);
             projectNavigation();
         });
 
         pageController.onNavigationalChanged(() => projectNavigation());
 
         pageController.onValueChanged(newValue => {
-            setNavpointName(hash, newValue);
+            setNavpointName(qualifier, hash, newValue);
             setPageTitle(hash, pageController.isActive());
         })
         // END
@@ -350,13 +352,13 @@ const NavigationProjector = (controller, pinToElement) => {
      * and removes the class from the old active hash.
      *
      * @function
+     * @param { !String } qualifier
      * @param { !String } hash
      * @param { !Boolean } newActive
      * @param { !Boolean } oldActive
      */
-    const setActiveCSSClass = (hash, newActive, oldActive) => {
-        const idPrefix = hash.slice(1);
-        const activeElement = findElementById(detailTree, idPrefix + '-node');
+    const setActiveCSSClass = (qualifier, hash, newActive, oldActive) => {
+        const activeElement = findElementById(detailTree, qualifier + '-node');
         const img = activeElement.getElementsByTagName('img')[0];
         const a   = activeElement.getElementsByTagName('a')[0];
         if (newActive && newActive !== oldActive) {
@@ -380,9 +382,9 @@ const NavigationProjector = (controller, pinToElement) => {
     const setParentActiveCSSClass = (hash, newActive, oldActive) => {
         const rootParent = getRootParentNode(hash);
         if (null !== rootParent) {
-            const idPrefix = rootParent.getHash().slice(1);
-            setActiveCSSClass(rootParent.getHash(), newActive, oldActive);
-            const overviewRootNode = findElementById(overviewContentWrapper, idPrefix+'-overview-node');
+            const qualifier = rootParent.getQualifier();
+            setActiveCSSClass(qualifier, rootParent.getHash(), newActive, oldActive);
+            const overviewRootNode = findElementById(overviewContentWrapper, qualifier+'-overview-node');
             const overviewIcon = overviewRootNode.getElementsByTagName('img')[0];
             toggleCSSClass(overviewIcon, 'active', newActive);
         }
@@ -443,9 +445,9 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !String } newIcon
      */
     const setIconSource = (pageController, newIcon) => {
-        const idPrefix = pageController.getHash().slice(1);
-        const overviewIcon = findElementById(overviewContentWrapper, idPrefix + '-overview-icon');
-        const detailIcon   = findElementById(detailTree, idPrefix + '-detail-icon');
+        const qualifier = pageController.getQualifier();
+        const overviewIcon = findElementById(overviewContentWrapper, qualifier + '-overview-icon');
+        const detailIcon   = findElementById(detailTree, qualifier + '-detail-icon');
         if (null === pageController.getParent() && null !== overviewIcon && null !== detailIcon) {
             overviewIcon.src = newIcon;
             detailIcon.src = newIcon;
@@ -458,13 +460,13 @@ const NavigationProjector = (controller, pinToElement) => {
      * A utility function that adds or removes the invisible CSS class to a given node with the hash.
      *
      * @function
+     * @param { !String } qualifier
      * @param { !String } hash
      * @param { !Boolean } isVisible
      */
-    const handleVisibleChange = (hash, isVisible) => {
-        const idPrefix = hash.slice(1);
-        const overviewNode = findElementById(overviewContentWrapper, idPrefix + '-overview-node');
-        const detailNode   = findElementById(detailTree, idPrefix + '-node');
+    const handleVisibleChange = (qualifier, hash, isVisible) => {
+        const overviewNode = findElementById(overviewContentWrapper, qualifier + '-overview-node');
+        const detailNode   = findElementById(detailTree, qualifier + '-node');
         if (null !== overviewNode) {
             toggleCSSClass(overviewNode, 'invisible', !isVisible);
         }
@@ -477,12 +479,12 @@ const NavigationProjector = (controller, pinToElement) => {
      * A utility function that sets the displayed name of a nav-point to the current page-name value.
      *
      * @function
+     * @param { !String } qualifier
      * @param { !String } hash
      * @param { !String } newValue
      */
-    const setNavpointName = (hash, newValue) => {
-        const idPrefix         = hash.slice(1);
-        const navigationNode   = document.getElementById(`${idPrefix}-node`);
+    const setNavpointName = (qualifier, hash, newValue) => {
+        const navigationNode   = document.getElementById(`${qualifier}-node`);
         const navigationAnchor = navigationNode.getElementsByTagName('a')[0];
         navigationAnchor.innerText = newValue;
     };
