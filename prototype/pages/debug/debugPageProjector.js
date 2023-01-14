@@ -28,6 +28,14 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
 
     const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
 
+    /**
+     * A utility function that toggles the open CSS class
+     *
+     */
+    const toggleOpen = () => {
+        contentWrapper.classList.toggle('open');
+    };
+
     // Initialize the dom components used on this page
     const [contentWrapper, debugTable, bubble, closeButton] = dom(`
         <!-- Create content wrapper -->
@@ -62,12 +70,19 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
      * @return { void }
      */
     const initialize = () => {
-        bubble.onclick      = () => contentWrapper.classList.toggle('open');
-        closeButton.onclick = () => contentWrapper.classList.toggle('open');
+        bubble.onclick      = toggleOpen;
+        closeButton.onclick = toggleOpen;
         contentWrapper.append(debugTable, bubble, closeButton);
 
         const pageClass = pageController.getHash().slice(1);
         contentWrapper.classList.add(pageClass);
+
+        // initalize keyboard event listener for CTRL-ALT-d key events and opens / closes the debugger on event
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.altKey && e.key === 'd') {
+                toggleOpen();
+            }
+        });
     };
 
     /**

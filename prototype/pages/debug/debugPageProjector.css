@@ -21,6 +21,10 @@
     border-spacing: 16px;
 }
 
+.debug .close-button {
+    display: none;
+}
+
 .debug.open .close-button {
     position: fixed;
     right: 10px;
