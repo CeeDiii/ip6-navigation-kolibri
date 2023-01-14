@@ -2,6 +2,12 @@
     display: none;
 }
 
+.debug.open img {
+    position: fixed;
+    right: 0;
+    padding: 10px;
+}
+
 .debug.open #debug-table {
     position: fixed;
     right: 0;
@@ -15,10 +21,12 @@
     border-spacing: 16px;
 }
 
-.debug #debug-table .close-button {
+.debug.open .close-button {
+    position: fixed;
+    right: 10px;
+    margin-top: 16px;
+    padding: 10px;
     cursor: pointer;
-    background-color: #EBECFE;
-    box-shadow: 0 2px 2px var(--kolibri--light---black--500);
     min-height: 30px;
     min-width: 30px;
     display: flex;
