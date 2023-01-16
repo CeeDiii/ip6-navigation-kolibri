@@ -34,12 +34,9 @@ const NavigationProjector = (controller, pinToElement) => {
         // Initialize your navigation anchors here...
 
         // initialize anchor
-        const anchorDom = dom(`
+        const [anchor] = dom(`
             <a href="${hash}">${pageName}</a>
         `);
-
-        // get anchor from collection
-        const anchor = anchorDom[0];
 
         return anchor;
     };
@@ -53,7 +50,11 @@ const NavigationProjector = (controller, pinToElement) => {
     const projectNavigation = () => {
         const navigationDiv = document.createElement("div");
         navigationDiv.classList.add("your-navigation-class");
-        // insert your projector code here...
+
+        navigationAnchors.forEach(anchor => {
+            // insert your projector code here...
+            navigationDiv.append(anchor);
+        });
 
         if (positionWrapper.firstChild === null) {
             positionWrapper.appendChild(navigationDiv)
@@ -80,12 +81,13 @@ const NavigationProjector = (controller, pinToElement) => {
     });
 
     controller.onNavigationHashAdd(hash => {
-        const pageName = controller.getPageController(hash).getValue();
+        const pageController = controller.getPageController(hash);
+        const pageName = pageController.getValue();
         const newNavPoint = initializeNavigationPoint(hash, pageName);
         observableNavigationAnchors.add(newNavPoint);
 
         // CREATE BINDINGS
-        // controller.getPageController(hash).onValueChanged((newValue, oldValue) => {
+        // pageController.onSomethingChanged(changedValue => {
         //      do something with binding
         //});
         // END
