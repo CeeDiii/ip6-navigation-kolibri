@@ -41,8 +41,8 @@ export { NavigationModel }
 const NavigationModel = () => {
     const navigationHashes = Attribute(ObservableList([]));
 
-    navigationHashes.getObs(HOMEPAGE).setValue('');
-    navigationHashes.getObs(DEBUGMODE).setValue(false);
+    navigationHashes.getObs(HOMEPAGE, '');
+    navigationHashes.getObs(DEBUGMODE, 'false');
 
     return {
         addNavigationHash:    pageHash => valueOf(navigationHashes).add(pageHash),

@@ -34,13 +34,14 @@ const PageModel = pageName => {
     const pageAttr = Attribute(pageName);
 
     pageAttr.setQualifier(pageName); // the initial pageName will uniquely identify the page and is unchangeable
-    pageAttr.getObs(ACTIVE).setValue(false);
-    pageAttr.getObs(HASH).setValue('#' + pageName.replace(' ', '')); //Converter is not used because it should only apply for the hash
-    pageAttr.getObs(VISITED).setValue(false);
-    pageAttr.getObs(ICON).setValue('./navigation/icons/placeholder.svg');
-    pageAttr.getObs(VISIBLE).setValue(true);
-    pageAttr.getObs(PARENT).setValue(null);
-    pageAttr.getObs(NAVIGATIONAL).setValue(true);
+
+    pageAttr.getObs(ACTIVE, false);
+    pageAttr.getObs(HASH, '#' + pageName.replace(' ', '')); //Converter is not used because it should only apply for the hash
+    pageAttr.getObs(VISITED, false);
+    pageAttr.getObs(ICON, './navigation/icons/placeholder.svg');
+    pageAttr.getObs(VISIBLE, true);
+    pageAttr.getObs(PARENT, null);
+    pageAttr.getObs(NAVIGATIONAL, true);
 
     return {
         getQualifier:   () => pageAttr.getQualifier(),
