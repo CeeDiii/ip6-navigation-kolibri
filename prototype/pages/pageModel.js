@@ -1,13 +1,14 @@
 import {
     Attribute,
     ACTIVE,
+    DESCRIPTION,
     HASH,
     ICON,
+    NAVIGATIONAL,
     PARENT,
     VALUE,
     VISIBLE,
-    VISITED,
-    NAVIGATIONAL
+    VISITED
 } from "../kolibri/presentationModel.js";
 
 export { PageModel }
@@ -43,6 +44,7 @@ const PageModel = pageName => {
     pageAttr.getObs(VISIBLE, true);
     pageAttr.getObs(PARENT, null);
     pageAttr.getObs(NAVIGATIONAL, true);
+    pageAttr.getObs(DESCRIPTION, '');
     pageAttr.getObs(VALUE).setValue(pageName); // set value explicitly, so it overrides any state the model world has
 
     return {

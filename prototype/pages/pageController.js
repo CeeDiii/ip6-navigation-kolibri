@@ -1,5 +1,6 @@
 import {
     ACTIVE,
+    DESCRIPTION,
     HASH,
     ICON,
     NAVIGATIONAL,
@@ -26,6 +27,8 @@ export { PageController }
  * @property { () => String } getHash - a getter function that returns the hash of the page.
  * @property { (newValue: String) => void } setValue - a setter function that sets the newValue of the page.
  * @property { () => String } getValue - a getter function that returns the value of the page.
+ * @property { (newDescription: String) => void } setDescription - a setter function that sets a descriptive text of the page.
+ * @property { () => String } getDescription - a getter function that returns a descriptive text of the page.
  * @property { (iconPath: String) => void } setIcon - a setter function that sets the icon of the page (icon path must be relative to index.html).
  * @property { () => String } getIcon - a setter function that sets the newValue of the page.
  * @property { (isActive: Boolean) => void } setActive - a setter function that sets the active state of the page.
@@ -110,6 +113,8 @@ const PageController = (pageName, contentControllers) => {
         getHash:                 pageModel.getPageObs(HASH).getValue,
         setValue:                pageModel.getPageObs(VALUE).setValue,
         getValue:                pageModel.getPageObs(VALUE).getValue,
+        setDescription:          pageModel.getPageObs(DESCRIPTION).setValue,
+        getDescription:          pageModel.getPageObs(DESCRIPTION).getValue,
         setIcon:                 pageModel.getPageObs(ICON).setValue,
         getIcon:                 pageModel.getPageObs(ICON).getValue,
         setActive:               pageModel.getPageObs(ACTIVE).setValue,
