@@ -72,16 +72,20 @@
     text-transform: uppercase;
 }
 
-.nav-wrapper > a:hover {
-    margin-bottom: 12px;
+.links > .nav-point-wrapper:hover {
+    padding-bottom: 12px;
     transition: all 0.25s ease-out;
+}
+
+.links > .nav-point-wrapper.active:hover, .links > .nav-point-wrapper.open:hover {
+    padding-bottom: 0;
 }
 
 .nav-wrapper .nav-point-wrapper .card-wrapper {
     display: none;
 }
 
-.nav-wrapper .nav-point-wrapper.active .card-wrapper {
+.nav-wrapper .nav-point-wrapper.open .card-wrapper {
     display: inline-grid;
     position: absolute;
     right: 0;
@@ -91,15 +95,15 @@
     padding: 16px;
     max-width: fit-content;
     color: #EBECFE;
-    box-shadow: 4px 4px 7px 0px rgba(0, 0, 0, 25%);
+    box-shadow: 4px 4px 7px 0 rgba(0, 0, 0, 25%);
 }
 
-.nav-wrapper .nav-point-wrapper.active > a::before {
+.nav-wrapper .nav-point-wrapper.active.open > a::before {
     content: "";
     opacity: 1;
     position: absolute;
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     top: 20px;
     left: calc(50% - 16px);
     border-left: 12px solid transparent;
@@ -119,13 +123,13 @@
     content: "";
     opacity: 1;
     position: absolute;
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     top: 10px;
     right: 10px;
     border: 4px solid #BD00FF;
     border-radius: 4px;
-    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 25%);
+    box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 25%);
 }
 
 .nav-wrapper a.grid-item.visited::before {
@@ -150,7 +154,7 @@
 
 .grid-item:hover {
     background: #784CB0;
-    box-shadow: 4px 4px 7px 0px #000000;
+    box-shadow: 4px 4px 7px 0 #000000;
 }
 
 .grid-item p {
