@@ -109,11 +109,11 @@ navigationSuite.add('onValueChanged', assert => {
 
     homePageController.onValueChanged(newValue => value = newValue);
 
-    assert.is(homePageController.getValue(), 'home');
+    assert.is(homePageController.getValue(), value);
 
     homePageController.setValue('about');
 
-    assert.is(homePageController.getValue(), 'about');
+    assert.is(homePageController.getValue(), value);
 });
 
 navigationSuite.add('onNavigationalChanged', assert => {

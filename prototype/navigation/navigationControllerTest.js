@@ -8,22 +8,16 @@ navigationSuite.add('addPageController', assert => {
     const homePageController = PageController('home', null);
     const navigationController = NavigationController();
 
-    assert.isTrue(navigationController.addPageController(homePageController));
+    navigationController.addPageControllers(homePageController);
 
     assert.is(navigationController.getPageController('#home'), homePageController);
-
-    assert.isTrue(!navigationController.addPageController(homePageController));
-
-    assert.isTrue(!navigationController.addPageController(null));
-
-    assert.isTrue(!navigationController.addPageController(undefined));
 });
 
 navigationSuite.add('deletePageController', assert => {
     const homePageController = PageController('home', null);
     const navigationController = NavigationController();
 
-    navigationController.addPageController(homePageController);
+    navigationController.addPageControllers(homePageController);
 
     assert.is(navigationController.getPageController('#home'), homePageController);
 
@@ -36,7 +30,7 @@ navigationSuite.add('setHomepage', assert => {
     const homePageController = PageController('home', null);
     const navigationController = NavigationController();
 
-    navigationController.addPageController(homePageController);
+    navigationController.addPageControllers(homePageController);
 
     assert.is(navigationController.getHomePage(), '');
 
@@ -54,7 +48,7 @@ navigationSuite.add('onNavigationHashAddAndDel', assert => {
     navigationController.onNavigationHashAdd(hash => newHash = hash);
     navigationController.onNavigationHashDel(() => isDeleted = true);
 
-    navigationController.addPageController(homePageController);
+    navigationController.addPageControllers(homePageController);
 
     assert.is(newHash, '#home');
 

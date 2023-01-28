@@ -130,9 +130,9 @@ const pinToDebugElement = document.getElementById('debug');
 debugController.setIcon('./navigation/icons/bug.svg');
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
 
-navigationController.addPageControllers([errorForbiddenController, errorForbiddenController, debugController]);
-navigationController.addPageControllers([homePageController, masterDetailViewsPageController, formsPageController]);
-navigationController.addPageControllers([welcomePageController, personPageController, carPageController, simpleFormPageController, simpleWorkWeekPageController]);
+navigationController.addPageControllers(errorForbiddenController, errorForbiddenController, debugController);
+navigationController.addPageControllers(homePageController, masterDetailViewsPageController, formsPageController);
+navigationController.addPageControllers(welcomePageController, personPageController, carPageController, simpleFormPageController, simpleWorkWeekPageController);
 
 // Has to happen after adding to the navigation controller
 welcomePageController.setParent(homePageController);
@@ -140,6 +140,3 @@ personPageController.setParent(masterDetailViewsPageController);
 carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
-
-
-

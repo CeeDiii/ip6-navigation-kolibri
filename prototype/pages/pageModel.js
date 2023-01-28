@@ -4,6 +4,7 @@ import {
     HASH,
     ICON,
     PARENT,
+    VALUE,
     VISIBLE,
     VISITED,
     NAVIGATIONAL
@@ -42,6 +43,7 @@ const PageModel = pageName => {
     pageAttr.getObs(VISIBLE, true);
     pageAttr.getObs(PARENT, null);
     pageAttr.getObs(NAVIGATIONAL, true);
+    pageAttr.getObs(VALUE).setValue(pageName); // set value explicitly, so it overrides any state the model world has
 
     return {
         getQualifier:   () => pageAttr.getQualifier(),

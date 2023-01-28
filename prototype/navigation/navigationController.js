@@ -9,10 +9,10 @@ export { NavigationController }
  * The controller passes the website logo path, the homepage, the websites name and the page controllers to the {@link NavigationModel}.
  *
  * @typedef NavigationControllerType
- * @property { (pageControllersToAdd: PageControllerType[]) => void } addPageControllers          - a function that adds one or more page controllers to the navigation controller and adds the page hash to the {@link NavigationModel}.
- * @property { (pageHash: String) => PageControllerType }             getPageController           - a function that returns the page controller of a specific hash.
- * @property { (pageHash: String) => void }                           deletePageController        - a function that deletes the page controller of a specific hash.
- * @property { (anchor: HTMLAnchorElement) => void }                  registerAnchorClickListener - a function that registers a click listener on an anchor. this binding triggers a location change trough navigate based on the hash the anchor has.
+ * @property { (...pageControllersToAdd: PageControllerType[]) => void } addPageControllers          - a function that adds one or more page controllers to the navigation controller and adds the page hash to the {@link NavigationModel}.
+ * @property { (pageHash: String) => PageControllerType }                getPageController           - a function that returns the page controller of a specific hash.
+ * @property { (pageHash: String) => void }                              deletePageController        - a function that deletes the page controller of a specific hash.
+ * @property { (anchor: HTMLAnchorElement) => void }                     registerAnchorClickListener - a function that registers a click listener on an anchor. this binding triggers a location change trough navigate based on the hash the anchor has.
  * @property { (setConfObj: Object) => void }       setConfiguration - a function that sets the attributes of this navigation for all keys in object to their value.
  * @property { (newHomepage: String) => void }      setHomePage      - a function that sets the homepage in the {@link NavigationModel}. the homepage is the fallback page which gets opened when no hash is provided in the request url.
  * @property { () => String}                        getHomePage      - a function that returns the hash of the homepage.
@@ -112,7 +112,7 @@ const NavigationController = () => {
     };
 
     return {
-        addPageControllers: pageControllersToAdd => {
+        addPageControllers: (...pageControllersToAdd) => {
             for (const pageController of pageControllersToAdd) {
                 if (pageController && pageControllers[pageController.getHash()] === undefined) {
                     const hash = pageController.getHash();

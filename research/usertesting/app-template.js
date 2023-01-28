@@ -77,7 +77,7 @@ BreadCrumbProjector(navigationController, pinToBreadCrumbElement); //@TODO remov
  achievable by adding your PageController to your NavigationController.
  */
 // your code here
-navigationController.addPageControllers([homePageController]); // @TODO remove
+navigationController.addPageControllers(homePageController); // @TODO remove
 
 /**
  * 4. More content is needed
@@ -96,7 +96,7 @@ const aboutPageController = PageController("about", null); //@TODO remove
 aboutPageController.setIcon('./pages/icons/cute-robot.svg'); //@TODO remove
 PageProjector(aboutPageController, pinToContentElement, './pages/about.html'); //@TODO remove
 
-navigationController.addPageControllers([aboutPageController]); //@TODO remove
+navigationController.addPageControllers(aboutPageController); //@TODO remove
 
 /**
  * 5. Wouldn't it be fun to add a breadcrumb feature to our SPA now?
@@ -142,6 +142,6 @@ const debugPageController = PageController("debug", null);
 debugPageController.setIcon('./pages/icons/bug.svg');
 debugPageController.setVisible(false);
 DebugPageProjector(navigationController, debugPageController, pinToDebugElement);
-navigationController.addPageControllers([debugPageController]);
+navigationController.addPageControllers(debugPageController);
 navigationController.setDebugMode(true);
 
