@@ -65,7 +65,7 @@ const NavigationProjector = (controller, pinToElement) => {
         parentAnchors.forEach(parentAnchor => {
             const parentQualifier = parentAnchor.id.split('-')[0]; // extract qualifier from something like "home-anchor"
             const [parentWrapper] = dom(`
-                <div class="nav-point-wrapper"></div>
+                <div class="nav-point-wrapper active open"></div>
             `);
             parentWrapper.append(parentAnchor);
 
@@ -75,7 +75,6 @@ const NavigationProjector = (controller, pinToElement) => {
                 const [cardWrapper] = dom(`
                     <div class="card-wrapper"></div>
                 `);
-                parentWrapper.append(cardWrapper);
 
                 if (undefined !== children){
                     children.forEach(childAnchor => {
@@ -88,12 +87,12 @@ const NavigationProjector = (controller, pinToElement) => {
                     `);
                     if (0 === childAnchor.children.length) {
                         childAnchor.append(cardIcon, cardTitle, cardDesc);
-                        cardWrapper.append(childAnchor);
                     }
+                    cardWrapper.append(childAnchor);
                     });
                 }
+                parentWrapper.append(cardWrapper);
             }
-
             links.append(parentWrapper);
         });
 
@@ -115,6 +114,7 @@ const NavigationProjector = (controller, pinToElement) => {
         } else {
             childrenCards[qualifier].push(anchor);
         }
+        projectNavigation();
     });
 
     controller.onWebsiteNameChanged(newWebsiteName => {
@@ -137,16 +137,27 @@ const NavigationProjector = (controller, pinToElement) => {
         const newNavPoint = initializeNavigationPoint(qualifier, hash, pageName);
         observableNavigationAnchors.add(newNavPoint);
 
-        pageController.onParentChanged(newParent => {
+        pageController.onParentChanged((newParent, oldParent) => {
            if (null !== newParent) {
                const deleteAnchorIndex = parentAnchors.findIndex(anchor => anchor.id === qualifier + '-anchor');
                const children = childrenCards[newParent.getQualifier()];
                if (-1 === children.findIndex(child => child.id === qualifier + '-anchor')) {
                    children.push(parentAnchors[deleteAnchorIndex]);
                }
-               parentAnchors.splice(deleteAnchorIndex, 1);
+               if (-1 !== deleteAnchorIndex) {
+                    parentAnchors.splice(deleteAnchorIndex, 1);
+               }
            } else {
-               childrenCards[qualifier] = [];
+               if (undefined === childrenCards[qualifier]) {
+                   childrenCards[qualifier] = [];
+               }
+               if (null !== oldParent) {
+                   const children = childrenCards[oldParent.getQualifier()];
+                   const deleteAnchorIndex = children.findIndex(anchor => anchor.id === qualifier + '-anchor');
+                   if (deleteAnchorIndex !== -1) {
+                       children.splice(deleteAnchorIndex, 1);
+                   }
+               }
            }
            projectNavigation();
         });
