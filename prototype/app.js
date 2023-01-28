@@ -4,6 +4,7 @@ import { NavigationController }                            from "./navigation/na
 import { NavigationProjector }                             from "./navigation/dashboard-refined/dashboardRefinedNavigationProjector.js";
 import { BubbleStateNavigationProjector }                  from "./navigation/bubble-state/bubblestateNavigationProjector.js";
 import { TreeNavigationProjector }                         from "./navigation/basic-tree/basicTreeNavigationProjector.js";
+import { CardNavigationProjector }                         from "./navigation/card/cardNavigationProjector.js";
 import { BreadCrumbProjector }                             from "./navigation/bread-crumbs/breadCrumbProjector.js";
 import { PageController }                                  from "./pages/pageController.js";
 import { ForbiddenPageProjector }                          from "./pages/403/forbiddenPageProjector.js";
@@ -129,6 +130,8 @@ debugController.setVisible(false);
 const pinToDebugElement = document.getElementById('debug');
 debugController.setIcon('./navigation/icons/bug.svg');
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
+const pinToCardNavElement = document.getElementById('card-nav');
+CardNavigationProjector(navigationController, pinToCardNavElement);
 
 navigationController.addPageControllers(errorForbiddenController, errorForbiddenController, debugController);
 navigationController.addPageControllers(homePageController, masterDetailViewsPageController, formsPageController);
@@ -140,3 +143,5 @@ personPageController.setParent(masterDetailViewsPageController);
 carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
+
+
