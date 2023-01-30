@@ -50,8 +50,10 @@ const NavigationProjector = (controller, pinToElement) => {
     const projectNavigation = () => {
         const [navWrapper] = dom(`
             <div class="card-nav nav-wrapper">
-                <div id="card-logo">
-                    <img src="../prototype/navigation/icons/placeholder.svg" alt="placeholder"/>
+                <div class="card-header">
+                    <div id="card-logo">
+                        <img src="../prototype/navigation/icons/placeholder.svg" alt="placeholder"/>
+                    </div>
                     <p>Placeholder for Website Title</p>
                 </div>
                 <div class="links">

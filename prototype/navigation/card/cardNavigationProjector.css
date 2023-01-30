@@ -20,24 +20,30 @@
     font-size: 14px;
 }
 
-.card-nav.nav-wrapper #card-logo {
-    max-height: 42px;
-    max-width: 42px;
+.card-nav .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.card-nav.nav-wrapper .card-header #card-logo {
+    height: 42px;
+    width: 42px;
     background-color: #FCFCFC;
     border-radius: 21px;
-    margin: auto;
     margin-left: 64px;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.card-nav.nav-wrapper #card-logo img {
-    max-height: 42px;
-    max-width: 42px;
+.card-nav.nav-wrapper .card-header #card-logo img {
+    max-width: 32px;
+    aspect-ratio: 1;
 }
 
-.card-nav.nav-wrapper #card-logo p {
+.card-nav.nav-wrapper .card-header p {
     color: #FFFFFF;
-    margin: auto;
     padding-left: 16px;
     font-size: 16px;
     font-weight: bold;
