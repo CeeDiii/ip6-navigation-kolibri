@@ -52,9 +52,9 @@ const NavigationProjector = (controller, pinToElement) => {
             <div class="card-nav nav-wrapper">
                 <div class="card-header">
                     <div id="card-logo">
-                        <img src="../prototype/navigation/icons/placeholder.svg" alt="placeholder"/>
+                        <img src="${controller.getWebsiteLogo()}" alt="${controller.getWebsiteName()}-logo"/>
                     </div>
-                    <p>Placeholder for Website Title</p>
+                    <p>${controller.getWebsiteName()}</p>
                 </div>
                 <div class="links">
                     <!-- Placeholder for navigation links -->
@@ -149,15 +149,29 @@ const NavigationProjector = (controller, pinToElement) => {
     });
 
     controller.onWebsiteNameChanged(newWebsiteName => {
-        // add website name anywhere to website
+        if (null !== newWebsiteName) {
+            const cardHeader = document.getElementsByClassName('card-header')[0];
+            if (undefined !== cardHeader) {
+                cardHeader.lastElementChild.innerHTML = newWebsiteName;
+            }
+        }
     });
 
     controller.onWebsiteLogoChanged(newWebsiteLogoSrc => {
-        // add logo anywhere to website
+        if (null !== newWebsiteLogoSrc) {
+            const cardHeaderLogo = document.getElementById('card-logo');
+            if (null !== cardHeaderLogo) {
+                cardHeaderLogo.firstElementChild.src = newWebsiteLogoSrc;
+                console.log(cardHeaderLogo.firstElementChild);
+            }
+        }
     });
 
     controller.onFavIconChanged(newFavIconSrc => {
-        // add favicon to website
+        if (null !== newFavIconSrc) {
+            const favIcon = document.getElementById('favicon');
+            favIcon.href = newFavIconSrc;
+        }
     });
 
     controller.onNavigationHashAdd(hash => {
