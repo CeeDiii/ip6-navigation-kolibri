@@ -213,6 +213,13 @@ const NavigationProjector = (controller, pinToElement) => {
             }
         });
 
+        pageController.onVisitedChanged(isVisited => {
+            if (isVisited) {
+                const anchor = document.getElementById(pageController.getQualifier() + '-anchor');
+                anchor.classList.add('visited');
+            }
+        });
+
         pageController.onVisibleChanged(isVisible => {
             if (isVisible) {
                 if (null === pageController.getParent()) {
