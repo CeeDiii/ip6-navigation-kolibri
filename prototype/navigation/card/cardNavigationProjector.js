@@ -66,6 +66,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
         parentAnchors.forEach(parentAnchor => {
             const pageController = controller.getPageController(parentAnchor.hash);
+
             if (pageController.isVisible()) {
                 const parentQualifier = pageController.getQualifier();
                 const [parentWrapper] = dom(`
@@ -85,14 +86,16 @@ const NavigationProjector = (controller, pinToElement) => {
 
                 const children = childrenCards[parentQualifier];
 
-                if (undefined !== children) {
+                if (undefined === children || 0 === children.length) {
+                    parentWrapper.classList.add('childless');
+                } else {
                     const [cardWrapper] = dom(`
                         <div class="card-wrapper"></div>
                     `);
 
-                    if (undefined !== children){
-                        children.forEach(childAnchor => {
-                            const childController = controller.getPageController(childAnchor.hash);
+                    children.forEach(childAnchor => {
+                        const childController = controller.getPageController(childAnchor.hash);
+                            if (childController.isVisible()) {
                             childAnchor.classList.add('grid-item');
                             // TODO remove placeholder description
                             const [cardIcon, cardDesc] = dom(`
@@ -110,8 +113,9 @@ const NavigationProjector = (controller, pinToElement) => {
                             childAnchor.append(cardIcon, cardTitle,cardDesc);
                             }
                             cardWrapper.append(childAnchor);
-                        });
-                    }
+                        }
+                    });
+
                     parentWrapper.append(cardWrapper);
                 }
                 links.append(parentWrapper);
@@ -160,9 +164,11 @@ const NavigationProjector = (controller, pinToElement) => {
         observableNavigationAnchors.add(newNavPoint);
 
         pageController.onParentChanged((newParent, oldParent) => {
-           if (null !== newParent) {
+           if (null !== newParent ) {
                const deleteAnchorIndex = parentAnchors.findIndex(anchor => anchor.id === qualifier + '-anchor');
                const children = childrenCards[newParent.getQualifier()];
+
+               // TODO solve special case where parent is set to null then to another controller again and it does not reappear
                if (-1 === children.findIndex(child => child.id === qualifier + '-anchor')) {
                    children.push(parentAnchors[deleteAnchorIndex]);
                }
@@ -182,6 +188,29 @@ const NavigationProjector = (controller, pinToElement) => {
                }
            }
            projectNavigation();
+        });
+
+        pageController.onActiveChanged(isActive => {
+            const parentController = pageController.getParent();
+            if (isActive) {
+                if (null !== parentController) {
+                    const parentAnchor = document.getElementById(parentController.getQualifier() + '-anchor');
+                    parentAnchor.classList.add('active');
+                }
+                const childAnchor = document.getElementById(pageController.getQualifier() + '-anchor');
+                if (null !== childAnchor) {
+                    childAnchor.classList.add('active');
+                }
+            } else {
+                if (null !== parentController) {
+                    const parentAnchor = document.getElementById(parentController.getQualifier() + '-anchor');
+                    parentAnchor.classList.remove('active');
+                }
+                const childAnchor = document.getElementById(pageController.getQualifier() + '-anchor');
+                if (null !== childAnchor) {
+                    childAnchor.classList.remove('active');
+                }
+            }
         });
 
         pageController.onVisibleChanged(isVisible => {

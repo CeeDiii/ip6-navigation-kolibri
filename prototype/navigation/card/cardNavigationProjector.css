@@ -72,12 +72,16 @@
     pointer-events: none;
 }
 
+.card-nav.nav-wrapper .nav-point-wrapper.childless > a {
+    pointer-events: all;
+}
+
 .card-nav .links > .nav-point-wrapper:hover {
     padding-bottom: 12px;
     transition: all 0.25s ease-out;
 }
 
-.card-nav .links > .nav-point-wrapper.active:hover, .links > .nav-point-wrapper.open:hover {
+.card-nav .links > .nav-point-wrapper.open:hover,  .card-nav .links > .nav-point-wrapper.childless:hover {
     padding-bottom: 0;
 }
 
@@ -111,7 +115,11 @@
     border-bottom: 12px solid #3A274E;
 }
 
-.card-nav.nav-wrapper .nav-point-wrapper.active > a {
+.card-nav.nav-wrapper .nav-point-wrapper.open.childless > a::before {
+    border: none;
+}
+
+.card-nav.nav-wrapper .nav-point-wrapper > a.active {
     color: #361B52;
 }
 
