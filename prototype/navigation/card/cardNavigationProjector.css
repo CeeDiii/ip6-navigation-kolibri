@@ -6,12 +6,12 @@
     gap: 16px;
 }
 
-.card-wrapper > a {
+.card-nav .card-wrapper > a {
     text-decoration: none;
     color: #FFFFFF;
 }
 
-.nav-wrapper {
+.card-nav.nav-wrapper {
     min-height: 72px;
     background: linear-gradient(90.06deg, #FF2CA5 0.03%, #9317EC 99.98%);
     display: grid;
@@ -20,7 +20,7 @@
     font-size: 14px;
 }
 
-.nav-wrapper #card-logo {
+.card-nav.nav-wrapper #card-logo {
     max-height: 42px;
     max-width: 42px;
     background-color: #FCFCFC;
@@ -30,12 +30,12 @@
     display: flex;
 }
 
-.nav-wrapper #card-logo img {
+.card-nav.nav-wrapper #card-logo img {
     max-height: 42px;
     max-width: 42px;
 }
 
-.nav-wrapper #card-logo p {
+.card-nav.nav-wrapper #card-logo p {
     color: #FFFFFF;
     margin: auto;
     padding-left: 16px;
@@ -43,7 +43,7 @@
     font-weight: bold;
 }
 
-.nav-wrapper .links {
+.card-nav.nav-wrapper .links {
     min-width: auto;
     display: flex;
     justify-content: end;
@@ -51,12 +51,12 @@
     padding-right: 32px;
 }
 
-.nav-wrapper .nav-point-wrapper {
+.card-nav.nav-wrapper .nav-point-wrapper {
     position: relative;
     cursor: pointer;
 }
 
-.nav-wrapper .nav-point-wrapper > a {
+.card-nav.nav-wrapper .nav-point-wrapper > a {
     padding: 14px;
     text-decoration: none;
     color: #FFFFFF;
@@ -66,20 +66,20 @@
     pointer-events: none;
 }
 
-.links > .nav-point-wrapper:hover {
+.card-nav .links > .nav-point-wrapper:hover {
     padding-bottom: 12px;
     transition: all 0.25s ease-out;
 }
 
-.links > .nav-point-wrapper.active:hover, .links > .nav-point-wrapper.open:hover {
+.card-nav .links > .nav-point-wrapper.active:hover, .links > .nav-point-wrapper.open:hover {
     padding-bottom: 0;
 }
 
-.nav-wrapper .nav-point-wrapper .card-wrapper {
+.card-nav.nav-wrapper .nav-point-wrapper .card-wrapper {
     display: none;
 }
 
-.nav-wrapper .nav-point-wrapper.open .card-wrapper {
+.card-nav.nav-wrapper .nav-point-wrapper.open .card-wrapper {
     display: inline-grid;
     position: absolute;
     right: 0;
@@ -92,7 +92,7 @@
     box-shadow: 4px 4px 7px 0 rgba(0, 0, 0, 25%);
 }
 
-.nav-wrapper .nav-point-wrapper.open > a::before {
+.card-nav.nav-wrapper .nav-point-wrapper.open > a::before {
     content: "";
     opacity: 1;
     position: absolute;
@@ -105,15 +105,15 @@
     border-bottom: 12px solid #3A274E;
 }
 
-.nav-wrapper .nav-point-wrapper.active > a {
+.card-nav.nav-wrapper .nav-point-wrapper.active > a {
     color: #361B52;
 }
 
-.nav-wrapper .grid-item.active > img {
+.card-nav.nav-wrapper .grid-item.active > img {
     filter: invert(14%) sepia(32%) saturate(1919%) hue-rotate(236deg) brightness(99%) contrast(102%);
 }
 
-.nav-wrapper a.grid-item::before {
+.card-nav.nav-wrapper a.grid-item::before {
     content: "";
     opacity: 1;
     position: absolute;
@@ -126,11 +126,11 @@
     box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 25%);
 }
 
-.nav-wrapper a.grid-item.visited::before {
+.card-nav.nav-wrapper a.grid-item.visited::before {
     display: none;
 }
 
-.grid-item {
+.card-nav .grid-item {
     background: #5F5071;
     grid-row: span 2;
     border-radius: 8px;
@@ -141,47 +141,47 @@
     position: relative;
 }
 
-.grid-item.active {
+.card-nav .grid-item.active {
     background: #9C7DBC;
     color: #361B52;
 }
 
-.grid-item:hover {
+.card-nav .grid-item:hover {
     background: #784CB0;
     box-shadow: 4px 4px 7px 0 #000000;
 }
 
-.grid-item p {
+.card-nav .grid-item p {
     display: -webkit-box;
     -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-.grid-item img {
+.card-nav .grid-item img {
     height: 32px;
     width: 100%;
     filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(12deg) brightness(104%) contrast(101%);
 }
 
-.grid-item span {
+.card-nav .grid-item span {
     font-size: 18px;
     font-weight: 600;
 }
 
-.grid-item.half {
+.card-nav .grid-item.half {
     grid-row: span 1;
     grid-template-rows: 24px 18px auto;
 }
 
-.grid-item.half p {
+.card-nav .grid-item.half p {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-.grid-item.half img {
+.card-nav .grid-item.half img {
     height: 24px;
     width: auto;
 }
