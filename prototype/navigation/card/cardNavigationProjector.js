@@ -63,37 +63,57 @@ const NavigationProjector = (controller, pinToElement) => {
         const links = navWrapper.getElementsByClassName('links')[0];
 
         parentAnchors.forEach(parentAnchor => {
-            const parentQualifier = parentAnchor.id.split('-')[0]; // extract qualifier from something like "home-anchor"
-            const [parentWrapper] = dom(`
-                <div class="nav-point-wrapper active open"></div>
+            const pageController = controller.getPageController(parentAnchor.hash);
+            if (pageController.isVisible()) {
+                const parentQualifier = pageController.getQualifier();
+                const [parentWrapper] = dom(`
+                <div id="${parentQualifier}-wrapper" class="nav-point-wrapper"></div>
             `);
-            parentWrapper.append(parentAnchor);
+                parentWrapper.append(parentAnchor);
 
-            const children = childrenCards[parentQualifier];
-
-            if (undefined !== children) {
-                const [cardWrapper] = dom(`
-                    <div class="card-wrapper"></div>
-                `);
-
-                if (undefined !== children){
-                    children.forEach(childAnchor => {
-                        const childController = controller.getPageController(childAnchor.hash);
-                        childAnchor.classList.add('grid-item');
-                        const [cardIcon, cardTitle, cardDesc] = dom(`
-                        <img src="${childController.getIcon()}" alt="${childController.getValue()}-icon">
-                        <span>${childController.getValue()}</span>
-                        <p>${childController.getDescription()}</p>
-                    `);
-                    if (0 === childAnchor.children.length) {
-                        childAnchor.append(cardIcon, cardTitle, cardDesc);
+                parentWrapper.onclick = () => {
+                    const oldActive = document.getElementsByClassName('open')[0];
+                    if (undefined !== oldActive) {
+                        oldActive.classList.remove('open');
                     }
-                    cardWrapper.append(childAnchor);
-                    });
+                    if (oldActive !== parentWrapper) {
+                        parentWrapper.classList.toggle('open');
+                    }
+                };
+
+                const children = childrenCards[parentQualifier];
+
+                if (undefined !== children) {
+                    const [cardWrapper] = dom(`
+                        <div class="card-wrapper"></div>
+                    `);
+
+                    if (undefined !== children){
+                        children.forEach(childAnchor => {
+                            const childController = controller.getPageController(childAnchor.hash);
+                            childAnchor.classList.add('grid-item');
+                            // TODO remove placeholder description
+                            const [cardIcon, cardDesc] = dom(`
+                                <img src="${childController.getIcon()}" alt="${childController.getValue()}-icon">
+                                <p>${childController.getDescription()}
+                                Showing the report that runs the latest test cases live in your  browser window. The Kolibri test facility does not require any build steps or extra tooling.
+                                </p>
+                            `);
+                        if (0 === childAnchor.children.length) {
+                            const header = childAnchor.firstChild;
+                            childAnchor.removeChild(header);
+                            const [cardTitle] = dom(`
+                                <span>${header.textContent}</span>
+                            `);
+                            childAnchor.append(cardIcon, cardTitle,cardDesc);
+                            }
+                            cardWrapper.append(childAnchor);
+                        });
+                    }
+                    parentWrapper.append(cardWrapper);
                 }
-                parentWrapper.append(cardWrapper);
+                links.append(parentWrapper);
             }
-            links.append(parentWrapper);
         });
 
         if (positionWrapper.firstChild === null) {
@@ -160,6 +180,34 @@ const NavigationProjector = (controller, pinToElement) => {
                }
            }
            projectNavigation();
+        });
+
+        pageController.onVisibleChanged(isVisible => {
+            if (isVisible) {
+                if (null === pageController.getParent()) {
+                    const parentWrapper = document.getElementById(pageController.getQualifier() + '-wrapper');
+                    if (undefined !== parentWrapper) {
+                        parentWrapper.style.display = 'block';
+                    }
+                } else {
+                    const childWrapper = document.getElementById(pageController.getQualifier() + '-anchor');
+                    if (undefined !== childWrapper) {
+                        childWrapper.style.display = 'block';
+                    }
+                }
+            } else {
+                if (null === pageController.getParent()) {
+                    const parentWrapper = document.getElementById(pageController.getQualifier() + '-wrapper');
+                    if (null !== parentWrapper) {
+                        parentWrapper.style.display = 'none';
+                    }
+                } else {
+                    const childWrapper = document.getElementById(pageController.getQualifier() + '-anchor');
+                    if (null !== childWrapper) {
+                        childWrapper.style.display = 'none';
+                    }
+                }
+            }
         });
 
         projectNavigation();

@@ -53,6 +53,7 @@
 
 .nav-wrapper .nav-point-wrapper {
     position: relative;
+    cursor: pointer;
 }
 
 .nav-wrapper .nav-point-wrapper > a {
@@ -62,6 +63,7 @@
     font-weight: bold;
     font-size: 14px;
     text-transform: uppercase;
+    pointer-events: none;
 }
 
 .links > .nav-point-wrapper:hover {
@@ -90,7 +92,7 @@
     box-shadow: 4px 4px 7px 0 rgba(0, 0, 0, 25%);
 }
 
-.nav-wrapper .nav-point-wrapper.active.open > a::before {
+.nav-wrapper .nav-point-wrapper.open > a::before {
     content: "";
     opacity: 1;
     position: absolute;
