@@ -15,7 +15,7 @@
     min-height: 72px;
     background: linear-gradient(90.06deg, #FF2CA5 0.03%, #9317EC 99.98%);
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: fit-content(20vw) auto;
     font-family: var(--kb-font-rubik-light-regular);
     font-size: 14px;
 }
@@ -45,6 +45,7 @@
 .card-nav.nav-wrapper .card-header p {
     color: #FFFFFF;
     padding-left: 16px;
+    padding-right: 16px;
     font-size: 16px;
     font-weight: bold;
 }

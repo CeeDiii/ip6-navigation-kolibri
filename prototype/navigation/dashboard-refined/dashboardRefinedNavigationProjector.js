@@ -31,9 +31,9 @@ const NavigationProjector = (controller, pinToElement) => {
         <div class="overview"></div>
         
         <!-- create overview header -->
-        <div class="logo">
+        <a class="logo" href="${controller.getHomePage()}">
             <img src="" alt="website-logo">
-        </div>
+        </a>
         
         <!-- create overview content wrapper -->
         <div class="content" id="overview-content-wrapper"></div>
