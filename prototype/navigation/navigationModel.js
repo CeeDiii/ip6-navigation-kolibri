@@ -18,7 +18,9 @@ export { NavigationModel }
  * @property { (debugModeActive: Boolean) => void }  setDebugMode   - a function that sets the debug mode active state. calling all registered {@link onValueChangeCallback}s.
  * @property { () => Boolean }                       isDebugMode    - a function that returns the if the debug mode is active.
  * @property { (name: String) => void }              setWebsiteName - a function that sets the name for the website, calling all registered {@link onValueChangeCallback}s.
+ * @property { () => String }                        getWebsiteName - a function that returns the name for the website.
  * @property { (logoSrcPath: String) => void }       setWebsiteLogo - a function that sets the path for the page logo that can be displayed in the navigation, calling all registered {@link onValueChangeCallback}s.
+ * @property { () => String }                        getWebsiteLogo - a function that returns the path for the page logo that can be displayed in the navigation.
  * @property { (favIconSrcPath: String) => void }    setFavIcon     - a function that sets the favicon, calling all registered {@link onValueChangeCallback}s.
  * @property { (callback: onValueChangeCallback<String>)  => void } onWebsiteNameChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page name is changed.
  * @property { (callback: onValueChangeCallback<String>)  => void } onWebsiteLogoChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page logo is changed.
@@ -51,7 +53,9 @@ const NavigationModel = () => {
         onDel:                valueOf(navigationHashes).onDel,
         getNavObs:            navigationHashes.getObs,
         setWebsiteName:       navigationHashes.getObs(NAME).setValue,
+        getWebsiteName:       navigationHashes.getObs(NAME).getValue,
         setWebsiteLogo:       navigationHashes.getObs(LOGO).setValue,
+        getWebsiteLogo:       navigationHashes.getObs(LOGO).getValue,
         setFavIcon:           navigationHashes.getObs(FAVICON).setValue,
         setHomepage:          navigationHashes.getObs(HOMEPAGE).setValue,
         getHomepage:          navigationHashes.getObs(HOMEPAGE).getValue,

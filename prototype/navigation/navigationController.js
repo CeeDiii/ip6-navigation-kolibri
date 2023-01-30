@@ -16,9 +16,10 @@ export { NavigationController }
  * @property { (setConfObj: Object) => void }       setConfiguration - a function that sets the attributes of this navigation for all keys in object to their value.
  * @property { (newHomepage: String) => void }      setHomePage      - a function that sets the homepage in the {@link NavigationModel}. the homepage is the fallback page which gets opened when no hash is provided in the request url.
  * @property { () => String}                        getHomePage      - a function that returns the hash of the homepage.
- * @property { (name: String) => void }             setWebsiteName   - a function that sets the name for the website in the {@link NavigationModel}
- * @property { (logoSrcPath: String) => void }      setWebsiteLogo   - a function that sets the path for the logo that can be displayed in the navigation in the {@link NavigationModel}
- * @property { (favIconSrcPath: String) => void }   setFavIcon       - a function that sets the favicon, calling all registered {@link onValueChangeCallback}s.
+ * @property { (name: String) => void }              setWebsiteName - a function that sets the name for the website, calling all registered {@link onValueChangeCallback}s.
+ * @property { () => String }                        getWebsiteName - a function that returns the name for the website.
+ * @property { (logoSrcPath: String) => void }       setWebsiteLogo - a function that sets the path for the page logo that can be displayed in the navigation, calling all registered {@link onValueChangeCallback}s.
+ * @property { () => String }                        getWebsiteLogo - a function that returns the path for the page logo that can be displayed in the navigation.* @property { (favIconSrcPath: String) => void }   setFavIcon       - a function that sets the favicon, calling all registered {@link onValueChangeCallback}s.
  * @property { (debugModeActive: Boolean) => void } setDebugMode     - a function that sets the debug mode active state. calling all registered {@link onValueChangeCallback}s.
  * @property { () => Boolean }                      isDebugMode      - a function that returns the if the debug mode is active.
  * @property { (callback: observableListCallback) => Boolean }                 onNavigationHashAdd  - a function that registers an {@link observableListCallback} that will be called whenever a page hash is added.
@@ -145,7 +146,9 @@ const NavigationController = () => {
             }
         },
         setWebsiteName:         navigationModel.setWebsiteName,
+        getWebsiteName:         navigationModel.getWebsiteName,
         setWebsiteLogo:         navigationModel.setWebsiteLogo,
+        getWebsiteLogo:         navigationModel.getWebsiteLogo,
         setFavIcon:             navigationModel.setFavIcon,
         setHomePage:            navigationModel.setHomepage,
         getHomePage:            navigationModel.getHomepage,
