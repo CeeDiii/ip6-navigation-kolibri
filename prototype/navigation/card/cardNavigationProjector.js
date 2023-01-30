@@ -95,7 +95,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
                     children.forEach(childAnchor => {
                         const childController = controller.getPageController(childAnchor.hash);
-                            if (childController.isVisible()) {
+                        if (childController.isVisible()) {
                             childAnchor.classList.add('grid-item');
                             // TODO remove placeholder description
                             const [cardIcon, cardDesc] = dom(`
@@ -104,14 +104,19 @@ const NavigationProjector = (controller, pinToElement) => {
                                 Showing the report that runs the latest test cases live in your  browser window. The Kolibri test facility does not require any build steps or extra tooling.
                                 </p>
                             `);
-                        if (0 === childAnchor.children.length) {
-                            const header = childAnchor.firstChild;
-                            childAnchor.removeChild(header);
-                            const [cardTitle] = dom(`
-                                <span>${header.textContent}</span>
-                            `);
-                            childAnchor.append(cardIcon, cardTitle,cardDesc);
+                            if (0 === childAnchor.children.length) {
+                                const header = childAnchor.firstChild;
+                                childAnchor.removeChild(header);
+                                const [cardTitle] = dom(`
+                                    <span>${header.textContent}</span>
+                                `);
+                                childAnchor.append(cardIcon, cardTitle,cardDesc);
                             }
+                            const gridProps = childController.getGrid();
+                            if (1 === gridProps.rowSpan) {
+                                childAnchor.classList.add('half');
+                            }
+
                             cardWrapper.append(childAnchor);
                         }
                     });

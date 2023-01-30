@@ -69,7 +69,6 @@ welcomePageController.setConfiguration({
 });
 WelcomePageProjector(welcomePageController, pinToContentElement, './pages/welcome/welcome.html');
 
-
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
@@ -89,6 +88,10 @@ CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html')
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
 simpleWorkWeekPageController.setConfiguration({
     icon: './navigation/icons/calendar.svg',
+    grid: {
+        ...simpleWorkWeekPageController.getGrid(),
+        rowSpan: 1
+    }
 });
 SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
 
@@ -104,6 +107,10 @@ const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleform", [simpleFormController]);
 simpleFormPageController.setConfiguration({
     icon: './navigation/icons/simpleform.svg',
+    grid: {
+        ...simpleWorkWeekPageController.getGrid(),
+        rowSpan: 1
+    }
 });
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
@@ -113,7 +120,7 @@ navigationController.setConfiguration({
     logo: './img/logo/logo-new-128.svg',
     favicon: './img/logo/logo-new-128.svg',
     homepage: welcomePageController.getHash(),
-    debugmode: true
+    debugmode: false
 });
 
 const pinToNavElement = document.getElementById('nav');
@@ -143,5 +150,3 @@ personPageController.setParent(masterDetailViewsPageController);
 carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
-
-
