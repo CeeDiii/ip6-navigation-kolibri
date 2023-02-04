@@ -110,7 +110,7 @@ const NavigationProjector = (controller, pinToElement) => {
                                 const [cardTitle] = dom(`
                                     <span>${header.textContent}</span>
                                 `);
-                                childAnchor.append(cardIcon, cardTitle,cardDesc);
+                                childAnchor.append(cardIcon, cardTitle, cardDesc);
                             }
                             const gridProps = childController.getGrid();
                             if (1 === gridProps.rowSpan) {
@@ -183,96 +183,176 @@ const NavigationProjector = (controller, pinToElement) => {
         observableNavigationAnchors.add(newNavPoint);
 
         pageController.onParentChanged((newParent, oldParent) => {
-           if (null !== newParent ) {
-               const deleteAnchorIndex = parentAnchors.findIndex(anchor => anchor.id === qualifier + '-anchor');
-               const children = childrenCards[newParent.getQualifier()];
-
-               // TODO solve special case where parent is set to null then to another controller again and it does not reappear
-               if (-1 === children.findIndex(child => child.id === qualifier + '-anchor')) {
-                   children.push(parentAnchors[deleteAnchorIndex]);
-               }
-               if (-1 !== deleteAnchorIndex) {
-                    parentAnchors.splice(deleteAnchorIndex, 1);
-               }
-           } else {
-               if (undefined === childrenCards[qualifier]) {
-                   childrenCards[qualifier] = [];
-               }
-               // node is a new parent
-               if (null !== oldParent) {
-                   const children = childrenCards[oldParent.getQualifier()];
-                   const deleteAnchorIndex = children.findIndex(anchor => anchor.id === qualifier + '-anchor');
-                   if (deleteAnchorIndex !== -1) {
-                       const newParentAnchor = children[deleteAnchorIndex];
-                       newParentAnchor.innerHTML = pageName;
-                       newParentAnchor.classList.forEach(cssClass => newParentAnchor.classList.remove(cssClass));
-                       parentAnchors.push(newParentAnchor);
-                       children.splice(deleteAnchorIndex, 1);
-                   }
-
-               }
-           }
-           projectNavigation();
+            addAnchor(pageController, newParent, oldParent, parentAnchors, childrenCards);
+            projectNavigation();
         });
 
         pageController.onActiveChanged(isActive => {
-            const parentController = pageController.getParent();
-            if (isActive) {
-                if (null !== parentController) {
-                    const parentAnchor = document.getElementById(parentController.getQualifier() + '-anchor');
-                    parentAnchor.classList.add('active');
-                }
-                const childAnchor = document.getElementById(pageController.getQualifier() + '-anchor');
-                if (null !== childAnchor) {
-                    childAnchor.classList.add('active');
-                }
-            } else {
-                if (null !== parentController) {
-                    const parentAnchor = document.getElementById(parentController.getQualifier() + '-anchor');
-                    parentAnchor.classList.remove('active');
-                }
-                const childAnchor = document.getElementById(pageController.getQualifier() + '-anchor');
-                if (null !== childAnchor) {
-                    childAnchor.classList.remove('active');
-                }
-            }
+            setActiveCSSClass(isActive, qualifier, pageController.getParent());
         });
 
-        pageController.onVisitedChanged(isVisited => {
-            if (isVisited) {
-                const anchor = document.getElementById(pageController.getQualifier() + '-anchor');
-                anchor.classList.add('visited');
-            }
+        pageController.onVisitedChanged(visited => {
+            setVisitedCSSClass(visited, qualifier);
         });
 
         pageController.onVisibleChanged(isVisible => {
-            if (isVisible) {
-                if (null === pageController.getParent()) {
-                    const parentWrapper = document.getElementById(pageController.getQualifier() + '-wrapper');
-                    if (undefined !== parentWrapper) {
-                        parentWrapper.style.display = 'block';
-                    }
-                } else {
-                    const childWrapper = document.getElementById(pageController.getQualifier() + '-anchor');
-                    if (undefined !== childWrapper) {
-                        childWrapper.style.display = 'block';
-                    }
-                }
-            } else {
-                if (null === pageController.getParent()) {
-                    const parentWrapper = document.getElementById(pageController.getQualifier() + '-wrapper');
-                    if (null !== parentWrapper) {
-                        parentWrapper.style.display = 'none';
-                    }
-                } else {
-                    const childWrapper = document.getElementById(pageController.getQualifier() + '-anchor');
-                    if (null !== childWrapper) {
-                        childWrapper.style.display = 'none';
-                    }
-                }
-            }
+            setVisibleCSSClass(isVisible, qualifier, pageController.getParent());
         });
 
         projectNavigation();
     });
+
+    /* ********************* Utility functions for bindings ***************************** */
+
+    /**
+     * A utility function that adds an anchor to the corresponding data structure depending on if it is a child or a parent.
+     *
+     * @param { !PageControllerType } pageController
+     * @param { ?PageControllerType } newParent
+     * @param { ?PageControllerType } oldParent
+     * @param { !HTMLAnchorElement[] } parentAnchors
+     * @param { !Object } childrenCards
+     */
+    const addAnchor = (pageController, newParent, oldParent, parentAnchors, childrenCards) => {
+        if (null === newParent) {
+            addParentAnchor(pageController, newParent, oldParent, parentAnchors, childrenCards);
+        } else {
+            addChildAnchor(pageController, newParent, parentAnchors, childrenCards);
+        }
+    };
+
+    /**
+     * A utility function that adds an anchor to the parent anchors data structure
+     * and removes it from the child anchors if present.
+     *
+     * @param { !PageControllerType } pageController
+     * @param { ?PageControllerType } newParent
+     * @param { ?PageControllerType } oldParent
+     * @param { !HTMLAnchorElement[] } parentAnchors
+     * @param { !Object } childrenCards
+     */
+    const addParentAnchor = (pageController, newParent, oldParent, parentAnchors, childrenCards) => {
+        const qualifier = pageController.getQualifier();
+        const pageName = pageController.getValue();
+        // initialize empty child array for new parents
+        if (undefined === childrenCards[qualifier]) {
+            childrenCards[qualifier] = [];
+        }
+        if (null !== oldParent) {
+            const children = childrenCards[oldParent.getQualifier()];
+            const deleteAnchorIndex = children.findIndex(anchor => anchor.id === qualifier + '-anchor');
+            if (deleteAnchorIndex !== -1) {
+                const newParentAnchor = children[deleteAnchorIndex];
+                transformChildToParentAnchor(newParentAnchor, pageName);
+                parentAnchors.push(newParentAnchor);
+                removeAtIndex(children, deleteAnchorIndex);
+            }
+        }
+    };
+
+    /**
+     * A utility function that adds an anchor to the children anchors data structure
+     * and removes it from the parent anchors if present.
+     *
+     * @param { !PageControllerType } pageController
+     * @param { ?PageControllerType } newParent
+     * @param { !HTMLAnchorElement[] } parentAnchors
+     * @param { !Object } childrenCards
+     */
+    const addChildAnchor = (pageController, newParent, parentAnchors, childrenCards) => {
+        const qualifier = pageController.getQualifier();
+        const deleteAnchorIndex = parentAnchors.findIndex(anchor => anchor.id === qualifier + '-anchor');
+        const children = childrenCards[newParent.getQualifier()];
+        const childExists = children.findIndex(child => child.id === qualifier + '-anchor');
+
+        if (-1 === childExists) {
+            children.push(parentAnchors[deleteAnchorIndex]);
+        }
+        if (-1 !== deleteAnchorIndex) {
+            removeAtIndex(parentAnchors, deleteAnchorIndex);
+        }
+    };
+
+    /**
+     * A utility function that changes transforms the child anchor html structure
+     * so that it represents the parent anchor html structure. The function also removes child CSS classes.
+     *
+     * @param { !HTMLAnchorElement } anchor
+     * @param { !String } pageName
+     */
+    const transformChildToParentAnchor = (anchor, pageName) => {
+        anchor.innerHTML = pageName;
+        anchor.classList.forEach(cssClass => anchor.classList.remove(cssClass));
+    };
+
+    /**
+     * A utility function that removes an array element at index i.
+     * @template T
+     * @param { T[] } arr
+     * @param { number } i
+     */
+    const removeAtIndex = (arr, i) => arr.splice(i, 1);
+
+    /**
+     * A utility function that sets the active CSS class for the given qualifier
+     * and removes the class from the old active qualifier.
+     *
+     * @function
+     * @param { !Boolean } isActive
+     * @param { !String } qualifier
+     * @param { ?PageControllerType } parentController
+     */
+    const setActiveCSSClass = (isActive, qualifier, parentController) => {
+        const thisAnchor = document.getElementById(qualifier + '-anchor');
+        if (null !== parentController) {
+            setActiveCSSClass(isActive, parentController.getQualifier(), null);
+        }
+        if (null !== thisAnchor) {
+            if (isActive) {
+                thisAnchor.classList.add('active');
+            } else if (!isActive) {
+                thisAnchor.classList.remove('active');
+            }
+        }
+
+    };
+
+    /**
+     * A utility function that sets the visited CSS class for the given qualifier
+     *
+     * @function
+     * @param { !Boolean } visited
+     * @param { !String } qualifier
+     */
+    const setVisitedCSSClass = (visited, qualifier) => {
+        if (visited) {
+            const anchor = document.getElementById(qualifier + '-anchor');
+            anchor.classList.add('visited');
+        }
+    };
+
+    /**
+     * A utility function that adds or removes the invisible CSS class to a given node with the qualifier.
+     *
+     * @function
+     * @param { !Boolean } isVisible
+     * @param { !String } qualifier
+     * @param { ?PageControllerType } parentController
+     */
+    const setVisibleCSSClass = (isVisible, qualifier, parentController) => {
+        let thisAnchor;
+        if (null !== parentController) {
+            thisAnchor = document.getElementById(qualifier + '-anchor');
+        } else {
+            thisAnchor = document.getElementById(qualifier + '-wrapper');
+        }
+        if (null !== thisAnchor) {
+            if (isVisible) {
+                thisAnchor.classList.remove('invisible');
+            } else if (!isVisible) {
+                thisAnchor.classList.add('invisible');
+            }
+        }
+
+    };
 };
