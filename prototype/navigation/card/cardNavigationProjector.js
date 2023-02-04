@@ -339,7 +339,6 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !String } qualifier
      * @param { ?PageControllerType } parentController
      */
-    // TODO set class instead of inline
     const setVisibleCSSClass = (isVisible, qualifier, parentController) => {
         let thisAnchor;
         if (null !== parentController) {
@@ -349,9 +348,9 @@ const NavigationProjector = (controller, pinToElement) => {
         }
         if (null !== thisAnchor) {
             if (isVisible) {
-                thisAnchor.style.display = 'block';
+                thisAnchor.classList.remove('invisible');
             } else if (!isVisible) {
-                thisAnchor.style.display = 'none';
+                thisAnchor.classList.add('invisible');
             }
         }
 

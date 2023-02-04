@@ -213,3 +213,7 @@
     height: 24px;
     width: auto;
 }
+
+.card-nav .invisible {
+    display: none;
+}
