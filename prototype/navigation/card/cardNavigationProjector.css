@@ -13,7 +13,7 @@
 }
 
 .card-nav.nav-wrapper {
-    min-height: 72px;
+    min-height: 96px;
     background: linear-gradient(90.06deg, #FF2CA5 0.03%, #9317EC 99.98%);
     display: grid;
     grid-template-columns: fit-content(20vw) auto;
@@ -76,16 +76,16 @@
     border-bottom: 2px solid #FFFFFF;
     width: 6px;
     height: 6px;
-    transform: translate(-30%, -70%) rotate(45deg);
+    transform: translate(-100%, -70%) rotate(45deg);
     transition: transform 0.2s ease;
 }
 
 .card-nav.nav-wrapper .nav-point-wrapper.open:not(.childless)::before{
-    transform: translate(-30%, -10%) rotate(225deg);
+    transform: translate(-100%, -10%) rotate(225deg);
 }
 
 .card-nav.nav-wrapper .nav-point-wrapper > a {
-    padding: 14px;
+    padding: 26px;
     text-decoration: none;
     color: #D9DBE9;
     font-weight: bold;
