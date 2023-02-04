@@ -87,7 +87,7 @@
 .card-nav.nav-wrapper .nav-point-wrapper > a {
     padding: 14px;
     text-decoration: none;
-    color: #FFFFFF;
+    color: #D9DBE9;
     font-weight: bold;
     font-size: 14px;
     text-transform: uppercase;
@@ -133,7 +133,7 @@
 }
 
 .card-nav.nav-wrapper .nav-point-wrapper > a.active {
-    color: #D9DBE9;
+    color: #FFFFFF;
 }
 
 .card-nav.nav-wrapper .grid-item.active > img {
