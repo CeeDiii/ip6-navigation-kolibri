@@ -198,12 +198,18 @@ const NavigationProjector = (controller, pinToElement) => {
                if (undefined === childrenCards[qualifier]) {
                    childrenCards[qualifier] = [];
                }
+               // node is a new parent
                if (null !== oldParent) {
                    const children = childrenCards[oldParent.getQualifier()];
                    const deleteAnchorIndex = children.findIndex(anchor => anchor.id === qualifier + '-anchor');
                    if (deleteAnchorIndex !== -1) {
+                       const newParentAnchor = children[deleteAnchorIndex];
+                       newParentAnchor.innerHTML = pageName;
+                       newParentAnchor.classList.forEach(cssClass => newParentAnchor.classList.remove(cssClass));
+                       parentAnchors.push(newParentAnchor);
                        children.splice(deleteAnchorIndex, 1);
                    }
+
                }
            }
            projectNavigation();
