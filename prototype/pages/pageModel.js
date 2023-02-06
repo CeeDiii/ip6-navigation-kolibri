@@ -2,7 +2,6 @@ import {
     Attribute,
     ACTIVE,
     DESCRIPTION,
-    GRID,
     HASH,
     ICON,
     NAVIGATIONAL,
@@ -42,14 +41,6 @@ const PageModel = pageName => {
     pageAttr.getObs(HASH, '#' + pageName.replace(' ', '')); //Converter is not used because it should only apply for the hash
     pageAttr.getObs(VISITED, false);
     pageAttr.getObs(ICON, './navigation/icons/placeholder.svg');
-    pageAttr.getObs(GRID, {
-        rowStartIndex: 0,
-        rowEndIndex: 0,
-        colStartIndex: 0,
-        colEndIndex: 0,
-        rowSpan: 0,
-        colSpan: 0
-    });
     pageAttr.getObs(VISIBLE, true);
     pageAttr.getObs(PARENT, null);
     pageAttr.getObs(NAVIGATIONAL, true);

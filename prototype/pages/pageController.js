@@ -1,7 +1,6 @@
 import {
     ACTIVE,
     DESCRIPTION,
-    GRID,
     HASH,
     ICON,
     NAVIGATIONAL,
@@ -32,8 +31,6 @@ export { PageController }
  * @property { () => String } getDescription - a getter function that returns a descriptive text of the page.
  * @property { (iconPath: String) => void } setIcon - a setter function that sets the icon of the page (icon path must be relative to index.html).
  * @property { () => String } getIcon - a setter function that sets the newValue of the page.
- * @property { () => Object } getGrid - a getter function that returns the grid object of the page.
- * @property { (gridObject: Object) => void } setGrid - a setter function that sets the grid object of the page.
  * @property { (isActive: Boolean) => void } setActive - a setter function that sets the active state of the page.
  * @property { () => Boolean } isActive - a getter function that returns the active state of the page.
  * @property { (isVisited: Boolean) => void } setVisited - a setter function that sets the visitedState of the page.
@@ -120,8 +117,6 @@ const PageController = (pageName, contentControllers) => {
         getDescription:          pageModel.getPageObs(DESCRIPTION).getValue,
         setIcon:                 pageModel.getPageObs(ICON).setValue,
         getIcon:                 pageModel.getPageObs(ICON).getValue,
-        setGrid:                 pageModel.getPageObs(GRID).setValue,
-        getGrid:                 pageModel.getPageObs(GRID).getValue,
         setActive:               pageModel.getPageObs(ACTIVE).setValue,
         isActive:                pageModel.getPageObs(ACTIVE).getValue,
         setVisited:              pageModel.getPageObs(VISITED).setValue,
