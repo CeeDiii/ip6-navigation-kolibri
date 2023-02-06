@@ -87,9 +87,9 @@ const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
 carPageController.setConfiguration({
+    icon: './navigation/icons/car.svg',
     description: `Have a go and play around with adding new entries, selecting various entries, 
     start typing in either the master or the detail view, delete entries, and change the brandname to less than three characters. See what happens.`,
-    icon: './navigation/icons/car.svg',
 });
 CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
 
@@ -98,11 +98,8 @@ simpleWorkWeekPageController.setConfiguration({
     icon: './navigation/icons/calendar.svg',
     description: `We go from simple to more advanced user interfaces by combining previous work without touching (and possibly compromising) previous functionality. 
     You cannot break what you do not touch.`,
-    grid: {
-        ...simpleWorkWeekPageController.getGrid(),
-        rowSpan: 1
-    }
 });
+
 SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
 
 const formStructure = [
@@ -120,11 +117,7 @@ simpleFormPageController.setConfiguration({
     description: `It only takes a single line of code to create the form, set up the presentation models, 
     and bind all required listeners such that model and view are always kept in sync. 
     After that, any controller can solely work on the presentation models without ever touching the view.
-    `,
-    grid: {
-        ...simpleWorkWeekPageController.getGrid(),
-        rowSpan: 1
-    }
+    `
 });
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
@@ -134,7 +127,7 @@ navigationController.setConfiguration({
     logo: './img/logo/logo-new-128.svg',
     favicon: './img/logo/logo-new-128.svg',
     homepage: welcomePageController.getHash(),
-    debugmode: false
+    debugmode: true
 });
 
 const pinToNavElement = document.getElementById('nav');
@@ -152,7 +145,10 @@ const pinToDebugElement = document.getElementById('debug');
 debugController.setIcon('./navigation/icons/bug.svg');
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
 const pinToCardNavElement = document.getElementById('card-nav');
-CardNavigationProjector(navigationController, pinToCardNavElement);
+const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
+const cardGridProjector = cardNavigationProjector.getGridProjector();
+cardGridProjector.setGridForPage(simpleWorkWeekPageController.getQualifier(), { rowSpan: 1 });
+cardGridProjector.setGridForPage(simpleFormPageController.getQualifier(), { rowSpan: 1 });
 
 navigationController.addPageControllers(errorForbiddenController, errorForbiddenController, debugController);
 navigationController.addPageControllers(homePageController, masterDetailViewsPageController, formsPageController);

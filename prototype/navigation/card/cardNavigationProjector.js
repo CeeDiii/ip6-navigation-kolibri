@@ -1,22 +1,30 @@
 import { ObservableList } from "../../kolibri/observable.js";
 import { dom } from "../../kolibri/util/dom.js";
+import { GridProjector } from "../utility-projectors/GridProjector.js";
 
 export { NavigationProjector as CardNavigationProjector }
 
 /**
+ * @typedef { Object.<String, HTMLAnchorElement[]>} ParentChildMap
+ */
+
+
+/**
  * @typedef NavigationProjectorType
+ * @property { () => GridProjectorType } getGridProjector - a getter function that returns the grid projector for this navigation.
  */
 
 /**
  * @constructor
  * @param { !NavigationControllerType } controller
  * @param { !HTMLDivElement } pinToElement
- * @return { NavigationProjectorType }
+ * @returns NavigationProjectorType
  * @example
  * const navigationController = NavigationController();
  * DashboardNavigationProjector(navigationController, pinToNavElement);
  */
 const NavigationProjector = (controller, pinToElement) => {
+    const gridProjector = GridProjector();
     const positionWrapper = pinToElement;
     const observableNavigationAnchors = ObservableList([]);
     const parentAnchors = [];
@@ -99,8 +107,8 @@ const NavigationProjector = (controller, pinToElement) => {
                                 `);
             childAnchor.append(cardIcon, cardTitle, cardDesc);
         }
-        const gridProps = childController.getGrid();
-        if (1 === gridProps.rowSpan) {
+        const gridProps = gridProjector.getGridForPage(childController.getQualifier());
+        if (undefined !== gridProps && 1 === gridProps.rowSpan) {
             childAnchor.classList.add('half');
         }
     };
@@ -109,7 +117,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * A utility function that returns the child anchors for a given parent. If no children are found, an empty array is returned.
      *
      * @param { !String } rootQualifier
-     * @param { !Object } parentChildMap
+     * @param { !ParentChildMap } parentChildMap
      * @return { HTMLAnchorElement[] }
      */
     const getChildAnchors = (rootQualifier, parentChildMap) => {
@@ -125,7 +133,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !NavigationControllerType } navigationController
      * @param { !HTMLDivElement } navWrapper
      * @param { HTMLAnchorElement[] } rootAnchors
-     * @param { !Object } parentChildMap
+     * @param { !ParentChildMap } parentChildMap
      */
     const projectAnchors = (navigationController, navWrapper, rootAnchors, parentChildMap) => {
         const links = navWrapper.getElementsByClassName('links')[0];
@@ -406,4 +414,8 @@ const NavigationProjector = (controller, pinToElement) => {
         }
 
     };
+
+    return {
+        getGridProjector: () => gridProjector
+    }
 };
