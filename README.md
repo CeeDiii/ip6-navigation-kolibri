@@ -31,3 +31,16 @@ The procedure in this research project is iterative and incremental. The finding
 
 ## Acknowledgment
 We would like to express our sincere thanks to our lecturers, project clients and experts Prof. Dierk Koenig and Fabian Affolter. Without their regular feedback and exciting suggestions, this project would not have come about to the same extent and especially not in the same quality. Many thanks!
+
+## Usage
+TODO
+
+### Remove the presentation stylesheet
+If you want to use a single navigation projector for your project, remove the following stylesheet from `index.html`:
+ 
+```html
+<link rel="stylesheet" href="./navigation/prototypePresentation.css">
+```
+
+
+It is currently only used to combine all projectors onto one page for prototyping purposes.

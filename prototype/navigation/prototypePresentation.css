@@ -1,0 +1,11 @@
+body {
+    padding-top: 96px;
+}
+
+.dashboard-refined-nav {
+    top: auto;
+    min-height: calc(100vh - 96px);
+}
+
+
+
