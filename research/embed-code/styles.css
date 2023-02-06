@@ -1,0 +1,5 @@
+.code {
+    display: flex;
+    justify-content: center;
+    max-width: 1200px;
+}
