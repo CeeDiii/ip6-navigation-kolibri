@@ -66,6 +66,10 @@ FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/form
 const welcomePageController = PageController("welcome", null);
 welcomePageController.setConfiguration({
     icon: './navigation/icons/cute-robot.svg',
+    description: `Kolibri aims to be a sustainable, high-quality toolkit. 
+    Contributions are validated through usability testing and automated tests. 
+    Industry experts and academic advisers assess the code quality and the completeness of the documentation. 
+    Every contribution must have proven its worth in an application.`
 });
 WelcomePageProjector(welcomePageController, pinToContentElement, './pages/welcome/welcome.html');
 
@@ -74,6 +78,8 @@ const personSelectionController = PersonSelectionController(personSelectionMold)
 const personPageController = PageController("person", [personListController, personSelectionController]);
 personPageController.setConfiguration({
     icon: './navigation/icons/person.svg',
+    description: `Have a go and play around with adding new entries, selecting various entries, 
+    start typing in either the master or the detail view, delete entries, and change the lastname to less than three characters. See what happens.`
 });
 PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html');
 
@@ -81,6 +87,8 @@ const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
 carPageController.setConfiguration({
+    description: `Have a go and play around with adding new entries, selecting various entries, 
+    start typing in either the master or the detail view, delete entries, and change the brandname to less than three characters. See what happens.`,
     icon: './navigation/icons/car.svg',
 });
 CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
@@ -88,6 +96,8 @@ CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html')
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
 simpleWorkWeekPageController.setConfiguration({
     icon: './navigation/icons/calendar.svg',
+    description: `We go from simple to more advanced user interfaces by combining previous work without touching (and possibly compromising) previous functionality. 
+    You cannot break what you do not touch.`,
     grid: {
         ...simpleWorkWeekPageController.getGrid(),
         rowSpan: 1
@@ -107,6 +117,10 @@ const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleform", [simpleFormController]);
 simpleFormPageController.setConfiguration({
     icon: './navigation/icons/simpleform.svg',
+    description: `It only takes a single line of code to create the form, set up the presentation models, 
+    and bind all required listeners such that model and view are always kept in sync. 
+    After that, any controller can solely work on the presentation models without ever touching the view.
+    `,
     grid: {
         ...simpleWorkWeekPageController.getGrid(),
         rowSpan: 1
