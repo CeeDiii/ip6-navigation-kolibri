@@ -42,6 +42,120 @@ const NavigationProjector = (controller, pinToElement) => {
     };
 
     /**
+     * A projector function that projects a root anchor.
+     *
+     * @param { !HTMLDivElement } rootWrapper
+     * @param { !String }qualifier
+     * @param { !HTMLAnchorElement } anchor
+     */
+    const projectRootAnchors = (rootWrapper, qualifier, anchor) => {
+        rootWrapper.append(anchor);
+
+        rootWrapper.onclick = () => {
+            const oldActive = document.getElementsByClassName('open')[0];
+            if (undefined !== oldActive) {
+                oldActive.classList.remove('open');
+            }
+            if (oldActive !== rootWrapper) {
+                rootWrapper.classList.toggle('open');
+            }
+        };
+    };
+
+    /**
+     * A projector function that projects all child anchors from an array.
+     *
+     * @param { !NavigationControllerType } navigationController
+     * @param { !HTMLDivElement } cardWrapper
+     * @param { !HTMLAnchorElement[] } childAnchors
+     */
+    const projectChildAnchors = (navigationController, cardWrapper, childAnchors) => {
+        childAnchors.forEach(childAnchor => {
+            const childController = navigationController.getPageController(childAnchor.hash);
+            if (childController.isVisible()) {
+                projectChildAnchor(childController, childAnchor);
+                cardWrapper.append(childAnchor);
+            }
+        });
+    };
+
+    /**
+     * A projector function that projects a child anchor.
+     *
+     * @param { !PageControllerType } childController
+     * @param { !HTMLAnchorElement } childAnchor
+     */
+    const projectChildAnchor = (childController, childAnchor) => {
+        childAnchor.classList.add('grid-item');
+        const [cardIcon, cardDesc] = dom(`
+                                <img src="${childController.getIcon()}" alt="${childController.getValue()}-icon">
+                                <p>${childController.getDescription()}</p>
+                            `);
+        if (0 === childAnchor.children.length) {
+            const header = childAnchor.firstChild;
+            childAnchor.removeChild(header);
+            const [cardTitle] = dom(`
+                                    <span>${header.textContent}</span>
+                                `);
+            childAnchor.append(cardIcon, cardTitle, cardDesc);
+        }
+        const gridProps = childController.getGrid();
+        if (1 === gridProps.rowSpan) {
+            childAnchor.classList.add('half');
+        }
+    };
+
+    /**
+     * A utility function that returns the child anchors for a given parent. If no children are found, an empty array is returned.
+     *
+     * @param { !String } rootQualifier
+     * @param { !Object } parentChildMap
+     * @return { HTMLAnchorElement[] }
+     */
+    const getChildAnchors = (rootQualifier, parentChildMap) => {
+        if (undefined === parentChildMap[rootQualifier]) {
+            return [];
+        }
+        return parentChildMap[rootQualifier];
+    };
+
+    /**
+     * A projector function that projects all anchors and places them at the root or in a card depending on their hierarchy level.
+     *
+     * @param { !NavigationControllerType } navigationController
+     * @param { !HTMLDivElement } navWrapper
+     * @param { HTMLAnchorElement[] } rootAnchors
+     * @param { !Object } parentChildMap
+     */
+    const projectAnchors = (navigationController, navWrapper, rootAnchors, parentChildMap) => {
+        const links = navWrapper.getElementsByClassName('links')[0];
+
+        rootAnchors.forEach(rootAnchor => {
+            const pageController = navigationController.getPageController(rootAnchor.hash);
+
+            if (pageController.isVisible()) {
+                const rootQualifier = pageController.getQualifier();
+                const [rootWrapper, cardWrapper] = dom(`
+                    <div id="${rootQualifier}-wrapper" class="nav-point-wrapper"></div>
+                    <div class="card-wrapper"></div>
+                `);
+
+                const children = getChildAnchors(rootQualifier, parentChildMap);
+
+                projectRootAnchors(rootWrapper, rootQualifier, rootAnchor);
+                if (0 === children.length) {
+                    rootWrapper.classList.add('childless');
+                } else {
+                    projectChildAnchors(navigationController, cardWrapper, children);
+                    rootWrapper.append(cardWrapper);
+                }
+
+                links.append(rootWrapper);
+            }
+        });
+    };
+
+    /**
      * Binds the navigation anchors to the DOM.
      *
      * @function
@@ -62,70 +176,7 @@ const NavigationProjector = (controller, pinToElement) => {
             </div>
         `);
 
-        const links = navWrapper.getElementsByClassName('links')[0];
-
-        parentAnchors.forEach(parentAnchor => {
-            const pageController = controller.getPageController(parentAnchor.hash);
-
-            if (pageController.isVisible()) {
-                const parentQualifier = pageController.getQualifier();
-                const [parentWrapper] = dom(`
-                <div id="${parentQualifier}-wrapper" class="nav-point-wrapper"></div>
-            `);
-                parentWrapper.append(parentAnchor);
-
-                parentWrapper.onclick = () => {
-                    const oldActive = document.getElementsByClassName('open')[0];
-                    if (undefined !== oldActive) {
-                        oldActive.classList.remove('open');
-                    }
-                    if (oldActive !== parentWrapper) {
-                        parentWrapper.classList.toggle('open');
-                    }
-                };
-
-                const children = childrenCards[parentQualifier];
-
-                if (undefined === children || 0 === children.length) {
-                    parentWrapper.classList.add('childless');
-                } else {
-                    const [cardWrapper] = dom(`
-                        <div class="card-wrapper"></div>
-                    `);
-
-                    children.forEach(childAnchor => {
-                        const childController = controller.getPageController(childAnchor.hash);
-                        if (childController.isVisible()) {
-                            childAnchor.classList.add('grid-item');
-                            // TODO remove placeholder description
-                            const [cardIcon, cardDesc] = dom(`
-                                <img src="${childController.getIcon()}" alt="${childController.getValue()}-icon">
-                                <p>${childController.getDescription()}
-                                Showing the report that runs the latest test cases live in your  browser window. The Kolibri test facility does not require any build steps or extra tooling.
-                                </p>
-                            `);
-                            if (0 === childAnchor.children.length) {
-                                const header = childAnchor.firstChild;
-                                childAnchor.removeChild(header);
-                                const [cardTitle] = dom(`
-                                    <span>${header.textContent}</span>
-                                `);
-                                childAnchor.append(cardIcon, cardTitle, cardDesc);
-                            }
-                            const gridProps = childController.getGrid();
-                            if (1 === gridProps.rowSpan) {
-                                childAnchor.classList.add('half');
-                            }
-
-                            cardWrapper.append(childAnchor);
-                        }
-                    });
-
-                    parentWrapper.append(cardWrapper);
-                }
-                links.append(parentWrapper);
-            }
-        });
+       projectAnchors(controller, navWrapper, parentAnchors, childrenCards);
 
         if (positionWrapper.firstChild === null) {
             positionWrapper.appendChild(navWrapper)

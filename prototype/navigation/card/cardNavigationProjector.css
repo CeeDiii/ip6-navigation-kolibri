@@ -1,6 +1,6 @@
 .card-nav .card-wrapper {
     display: grid;
-    grid-auto-rows: minmax(147px, 147px);
+    grid-auto-rows: minmax(152px, 152px);
     grid-auto-columns: minmax(224px, 224px);
     grid-auto-flow: column dense;
     gap: 16px;
