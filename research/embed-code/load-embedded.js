@@ -3,7 +3,7 @@
 
         function forEach(array, callback, scope) {
             //REF: http://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
-            for (const i = 0; i < array.length; i++) {
+            for (let i = 0; i < array.length; i++) {
                 callback.call(scope, i, array[i]); // passes back stuff we need
             }
         };
