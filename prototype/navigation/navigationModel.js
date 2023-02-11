@@ -22,6 +22,7 @@ export { NavigationModel }
  * @property { (logoSrcPath: String) => void }       setWebsiteLogo - a function that sets the path for the page logo that can be displayed in the navigation, calling all registered {@link onValueChangeCallback}s.
  * @property { () => String }                        getWebsiteLogo - a function that returns the path for the page logo that can be displayed in the navigation.
  * @property { (favIconSrcPath: String) => void }    setFavIcon     - a function that sets the favicon, calling all registered {@link onValueChangeCallback}s.
+ * @property { () => String }                        getFavIcon     - a function that returns the path to the favicon.
  * @property { (callback: onValueChangeCallback<String>)  => void } onWebsiteNameChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page name is changed.
  * @property { (callback: onValueChangeCallback<String>)  => void } onWebsiteLogoChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page logo is changed.
  * @property { (callback: onValueChangeCallback<String>)  => void } onFavIconChanged     - a function that registers an {@link onValueChangeCallback} that will be called whenever the fav icon is changed.
@@ -57,6 +58,7 @@ const NavigationModel = () => {
         setWebsiteLogo:       navigationHashes.getObs(LOGO).setValue,
         getWebsiteLogo:       navigationHashes.getObs(LOGO).getValue,
         setFavIcon:           navigationHashes.getObs(FAVICON).setValue,
+        getFavIcon:           navigationHashes.getObs(FAVICON).getValue,
         setHomepage:          navigationHashes.getObs(HOMEPAGE).setValue,
         getHomepage:          navigationHashes.getObs(HOMEPAGE).getValue,
         setDebugMode:         navigationHashes.getObs(DEBUGMODE).setValue,
