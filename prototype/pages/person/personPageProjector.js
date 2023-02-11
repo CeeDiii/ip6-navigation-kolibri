@@ -1,6 +1,5 @@
 import { personProjectMasterView, personProjectDetailView } from "./masterDetailProjector.js";
 import { personPageCss } from "./instantUpdateProjector.js";
-import { PageSwitchProjector } from "../../navigation/page-switch/pageSwitchProjector.js";
 import { dom } from "../../kolibri/util/dom.js";
 
 export { PersonPageProjector }
@@ -47,15 +46,16 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
             const [exampleDiv, masterContainer, detailCard] = dom(`
                     <div></div>
                     <div class="holder" id="masterContainer">
+                        <h2>Person Master</h2>
                         <button id="plus" autoFocus >+</button>
                     </div>
                     <div class="card" id="detailCard">
-                        <h1>Person Detail</h1>
+                        <h2>Person Detail</h2>
                         <div class="holder" id="detailContainer"></div>
                     </div>
             `);
 
-            const plusButton = masterContainer.firstElementChild;
+            const plusButton = masterContainer.lastElementChild;
             const detailContainer = detailCard.lastElementChild;
 
             const master = personProjectMasterView(listController, selectionController,);
