@@ -43,10 +43,11 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
         const contentPromise = fetchPageContent(contentFilePath);
         contentPromise.then(contentHtml => {
             contentWrapper.innerHTML = contentHtml;
+
             const [exampleDiv, masterContainer, detailCard] = dom(`
                     <div></div>
                     <div className="holder" id="masterContainer">
-                        <button id="plus" autoFocus ></button>
+                        <button id="plus" autoFocus >+</button>
                     </div>
                     <div class="card" id="detailCard">
                         <h1>Person Detail</h1>
@@ -54,10 +55,8 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
                     </div>
             `);
 
-            const [plusButton] = masterContainer;
-            const [_, detailContainer] = detailCard;
-
-            console.log(masterContainer, plusButton);
+            const plusButton = masterContainer.firstElementChild;
+            const detailContainer = detailCard.lastElementChild;
 
             const master = personProjectMasterView(listController, selectionController,);
             masterContainer.append(...master);
@@ -70,7 +69,11 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
             // binding of the main view
             plusButton.onclick = _ => listController.addModel();
 
-            pageSwitchProjector.projectNavgation(contentWrapper, exampleDiv);
+            exampleDiv.append(masterContainer, detailCard);
+
+            const switchDiv = pageSwitchProjector.projectNavigation(exampleDiv);
+            const cardDiv = document.getElementsByClassName('card')[0];
+            cardDiv.append(switchDiv);
         });
 
         const pageClass = pageController.getQualifier();

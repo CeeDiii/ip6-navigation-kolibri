@@ -161,5 +161,6 @@ carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
 
-const personPageSwitchProjector = PageSwitchProjector(navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9')
+const personPageSwitchProjector = PageSwitchProjector(personPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
 PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html', personPageSwitchProjector);
+

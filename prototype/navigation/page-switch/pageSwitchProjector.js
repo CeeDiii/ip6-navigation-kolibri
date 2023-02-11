@@ -5,76 +5,122 @@ export { PageSwitchProjector }
 
 /**
  * @typedef NavigationProjectorType
- * @property { (contentWrapper: !HTMLDivElement, exampleDiv: !HTMLDivElement) => void } projectNavgation
+ * @property { (exampleDiv: !HTMLDivElement) => void } projectNavigation
  */
 
 /**
  * @constructor
- * @param { !NavigationControllerType } controller
+ * @param { !String } hash
+ * @param { !NavigationControllerType } navigationController
  * @param { !String } gistID
  * @return { NavigationProjectorType }
- * @example
- * const navigationController = NavigationController();
- * DashboardNavigationProjector(navigationController, pinToNavElement);
  */
-const PageSwitchProjector = (controller, gistID) => {
+const PageSwitchProjector = (hash, navigationController, gistID) => {
     const observableNavigationAnchors = ObservableList([]);
     const navigationAnchors = [];
 
+    function loadAndEmbedGist(document, window) {
+        document.addEventListener("DOMContentLoaded", function (event) {
+
+            function forEach(array, callback, scope) {
+                //REF: http://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
+                for (let i = 0; i < array.length; i++) {
+                    callback.call(scope, i, array[i]); // passes back stuff we need
+                }
+            };
+
+            function loadGist(el, i, gistId) {
+                //REF: http://stackoverflow.com/a/16178339
+                const callbackName = "gist_callback" + i; // Create individual callbacks for each gist
+                window[callbackName] = function (gistData) {
+                    delete window[callbackName];
+                    let html = '';
+                    html += gistData.div;
+                    el.innerHTML = html;
+                };
+                const script = document.createElement("script");
+                script.setAttribute("src", "https://gist.github.com/" + gistId + ".json?callback=" + callbackName);
+                document.body.appendChild(script);
+            }
+
+            // Haven't figured out the Callback function for Markdown
+            setTimeout(function () {
+                const gists = document.querySelectorAll('.gistEmbed');
+
+                forEach(gists, function (i, element) {
+                    console.log(element);
+
+                    loadGist(element, i, element.dataset.gistId)
+                });
+
+            }, 300); //Might need to increas this time if it takes time to load
+        });
+    }
+
+
+
     /**
-     * Initializes a navigation anchor
+     * Initializes the navigation anchors
      *
      * @function
-     * @param { !String } hash - the hash that represents the identifier of a page
-     * @param { !String } pageName - the pageName that is displayed for this hash
-     * @return { HTMLAnchorElement }
+     * @return { HTMLAnchorElement[] }
      *
      */
-    const initializeNavigationPoint = (hash, pageName) => {
-        // Initialize your navigation anchors here...
-
-        // initialize anchor
-        const [anchor] = dom(`
-            <a href="${hash}">${pageName}</a>
+    const initializeNavigationPoint = () => {
+        const [exampleAnchor, codeAnchor] = dom(`
+            <a href="${hash}/example">Example</a>
+            <a href="${hash}/code">Code</a>
         `);
 
-        return anchor;
+        return [/** @type { HTMLAnchorElement } */ exampleAnchor, /** @type { HTMLAnchorElement } */ codeAnchor];
     };
 
     /**
      * Binds the navigation anchors to the DOM.
      *
      * @function
-     * @param { !HTMLDivElement } contentWrapper - a div that holds the content. Mandatory.
      * @param { !HTMLDivElement } exampleDiv     - a div with the projection of a running example. Mandatory.
-     * @return void
+     * @return HTMLDivElement
      */
-    const projectNavigation = (contentWrapper, exampleDiv) => {
-        const navigationDiv = document.createElement("div");
-        navigationDiv.classList.add("your-navigation-class");
+    const projectNavigation = exampleDiv => {
+        if (0 === navigationAnchors.length) {
+            const [exampleAnchor, codeAnchor] = initializeNavigationPoint();
+            observableNavigationAnchors.add(exampleAnchor);
+            observableNavigationAnchors.add(codeAnchor);
+        }
+        const [exampleAnchor, codeAnchor] = navigationAnchors;
 
-        navigationAnchors.forEach(anchor => {
-            // insert your projector code here...
-            navigationDiv.append(anchor);
-        });
+        const [switchDiv, navDiv, contentDiv, codeDiv] = dom(`
+            <div class="switch-nav"></div>
+            <div class="ensemble-navigation"></div>
+            <div class="ensemble-content"></div>
+            <div class="code gistEmbed" data-gist-id="${gistID}"></div>
+        `);
 
+        contentDiv.append(exampleDiv, codeDiv);
+        loadAndEmbedGist(document, window);
+        navDiv.append(exampleAnchor, codeAnchor);
+        switchDiv.append(navDiv, contentDiv);
+
+        return switchDiv;
     };
 
     observableNavigationAnchors.onAdd(anchor => {
-        controller.registerAnchorClickListener(anchor);
+        navigationController.registerAnchorClickListener(anchor);
         navigationAnchors.push(anchor);
     });
 
-    controller.onPathChanged(newPath => {
+    navigationController.onPathChanged(newPath => {
        console.log(newPath);
     });
 
-    controller.onNavigationHashAdd(hash => {
-        const pageController = controller.getPageController(hash);
-        const pageName = pageController.getValue();
-        const newNavPoint = initializeNavigationPoint(hash, pageName);
-        observableNavigationAnchors.add(newNavPoint);
+    navigationController.getPageController(hash).onActiveChanged(active => {
+        if (active) {
+            loadAndEmbedGist(document, window);
+        }
     });
 
-    return projectNavigation;
+    return {
+        projectNavigation
+    };
 };
