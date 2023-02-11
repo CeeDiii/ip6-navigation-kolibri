@@ -56,7 +56,7 @@
 }
 
 .switch-nav .ensemble-content {
-    height: 80%;
+    height: 60vh;
     top: -56px;
     position: relative;
     overflow: scroll;

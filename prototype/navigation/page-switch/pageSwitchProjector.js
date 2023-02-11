@@ -5,74 +5,79 @@ export { PageSwitchProjector }
 
 /**
  * @typedef NavigationProjectorType
- * @property { (exampleDiv: !HTMLDivElement) => void } projectNavigation
+ * @property { (exampleDiv: !HTMLDivElement) => HTMLDivElement } projectNavigation - a function that returns a HtmlDivElement where the example and code switch is implemented.
  */
 
 /**
  * @constructor
- * @param { !String } hash
- * @param { !NavigationControllerType } navigationController
- * @param { !String } gistID
+ * @param { !String } hash - the hash for which this PageSwitchProjector will project.
+ * @param { !NavigationControllerType } navigationController - the navigation controller that controls the current path.
+ * @param { !String } gistID - the GitHub GistID of the code that you want to show.
  * @return { NavigationProjectorType }
  */
 const PageSwitchProjector = (hash, navigationController, gistID) => {
     const observableNavigationAnchors = ObservableList([]);
     const navigationAnchors = [];
 
+    const [switchDiv, navDiv, contentDiv, codeDiv] = dom(`
+            <div class="switch-nav"></div>
+            <div class="ensemble-navigation"></div>
+            <div class="ensemble-content"></div>
+            <div class="code gistEmbed" data-gist-id="${gistID}"></div>
+        `);
 
-    function loadGist(codeDiv, gistId) {
-        //REF: http://stackoverflow.com/a/16178339
-        const callbackName = "gist_callback"; // Create individual callbacks for each gist
-        window[callbackName] = function (gistData) {
+    /**
+     * A function that creates a JSONP request for the given GitHub GistID.
+     * The content will dynamically be fetched and rendered into the given codeDiv.
+     *
+     * JSONP is used to bypass CORS, for more details visit: https://en.wikipedia.org/wiki/JSONP.
+     *
+     * @param { !HTMLDivElement } codeDiv - the div that you want to render your gist in.
+     * @param { !String } gistID - the gist id for the gist you want to render.
+     */
+    const loadGist = (codeDiv, gistID) => {
+        // REF: http://stackoverflow.com/a/16178339
+        const callbackName = "gist_callback";
+        window[callbackName] = gistData => {
             delete window[callbackName];
-            let html = '';
-            html += gistData.div;
-            codeDiv.innerHTML = html;
+            codeDiv.innerHTML = gistData['div'];
         };
+
         const script = document.createElement("script");
-        script.setAttribute("src", "https://gist.github.com/" + gistId + ".json?callback=" + callbackName);
+        script.setAttribute("src", "https://gist.github.com/" + gistID + ".json?callback=" + callbackName);
         document.body.appendChild(script);
-    }
-
-    const setActiveCSSClassOnSwitch = path => {
-        if (null !== path && path.includes(hash)) {
-            if (0 !== navigationAnchors.length && path.includes('/code')) {
-                const [exampleAnchor, codeAnchor] = navigationAnchors;
-                codeAnchor.classList.add('active');
-                exampleAnchor.classList.remove('active');
-                const navDiv = document.getElementsByClassName('ensemble-navigation')[0];
-                if (undefined !== navDiv) {
-                    navDiv.classList.add('active');
-                }
-
-            } else if (0 !== navigationAnchors.length) {
-                const [exampleAnchor, codeAnchor] = navigationAnchors;
-                exampleAnchor.classList.add('active');
-                codeAnchor.classList.remove('active');
-                const navDiv = document.getElementsByClassName('ensemble-navigation')[0];
-                if (undefined !== navDiv) {
-                    navDiv.classList.remove('active');
-                }
-            }
-        }
     };
 
+    /**
+     * A function that adds a css class to elementStateActive
+     * and removes it from the elementStateInactive.
+     *
+     * @param { !String } cssClass - the css class to toggle
+     * @param { !HTMLDivElement } elementStateActive - the element where the class will be added
+     * @param { !HTMLDivElement } elementStateInactive - the element where the class will be removed
+     */
+    const toggleState = (cssClass, elementStateActive, elementStateInactive) => {
+        elementStateActive.classList.add(cssClass);
+        elementStateInactive.classList.remove(cssClass);
+    };
+
+    /**
+     * A function that switches between the example / code view. The displayed view is decided based on the given path.
+     *
+     * @param { !String } path - the path for which this toggle decides whether to switch or not.
+     */
     const toggleSwitch = path => {
-        if (null !== path && path.includes(hash)) {
-            if (0 !== navigationAnchors.length && path.includes('/code')) {
-                const codeDiv = document.getElementsByClassName('code')[0];
-                const exampleDiv = document.getElementsByClassName('example')[0];
-                if (undefined !== codeDiv && undefined !== exampleDiv) {
-                    exampleDiv.classList.add('invisible');
-                    codeDiv.classList.remove('invisible');
-                }
-            } else if (0 !== navigationAnchors.length) {
-                const codeDiv = document.getElementsByClassName('code')[0];
-                const exampleDiv = document.getElementsByClassName('example')[0];
-                if (undefined !== codeDiv && undefined !== exampleDiv) {
-                    codeDiv.classList.add('invisible');
-                    exampleDiv.classList.remove('invisible');
-                }
+        const exampleDiv = document.getElementsByClassName('example')[0];
+        if (null !== path && undefined !== exampleDiv && 2 === navigationAnchors.length) {
+            const [exampleAnchor, codeAnchor] = navigationAnchors;
+            if (path.includes(hash + '/code')) {
+                toggleState('active', codeAnchor, exampleAnchor);
+                toggleState('invisible', exampleDiv, codeDiv);
+                navDiv.classList.add('active');
+            } else {
+                toggleState('active', exampleAnchor, codeAnchor);
+                toggleState('invisible', codeDiv, exampleDiv);
+                navDiv.classList.remove('active');
             }
         }
     };
@@ -95,13 +100,11 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
     };
 
     /**
-     * Binds the navigation anchors to the DOM.
+     * A function that initializes the content of this navigation.
      *
-     * @function
-     * @param { !HTMLDivElement } exampleDiv     - a div with the projection of a running example. Mandatory.
-     * @return HTMLDivElement
+     * @param { !HTMLDivElement } exampleDiv - the div where the example part of this code is rendered in.
      */
-    const projectNavigation = exampleDiv => {
+    const initializeNavigation = exampleDiv => {
         if (0 === navigationAnchors.length) {
             const [exampleAnchor, codeAnchor] = initializeNavigationPoint();
             observableNavigationAnchors.add(exampleAnchor);
@@ -109,14 +112,28 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
         }
         const [exampleAnchor, codeAnchor] = navigationAnchors;
 
-        const [switchDiv, navDiv, contentDiv, codeDiv] = dom(`
-            <div class="switch-nav"></div>
-            <div class="ensemble-navigation"></div>
-            <div class="ensemble-content"></div>
-            <div class="code gistEmbed" data-gist-id="${gistID}"></div>
-        `);
-
         exampleDiv.classList.add('example');
+
+        loadGist(codeDiv, gistID);
+
+        contentDiv.append(exampleDiv, codeDiv);
+        navDiv.append(exampleAnchor, codeAnchor);
+        switchDiv.append(navDiv, contentDiv);
+    };
+
+    /**
+     * Binds the navigation anchors to the DOM.
+     *
+     * @function
+     * @param { !HTMLDivElement } exampleDiv  - a div with the projection of a running example. Mandatory.
+     * @return { HTMLDivElement }
+     */
+    const projectNavigation = exampleDiv => {
+        if (0 === switchDiv.children.length) {
+            initializeNavigation(exampleDiv);
+        }
+
+        const [exampleAnchor, codeAnchor] = navigationAnchors;
 
         const currentPath = navigationController.getPath();
         if (currentPath.includes('/code')) {
@@ -128,13 +145,7 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
             codeDiv.classList.add('invisible');
         }
 
-        loadGist(codeDiv, gistID);
-
-        contentDiv.append(exampleDiv, codeDiv);
-        navDiv.append(exampleAnchor, codeAnchor);
-        switchDiv.append(navDiv, contentDiv);
-
-        return switchDiv;
+        return /** @type HTMLDivElement */ switchDiv;
     };
 
     observableNavigationAnchors.onAdd(anchor => {
@@ -143,7 +154,6 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
     });
 
     navigationController.onPathChanged(newPath => {
-        setActiveCSSClassOnSwitch(newPath);
         toggleSwitch(newPath);
     });
 
