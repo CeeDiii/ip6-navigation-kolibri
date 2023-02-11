@@ -15,5 +15,12 @@ body {
     z-index: 10;
 }
 
+#debug-table {
+    z-index: 8;
+}
+#debug-table ~ .close-button {
+    z-index: 9;
+}
+
 
 
