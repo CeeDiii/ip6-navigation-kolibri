@@ -53,7 +53,7 @@ const NavigationProjector = (controller, pinToElement) => {
      * A projector function that projects a root anchor.
      *
      * @param { !HTMLDivElement } rootWrapper
-     * @param { !String }qualifier
+     * @param { !String } qualifier
      * @param { !HTMLAnchorElement } anchor
      */
     const projectRootAnchors = (rootWrapper, qualifier, anchor) => {
@@ -151,7 +151,7 @@ const NavigationProjector = (controller, pinToElement) => {
                 const children = getChildAnchors(rootQualifier, parentChildMap);
 
                 projectRootAnchors(rootWrapper, rootQualifier, rootAnchor);
-                if (0 === children.length) {
+                if (0 === children.length || (1 === children.length && children[0].hash === '#debug' )) {
                     rootWrapper.classList.add('childless');
                 } else {
                     projectChildAnchors(navigationController, cardWrapper, children);
