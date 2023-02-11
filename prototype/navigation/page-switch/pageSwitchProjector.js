@@ -19,44 +19,20 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
     const observableNavigationAnchors = ObservableList([]);
     const navigationAnchors = [];
 
-    function loadAndEmbedGist(document, window) {
-        document.addEventListener("DOMContentLoaded", function (event) {
 
-            function forEach(array, callback, scope) {
-                //REF: http://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
-                for (let i = 0; i < array.length; i++) {
-                    callback.call(scope, i, array[i]); // passes back stuff we need
-                }
-            };
-
-            function loadGist(el, i, gistId) {
-                //REF: http://stackoverflow.com/a/16178339
-                const callbackName = "gist_callback" + i; // Create individual callbacks for each gist
-                window[callbackName] = function (gistData) {
-                    delete window[callbackName];
-                    let html = '';
-                    html += gistData.div;
-                    el.innerHTML = html;
-                };
-                const script = document.createElement("script");
-                script.setAttribute("src", "https://gist.github.com/" + gistId + ".json?callback=" + callbackName);
-                document.body.appendChild(script);
-            }
-
-            // Haven't figured out the Callback function for Markdown
-            setTimeout(function () {
-                const gists = document.querySelectorAll('.gistEmbed');
-
-                forEach(gists, function (i, element) {
-                    console.log(element);
-
-                    loadGist(element, i, element.dataset.gistId)
-                });
-
-            }, 300); //Might need to increas this time if it takes time to load
-        });
+    function loadGist(codeDiv, gistId) {
+        //REF: http://stackoverflow.com/a/16178339
+        const callbackName = "gist_callback"; // Create individual callbacks for each gist
+        window[callbackName] = function (gistData) {
+            delete window[callbackName];
+            let html = '';
+            html += gistData.div;
+            codeDiv.innerHTML = html;
+        };
+        const script = document.createElement("script");
+        script.setAttribute("src", "https://gist.github.com/" + gistId + ".json?callback=" + callbackName);
+        document.body.appendChild(script);
     }
-
 
 
     /**
@@ -97,8 +73,8 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
             <div class="code gistEmbed" data-gist-id="${gistID}"></div>
         `);
 
+        loadGist(codeDiv, gistID);
         contentDiv.append(exampleDiv, codeDiv);
-        loadAndEmbedGist(document, window);
         navDiv.append(exampleAnchor, codeAnchor);
         switchDiv.append(navDiv, contentDiv);
 
@@ -111,13 +87,9 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
     });
 
     navigationController.onPathChanged(newPath => {
-       console.log(newPath);
-    });
+       if (null !== newPath && newPath.includes(hash)) {
 
-    navigationController.getPageController(hash).onActiveChanged(active => {
-        if (active) {
-            loadAndEmbedGist(document, window);
-        }
+       }
     });
 
     return {
