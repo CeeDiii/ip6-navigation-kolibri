@@ -46,7 +46,7 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
 
             const [exampleDiv, masterContainer, detailCard] = dom(`
                     <div></div>
-                    <div className="holder" id="masterContainer">
+                    <div class="holder" id="masterContainer">
                         <button id="plus" autoFocus >+</button>
                     </div>
                     <div class="card" id="detailCard">
@@ -72,7 +72,7 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
             exampleDiv.append(masterContainer, detailCard);
 
             const switchDiv = pageSwitchProjector.projectNavigation(exampleDiv);
-            const cardDiv = document.getElementsByClassName('card')[0];
+            const cardDiv = document.getElementsByClassName('switch-card')[0];
             cardDiv.append(switchDiv);
         });
 

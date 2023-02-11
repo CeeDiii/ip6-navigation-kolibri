@@ -1,9 +1,8 @@
 .switch-nav {
-    height: 400px;
-    width: 600px;
+    height: 480px;
+    max-width: 900px;
     position: relative;
-    float: right;
-    margin: 50px;
+    margin: auto;
 }
 
 .switch-nav .ensemble-navigation {
@@ -58,10 +57,10 @@
 }
 
 .switch-nav .ensemble-content {
-    height: 328px;
-    width: 588px;
+    height: 480px;
     top: -56px;
     position: relative;
+    overflow: scroll;
     background-color: #FFFFFF;
     padding: 63px 6px 6px 6px;
     border: #404040 solid 6px;

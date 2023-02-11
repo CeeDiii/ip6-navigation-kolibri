@@ -7,6 +7,7 @@
 }
 #content .person h1 {
     text-align: center;
+    margin: 30px;
 }
 #content .person .holder {
     margin: 0 3em 0 3em;
