@@ -60,6 +60,7 @@
     top: -56px;
     position: relative;
     overflow: scroll;
+    overflow-x: hidden;
     background-color: #FFFFFF;
     padding: 63px 6px 6px 6px;
     border: #310082 solid 3px;
