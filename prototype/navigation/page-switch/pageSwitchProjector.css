@@ -40,13 +40,17 @@
 .switch-nav .ensemble-navigation a {
     margin: 0;
     height: 50px;
-    width: 100px;
+    width: 200px;
     display: inline-block;
     text-align: center;
     color: transparent;
     line-height: 50px;
     text-decoration: none;
     position: relative;
+}
+
+.switch-nav .ensemble-navigation a.active {
+    display: none;
 }
 
 .switch-nav .ensemble-navigation a img {
@@ -63,4 +67,8 @@
     border: #404040 solid 6px;
     border-top-width: 62px;
     border-radius: 6px;
+}
+
+.switch-nav .invisible {
+    display: none;
 }
