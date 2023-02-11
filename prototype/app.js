@@ -25,6 +25,7 @@ import { SimpleWorkWeekPageProjector }                     from "./pages/workwee
 import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME }       from "./kolibri/util/dom.js";
 import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
+import { PageSwitchProjector }                               from "./navigation/page-switch/pageSwitchProjector.js";
 
 const pinToContentElement = document.getElementById("content");
 
@@ -81,7 +82,6 @@ personPageController.setConfiguration({
     description: `Have a go and play around with adding new entries, selecting various entries, 
     start typing in either the master or the detail view, delete entries, and change the lastname to less than three characters. See what happens.`
 });
-PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html');
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
@@ -160,3 +160,6 @@ personPageController.setParent(masterDetailViewsPageController);
 carPageController.setParent(masterDetailViewsPageController);
 simpleFormPageController.setParent(formsPageController);
 simpleWorkWeekPageController.setParent(formsPageController);
+
+const personPageSwitchProjector = PageSwitchProjector(navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9')
+PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html', personPageSwitchProjector);

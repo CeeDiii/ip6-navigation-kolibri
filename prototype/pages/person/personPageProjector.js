@@ -1,5 +1,7 @@
 import { personProjectMasterView, personProjectDetailView } from "./masterDetailProjector.js";
 import { personPageCss } from "./instantUpdateProjector.js";
+import { PageSwitchProjector } from "../../navigation/page-switch/pageSwitchProjector.js";
+import { dom } from "../../kolibri/util/dom.js";
 
 export { PersonPageProjector }
 
@@ -15,20 +17,22 @@ export { PersonPageProjector }
  * A constructor for a PageProjectorType.
  *
  * @constructor
+ * @template T
  * @param { !PageControllerType } pageController - the pageController that controls the PageModelType we want to observe. Mandatory.
  * @param { !HTMLDivElement } pinToElement - the element in the DOM that we want to bind to append the pageContent. Mandatory.
- * @param { String } contentFilePath - the path to the static html content relative to index.html! Can be null.
+ * @param { ?String } contentFilePath - the path to the static html content relative to index.html! Can be null.
+ * @param { ...?T } pageContentProjectors - optional pageContentProjectors used to project dynamic content.
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
  * homePageController.setIcon('./navigation/icons/house.svg');
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
-const PersonPageProjector = (pageController, pinToElement, contentFilePath) => {
+const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...pageContentProjectors) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
     const [listController, selectionController] = pageController.getPageContentControllers();
-
+    const [pageSwitchProjector] = pageContentProjectors;
     /**
      * A function that initializes the content and stores it in the pageWrapper.
      *
@@ -39,10 +43,21 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath) => {
         const contentPromise = fetchPageContent(contentFilePath);
         contentPromise.then(contentHtml => {
             contentWrapper.innerHTML = contentHtml;
-            const masterContainer = document.getElementById('masterContainer');
-            const plusButton = document.getElementById('plus');
-            const detailCard = document.getElementById('detailCard');
-            const detailContainer = document.getElementById('detailContainer');
+            const [exampleDiv, masterContainer, detailCard] = dom(`
+                    <div></div>
+                    <div className="holder" id="masterContainer">
+                        <button id="plus" autoFocus ></button>
+                    </div>
+                    <div class="card" id="detailCard">
+                        <h1>Person Detail</h1>
+                        <div class="holder" id="detailContainer"></div>
+                    </div>
+            `);
+
+            const [plusButton] = masterContainer;
+            const [_, detailContainer] = detailCard;
+
+            console.log(masterContainer, plusButton);
 
             const master = personProjectMasterView(listController, selectionController,);
             masterContainer.append(...master);
@@ -53,10 +68,12 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath) => {
             document.querySelector("head style").textContent += personPageCss;
 
             // binding of the main view
-            plusButton.onclick = _ => listController.addModel()
+            plusButton.onclick = _ => listController.addModel();
+
+            pageSwitchProjector.projectNavgation(contentWrapper, exampleDiv);
         });
 
-        const pageClass = pageController.getHash().slice(1);
+        const pageClass = pageController.getQualifier();
         contentWrapper.classList.add(pageClass);
     };
 

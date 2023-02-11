@@ -8,10 +8,10 @@ import { id }         from "./stdlib.js";
 export { Attribute, QualifiedAttribute,
          presentationModelFromAttributeNames,
          valueOf, obsValueOf, readQualifierValue,
-         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, HOMEPAGE, PARENT, NAVIGATIONAL, FAVICON, DEBUGMODE, DESCRIPTION }
+         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, HOMEPAGE, PARENT, NAVIGATIONAL, FAVICON, DEBUGMODE, DESCRIPTION, PATH }
 
 /**
- * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'homepage'|'parent'|'navigational'|'favicon' | 'debugmode' | 'description' } ObservableTypeString
+ * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'homepage'|'parent'|'navigational'|'favicon' | 'debugmode' | 'description' | 'path' } ObservableTypeString
  * Feel free to extend this type with new unique type strings as needed for your application.
  */
 
@@ -33,6 +33,7 @@ export { Attribute, QualifiedAttribute,
 /** @type ObservableTypeString */ const FAVICON      = "favicon";
 /** @type ObservableTypeString */ const DEBUGMODE    = "debugmode";
 /** @type ObservableTypeString */ const DESCRIPTION  = "description";
+/** @type ObservableTypeString */ const PATH         = "path";
 
 /**
  * Convenience function to read the current state of the attribute's VALUE observable for the given attribute.

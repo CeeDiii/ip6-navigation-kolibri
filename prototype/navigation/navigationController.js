@@ -1,4 +1,4 @@
-import {Attribute, HASH, PARENT, VALUE, valueOf} from "../kolibri/presentationModel.js";
+import {Attribute, HASH, PARENT, PATH, VALUE, valueOf} from "../kolibri/presentationModel.js";
 import { NavigationModel } from "./navigationModel.js";
 
 export { NavigationController }
@@ -25,6 +25,7 @@ export { NavigationController }
  * @property { (callback: observableListCallback) => Boolean }                 onNavigationHashAdd  - a function that registers an {@link observableListCallback} that will be called whenever a page hash is added.
  * @property { (callback: observableListCallback) => Boolean }                 onNavigationHashDel  - a function that registers an {@link observableListCallback} that will be called whenever a page hash is deleted.
  * @property { (callback: onValueChangeCallback<PageControllerType>) => void } onLocationChanged    - a function that registers an {@link onValueChangeCallback} that will be called whenever the current location is changed.
+ * @property { (callback: onValueChangeCallback<String>) => void }             onPathChanged        - a function that registers an {@link onValueChangeCallback} that will be called whenever the current path is changed.
  * @property { (callback: onValueChangeCallback<String>)  => void }            onWebsiteNameChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page name is changed.
  * @property { (callback: onValueChangeCallback<String>)  => void }            onWebsiteLogoChanged - a function that registers an {@link onValueChangeCallback} that will be called whenever the page logo is changed.
  * @property { (callback: onValueChangeCallback<String>)  => void }            onFavIconChanged     - a function that registers an {@link onValueChangeCallback} that will be called whenever the favicon is changed.
@@ -79,15 +80,18 @@ const NavigationController = () => {
     };
 
     /**
-     * A function that finds the correct route for a hash
+     * A function that finds the correct route for a path
      * and returns the corresponding pageController.
      *
      * @function
-     * @param { String } hash
+     * @param { String } path
      * @return { PageControllerType }
      */
-    const getRoutingLocation = hash => {
+    const getRoutingLocation = path => {
+        const [hash, ..._] = path.split('/');
         /** @type { PageControllerType } */ let newLocation = pageControllers[hash];
+
+        currentLocation.getObs(PATH).setValue(path);
 
         if(newLocation === undefined) { // if newLocation is undefined, navigate to an error page
             newLocation = pageControllers['#E404'];
@@ -157,6 +161,7 @@ const NavigationController = () => {
         onNavigationHashAdd:    navigationModel.onAdd,
         onNavigationHashDel:    navigationModel.onDel,
         onLocationChanged:      currentLocation.getObs(VALUE).onChange,
+        onPathChanged:          currentLocation.getObs(PATH).onChange,
         onWebsiteNameChanged:   navigationModel.onWebsiteNameChanged,
         onWebsiteLogoChanged:   navigationModel.onWebsiteLogoChanged,
         onFavIconChanged:       navigationModel.onFavIconChanged,
