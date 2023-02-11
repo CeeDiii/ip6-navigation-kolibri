@@ -13,13 +13,17 @@ export { NavigationController }
  * @property { (pageHash: String) => PageControllerType }                getPageController           - a function that returns the page controller of a specific hash.
  * @property { (pageHash: String) => void }                              deletePageController        - a function that deletes the page controller of a specific hash.
  * @property { (anchor: HTMLAnchorElement) => void }                     registerAnchorClickListener - a function that registers a click listener on an anchor. this binding triggers a location change trough navigate based on the hash the anchor has.
- * @property { (setConfObj: Object) => void }       setConfiguration - a function that sets the attributes of this navigation for all keys in object to their value.
- * @property { (newHomepage: String) => void }      setHomePage      - a function that sets the homepage in the {@link NavigationModel}. the homepage is the fallback page which gets opened when no hash is provided in the request url.
- * @property { () => String}                        getHomePage      - a function that returns the hash of the homepage.
+ * @property { (setConfObj: Object) => void }        setConfiguration - a function that sets the attributes of this navigation for all keys in object to their value.
+ * @property { (newHomepage: String) => void }       setHomePage      - a function that sets the homepage in the {@link NavigationModel}. the homepage is the fallback page which gets opened when no hash is provided in the request url.
+ * @property { () => String}                         getHomePage      - a function that returns the hash of the homepage.
+ * @property { (newPath: String) => void }           setPath          - a function that sets the current path.
+ * @property { () => String}                         getPath          - a function that returns the current path.
  * @property { (name: String) => void }              setWebsiteName - a function that sets the name for the website, calling all registered {@link onValueChangeCallback}s.
  * @property { () => String }                        getWebsiteName - a function that returns the name for the website.
  * @property { (logoSrcPath: String) => void }       setWebsiteLogo - a function that sets the path for the page logo that can be displayed in the navigation, calling all registered {@link onValueChangeCallback}s.
- * @property { () => String }                        getWebsiteLogo - a function that returns the path for the page logo that can be displayed in the navigation.* @property { (favIconSrcPath: String) => void }   setFavIcon       - a function that sets the favicon, calling all registered {@link onValueChangeCallback}s.
+ * @property { () => String }                        getWebsiteLogo - a function that returns the path for the page logo that can be displayed in the navigation.
+ * @property { (favIconSrcPath: String) => void }    setFavIcon      - a function that sets the favicon, calling all registered {@link onValueChangeCallback}s.
+ * @property { () => String }                        getFavIcon      - a function that returns the path to the favicon.
  * @property { (debugModeActive: Boolean) => void } setDebugMode     - a function that sets the debug mode active state. calling all registered {@link onValueChangeCallback}s.
  * @property { () => Boolean }                      isDebugMode      - a function that returns the if the debug mode is active.
  * @property { (callback: observableListCallback) => Boolean }                 onNavigationHashAdd  - a function that registers an {@link observableListCallback} that will be called whenever a page hash is added.
@@ -88,7 +92,7 @@ const NavigationController = () => {
      * @return { PageControllerType }
      */
     const getRoutingLocation = path => {
-        const [hash, ..._] = path.split('/');
+        const [hash] = path.split('/');
         /** @type { PageControllerType } */ let newLocation = pageControllers[hash];
 
         currentLocation.getObs(PATH).setValue(path);
@@ -154,10 +158,13 @@ const NavigationController = () => {
         setWebsiteLogo:         navigationModel.setWebsiteLogo,
         getWebsiteLogo:         navigationModel.getWebsiteLogo,
         setFavIcon:             navigationModel.setFavIcon,
+        getFavIcon:             navigationModel.getFavIcon,
         setHomePage:            navigationModel.setHomepage,
         getHomePage:            navigationModel.getHomepage,
         setDebugMode:           navigationModel.setDebugMode,
         isDebugMode:            navigationModel.isDebugMode,
+        setPath:                currentLocation.getObs(PATH).setValue,
+        getPath:                currentLocation.getObs(PATH).getValue,
         onNavigationHashAdd:    navigationModel.onAdd,
         onNavigationHashDel:    navigationModel.onDel,
         onLocationChanged:      currentLocation.getObs(VALUE).onChange,
