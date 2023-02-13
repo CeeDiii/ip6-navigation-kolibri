@@ -1,0 +1,39 @@
+:root {
+    --background: #FFFFFF;
+}
+
+* {
+    box-sizing: border-box;
+    font-family:      var(--kb-font-rubik-light-regular);
+}
+
+body {
+    min-height: 100vh;
+    overflow-anchor: none;
+    margin: 3em auto 3em auto;
+    padding-top: 6em;
+}
+
+h1 {
+    text-align: center;
+}
+
+input[type=text] {
+    font-size:      1.1em;
+    color:          var(--kolibri-color-output);
+    border-width:   0 0 1px 0;
+
+    background-image:    linear-gradient(orange, orange);
+    background-position: left bottom;
+    background-repeat:   no-repeat;
+    background-size:     0 1px; /* default:  do not show */
+}
+
+input[type=text]:focus {
+    outline:             transparent none 0;
+    border-bottom-color: transparent;
+
+    background-size:     100% 1px;
+    transition:          background-size linear .5s;
+}
+
