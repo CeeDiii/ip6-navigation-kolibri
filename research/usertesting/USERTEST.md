@@ -15,8 +15,10 @@ Most webdevs are familiar with the React or Angular router. As a mental model yo
 • [Florian Schnidrig, Student iCompetence](mailto:florian.schnidrig@students.fhnw.ch)<br>
 
 ## Prerequisites
-* Pull the following branch from github: @TODO add branch
-(This step can be ignored if you're reading this in your IDE)
+* Pull the branch "usertesting" from github: 
+
+  ````$ git clone --single-branch --branch usertesting https://github.com/CeeDiii/ip6-navigation-kolibri.git````
+
 * You need Chrome, Edge or Firefox
 
 ## Usage
