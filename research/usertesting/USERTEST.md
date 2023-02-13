@@ -8,6 +8,10 @@ The navigation fits into the context of Kolibri and follow the Model View Contro
 
 Most webdevs are familiar with the React or Angular router. As a mental model you can compare the Kolibri navigation to these routers.
 
+A navigation could like something like this:
+
+![Navigation Example](dashboard_refined_navigation.png)
+
 ## Team
 • [Prof. Dierk König, Project Coach & Expert](mailto:dierk.koenig@fhnw.ch)<br>
 • [Fabian Affolter, Project Coach & Expert](mailto:fabian.affolter@fhnw.ch)<br>
