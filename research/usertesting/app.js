@@ -55,7 +55,7 @@ const homePageController = PageController("", null);
 
 /*
  To add our navigation to our SPA we need to give our NavigationController and the pinToElement to our NavigationProjector.
- We have already created a BubbleStateNavigationProjector which you can use. You previously saw in the USERTEST.md how you
+ We have already created a NavigationProjector which you can use. You previously saw in the USERTEST.md how you
  have to do that.
  */
 // your code here
