@@ -88,8 +88,8 @@ const homePageController = PageController("", null);
  *
  * We have prepared a BreadCrumbProjector which you can add. But there is one important thing you have to know first.
  * A NavigationProjector needs to be initialized before the navigation points get added to the NavigationController.
- * Therefor you need to add the BreadCrumbProjector right below the BubbleStateNavigationProjector. And keep in mind,
- * we always need an element to bind a navigation to in the index.html
+ * Therefor you need to add the BreadCrumbProjector right below the NavigationProjector. And keep in mind,
+ * we always need an element to bind a navigation to in the index.html.
  */
 
 /**
@@ -120,6 +120,6 @@ const debugPageController = PageController("debug", null);
 debugPageController.setIcon('./pages/icons/bug.svg');
 debugPageController.setVisible(false);
 DebugPageProjector(navigationController, debugPageController, pinToDebugElement);
-navigationController.addPageController(debugPageController);
+navigationController.addPageControllers(debugPageController);
 navigationController.setDebugMode(true);
 */

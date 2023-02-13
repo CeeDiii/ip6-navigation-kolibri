@@ -14,7 +14,7 @@ export { NavigationController }
  * @property { (pageHash: String) => void }                              deletePageController        - a function that deletes the page controller of a specific hash.
  * @property { (anchor: HTMLAnchorElement) => void }                     registerAnchorClickListener - a function that registers a click listener on an anchor. this binding triggers a location change trough navigate based on the hash the anchor has.
  * @property { (setConfObj: Object) => void }        setConfiguration - a function that sets the attributes of this navigation for all keys in object to their value.
- * @property { (newHomepage: String) => void }       setHomePage      - a function that sets the homepage in the {@link NavigationModel}. the homepage is the fallback page which gets opened when no hash is provided in the request url.
+ * @property { (newHomepage: String) => void }       setHomePage      - a function that sets the homepage in the {@link NavigationModel}. newHomePage is the Hash of the page you want to set. the homepage is the fallback page which gets opened when no hash is provided in the request url.
  * @property { () => String}                         getHomePage      - a function that returns the hash of the homepage.
  * @property { (newPath: String) => void }           setPath          - a function that sets the current path.
  * @property { () => String}                         getPath          - a function that returns the current path.
@@ -43,8 +43,7 @@ export { NavigationController }
  * @constructor
  * @example
  * const navigationController = NavigationController();
- * navigationController.setWebsiteName('Kolibri');
- * navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
+ * navigationController.setHomepage('#home');
  */
 const NavigationController = () => {
     const navigationModel  = NavigationModel();
