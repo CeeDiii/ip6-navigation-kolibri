@@ -65,6 +65,7 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
     const initialize = () => {
         bubble.onclick      = () => contentWrapper.classList.toggle('open');
         closeButton.onclick = () => contentWrapper.classList.toggle('open');
+        debugTable.append(closeButton);
         contentWrapper.append(debugTable, bubble);
 
         const pageClass = pageController.getHash().slice(1);
