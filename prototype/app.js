@@ -45,28 +45,28 @@ PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404
 
 const homePageController = PageController("home", null);
 homePageController.setConfiguration({
-    icon: './navigation/icons/house.svg',
+    iconpath: './navigation/icons/house.svg',
     navigational: false
 });
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
 masterDetailViewsPageController.setConfiguration({
-    icon: './navigation/icons/masterdetail.svg',
+    iconpath: './navigation/icons/masterdetail.svg',
     navigational: false
 });
 MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
 
 const formsPageController = PageController("forms", null);
 formsPageController.setConfiguration({
-    icon: './navigation/icons/forms.svg',
+    iconpath: './navigation/icons/forms.svg',
     navigational: false
 });
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
 const welcomePageController = PageController("welcome", null);
 welcomePageController.setConfiguration({
-    icon: './navigation/icons/cute-robot.svg',
+    iconpath: './navigation/icons/cute-robot.svg',
     description: `Kolibri aims to be a sustainable, high-quality toolkit. 
     Contributions are validated through usability testing and automated tests. 
     Industry experts and academic advisers assess the code quality and the completeness of the documentation. 
@@ -78,7 +78,7 @@ const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
 personPageController.setConfiguration({
-    icon: './navigation/icons/person.svg',
+    iconpath: './navigation/icons/person.svg',
     description: `Have a go and play around with adding new entries, selecting various entries, 
     start typing in either the master or the detail view, delete entries, and change the lastname to less than three characters. See what happens.`
 });
@@ -87,7 +87,7 @@ const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
 carPageController.setConfiguration({
-    icon: './navigation/icons/car.svg',
+    iconpath: './navigation/icons/car.svg',
     description: `Have a go and play around with adding new entries, selecting various entries, 
     start typing in either the master or the detail view, delete entries, and change the brandname to less than three characters. See what happens.`,
 });
@@ -95,7 +95,7 @@ CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html')
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
 simpleWorkWeekPageController.setConfiguration({
-    icon: './navigation/icons/calendar.svg',
+    iconpath: './navigation/icons/calendar.svg',
     description: `We go from simple to more advanced user interfaces by combining previous work without touching (and possibly compromising) previous functionality. 
     You cannot break what you do not touch.`,
 });
@@ -113,7 +113,7 @@ const formStructure = [
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleform", [simpleFormController]);
 simpleFormPageController.setConfiguration({
-    icon: './navigation/icons/simpleform.svg',
+    iconpath: './navigation/icons/simpleform.svg',
     description: `It only takes a single line of code to create the form, set up the presentation models, 
     and bind all required listeners such that model and view are always kept in sync. 
     After that, any controller can solely work on the presentation models without ever touching the view.
@@ -142,7 +142,7 @@ BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
 const debugController = PageController('debug', null);
 debugController.setVisible(false);
 const pinToDebugElement = document.getElementById('debug');
-debugController.setIcon('./navigation/icons/bug.svg');
+debugController.setIconPath('./navigation/icons/bug.svg');
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
 const pinToCardNavElement = document.getElementById('card-nav');
 const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
