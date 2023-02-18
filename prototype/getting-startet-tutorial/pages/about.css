@@ -1,9 +1,8 @@
-#content .about h1 {
+#content h1 {
     margin-top: 35px;
-    color: var(--kb-hsla-primary-accent);
 }
 
-#content .about .message-wrapper {
+#content .message-wrapper {
     text-align: center;
     padding: 16px;
     display: flex;
@@ -11,7 +10,7 @@
     color: var(--kb-hsla-primary-accent);
 }
 
-#content .about button {
+#content button {
     padding: 5px;
     margin-top: 32px;
 }
