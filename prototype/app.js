@@ -25,49 +25,61 @@ import { SimpleWorkWeekPageProjector }                     from "./pages/workwee
 import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME }       from "./kolibri/util/dom.js";
 import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
-import { PageSwitchProjector }                               from "./navigation/page-switch/pageSwitchProjector.js";
+import { PageSwitchProjector }                             from "./navigation/page-switch/pageSwitchProjector.js";
+import {
+    DEBUGMODE,
+    DESCRIPTION,
+    FAVICON,
+    HOMEPAGE,
+    ICONPATH,
+    LOGO,
+    NAME,
+    NAVIGATIONAL,
+    VISIBLE
+} from "./kolibri/presentationModel.js";
 
 const pinToContentElement = document.getElementById("content");
 
 // Assembling 403 error page as example. Can be modified
 const errorForbiddenController = PageController("E403", null);
-errorForbiddenController.setConfiguration({
-    visible: false
+errorForbiddenController.setConfiguration(/** @type PageConfigurationObject */{
+    [VISIBLE]: false
 });
 ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
 
 // Assembling 404 error page as example. Can be modified
 const errorNotFoundController = PageController("E404", null);
-errorNotFoundController.setConfiguration({
-    visible: false
+errorNotFoundController.setConfiguration(/** @type PageConfigurationObject */{
+    [VISIBLE]: false
 });
 PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
 
 const homePageController = PageController("home", null);
-homePageController.setConfiguration({
-    iconpath: './navigation/icons/house.svg',
-    navigational: false
+
+homePageController.setConfiguration(/** @type PageConfigurationObject */ {
+    [ICONPATH]: './navigation/icons/house.svg',
+    [NAVIGATIONAL]: false
 });
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
-masterDetailViewsPageController.setConfiguration({
-    iconpath: './navigation/icons/masterdetail.svg',
-    navigational: false
+masterDetailViewsPageController.setConfiguration(/** @type PageConfigurationObject */ {
+    [ICONPATH]: './navigation/icons/masterdetail.svg',
+    [NAVIGATIONAL]: false
 });
 MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
 
 const formsPageController = PageController("forms", null);
-formsPageController.setConfiguration({
-    iconpath: './navigation/icons/forms.svg',
-    navigational: false
+formsPageController.setConfiguration(/** @type PageConfigurationObject */ {
+    [ICONPATH]: './navigation/icons/forms.svg',
+    [NAVIGATIONAL]: false
 });
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
 const welcomePageController = PageController("welcome", null);
-welcomePageController.setConfiguration({
-    iconpath: './navigation/icons/cute-robot.svg',
-    description: `Kolibri aims to be a sustainable, high-quality toolkit. 
+welcomePageController.setConfiguration(/** @type PageConfigurationObject */ {
+    [ICONPATH]: './navigation/icons/cute-robot.svg',
+    [DESCRIPTION]: `Kolibri aims to be a sustainable, high-quality toolkit. 
     Contributions are validated through usability testing and automated tests. 
     Industry experts and academic advisers assess the code quality and the completeness of the documentation. 
     Every contribution must have proven its worth in an application.`
@@ -77,26 +89,26 @@ WelcomePageProjector(welcomePageController, pinToContentElement, './pages/welcom
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
-personPageController.setConfiguration({
-    iconpath: './navigation/icons/person.svg',
-    description: `Have a go and play around with adding new entries, selecting various entries, 
+personPageController.setConfiguration(/** @type PageConfigurationObject */ {
+    [ICONPATH]: './navigation/icons/person.svg',
+    [DESCRIPTION]: `Have a go and play around with adding new entries, selecting various entries, 
     start typing in either the master or the detail view, delete entries, and change the lastname to less than three characters. See what happens.`
 });
 
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
-carPageController.setConfiguration({
-    iconpath: './navigation/icons/car.svg',
-    description: `Have a go and play around with adding new entries, selecting various entries, 
+carPageController.setConfiguration(/** @type PageConfigurationObject */ {
+    [ICONPATH]: './navigation/icons/car.svg',
+    [DESCRIPTION]: `Have a go and play around with adding new entries, selecting various entries, 
     start typing in either the master or the detail view, delete entries, and change the brandname to less than three characters. See what happens.`,
 });
 CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
-simpleWorkWeekPageController.setConfiguration({
-    iconpath: './navigation/icons/calendar.svg',
-    description: `We go from simple to more advanced user interfaces by combining previous work without touching (and possibly compromising) previous functionality. 
+simpleWorkWeekPageController.setConfiguration(/** @type PageConfigurationObject */ {
+    [ICONPATH]: './navigation/icons/calendar.svg',
+    [DESCRIPTION]: `We go from simple to more advanced user interfaces by combining previous work without touching (and possibly compromising) previous functionality. 
     You cannot break what you do not touch.`,
 });
 
@@ -112,9 +124,9 @@ const formStructure = [
 ];
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleform", [simpleFormController]);
-simpleFormPageController.setConfiguration({
-    iconpath: './navigation/icons/simpleform.svg',
-    description: `It only takes a single line of code to create the form, set up the presentation models, 
+simpleFormPageController.setConfiguration(/** @type PageConfigurationObject */ {
+    [ICONPATH]: './navigation/icons/simpleform.svg',
+    [DESCRIPTION]: `It only takes a single line of code to create the form, set up the presentation models, 
     and bind all required listeners such that model and view are always kept in sync. 
     After that, any controller can solely work on the presentation models without ever touching the view.
     `
@@ -123,11 +135,11 @@ SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/
 
 const navigationController = NavigationController();
 navigationController.setConfiguration({
-    name: 'Kolibri',
-    logo: './img/logo/logo-new-128.svg',
-    favicon: './img/logo/logo-new-128.svg',
-    homepage: welcomePageController.getHash(),
-    debugmode: true
+    [NAME]: 'Kolibri',
+    [LOGO]: './img/logo/logo-new-128.svg',
+    [FAVICON]: './img/logo/logo-new-128.svg',
+    [HOMEPAGE]: welcomePageController.getHash(),
+    [DEBUGMODE]: true
 });
 
 const pinToNavElement = document.getElementById('nav');
