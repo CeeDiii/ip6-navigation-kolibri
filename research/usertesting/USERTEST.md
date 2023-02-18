@@ -106,9 +106,9 @@ To create a page which can be used within the Kolibri navigation you will need t
    The `pinToNavElement` can be found in the index.html and is a container which holds the navigation of the application.
 
 ## Add the page to the navigation
-   Now the last step is to add your `PageController` to your `NavigationController`. You have to add an Array even if it is only one page you want to add at a time.
+   Now the last step is to add your `PageController` to your `NavigationController`. We use the Javascript spread operator, so you can add 1 to n pageControllers without wrapping it into an array.
    ```Javascript
-   navigationController.addPageControllers([yourPageController]);
+   navigationController.addPageControllers(yourPage);
    ```
 
 <b>Don't worry if you are confused by now, we will go through the whole process in depth step by step in the testing scenario afterwards.</b>
