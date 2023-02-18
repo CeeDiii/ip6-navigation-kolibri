@@ -106,6 +106,14 @@
     box-shadow: -1px -5px 0 0 var(--background);
 }
 
+.bubble-state-nav ul .indicator {
+    display: none;
+}
+
+.bubble-state-nav ul li.active ~.indicator {
+    display: block;
+}
+
 .bubble-state-nav .list .visited img.icon {
     filter: invert(9%) sepia(99%) saturate(6728%) hue-rotate(266deg) brightness(103%) contrast(125%); /* convert svg color to --kb-color-hsl-primary-accent */
 }
