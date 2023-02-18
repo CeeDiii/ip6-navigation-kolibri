@@ -33,7 +33,93 @@ The procedure in this research project is iterative and incremental. The finding
 We would like to express our sincere thanks to our lecturers, project clients and experts Prof. Dierk Koenig and Fabian Affolter. Without their regular feedback and exciting suggestions, this project would not have come about to the same extent and especially not in the same quality. Many thanks!
 
 ## Usage
-TODO
+The following block contains some theory on how to create a navigation with Kolibri. We have prepared a small tutorial where you can build your first Kolibri SPA based on the information below under `prototype/getting-startet-tutorial/app.js`
+### Page
+To create a page which can be used within the Kolibri navigation you will need to follow the following steps:
+1. Create a `PageController` (The `PageModel` is created by the controller behind the scenes)
+   ```Javascript
+   /**
+   * Constructor for a PageControllerType.
+   *
+   * @template T
+   * @constructor
+   * @param { !String } pageName - a name for page. the display name can be changed later, however the initial pageName must be unique as it will be set as the unchangeable hash that identifies the page. Mandatory
+   * @param { [T] } contentControllers - the controllers that produce the dynamic content of this page.
+   * @returns  PageControllerType
+   * @example
+   * const homePageController = PageController('home', null);
+   * homePageController.setIcon('./navigation/icons/house.svg');
+   * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
+   */
+   ```
+   ```Javascript
+   const yourPageController = PageController("YourPageName", null);
+   ```
+   Do not worry about the second parameter of the `PageController` for now. This parameter is to pass additional `ContentControllers` that generate dynamic content but this is more advanced and is not part of this test scenario.
+
+
+2. Call the `PageProjector` with your previously created `PageController`, a `pinToContentElement` and the path to your static HTML file. We will provide a `PageProjector` for you in this test scenario.
+   ```Javascript
+   /**
+   * A constructor for a PageProjectorType.
+   *
+   * @constructor
+   * @param { !PageControllerType } pageController - the pageController that controls the PageModelType we want to observe. Mandatory.
+   * @param { !HTMLDivElement } pinToElement - the element in the DOM that we want to bind to append the pageContent. Mandatory.
+   * @param { String } contentFilePath - the path to the static html content relative to index.html! Can be null.
+   * @returns { PageProjectorType }
+   * @example
+   * const homePageController = PageController("home", null);
+   * homePageController.setIcon('./navigation/icons/house.svg');
+   * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
+   */
+   ```
+   ```Javascript
+   YourPageProjector(yourPageController, pinToContentElement, './pages/yourPage/yourPage.html');
+   ```
+   The `pinToContentElement` can be found in the index.html and is a container which holds the currently displayed page.
+
+### Navigation
+1. Create a `NavigationController` to which you later will append your page.
+   ```Javascript
+   /**
+   * Constructor for a NavigationControllerType
+   * @return  { NavigationControllerType }
+   * @constructor
+   * @example
+   * const navigationController = NavigationController();
+   * navigationController.setWebsiteName('Kolibri');
+   * navigationController.setWebsiteLogo('./img/logo/logo-new-128.svg');
+   */
+   ```
+   ```Javascript
+   const navigationController = NavigationController();
+   ```
+
+2. Call the `NavigationProjector` with your previously created `NavigationController` and a `pinToNavElement`.
+   ```Javascript
+   /**
+   * @constructor
+   * @param { !NavigationControllerType } controller
+   * @param { !HTMLDivElement } pinToElement
+   * @return { NavigationProjectorType }
+   * @example
+   * const navigationController = NavigationController();
+   * DashboardNavigationProjector(navigationController, pinToNavElement);
+   */
+   ```
+   ```Javascript
+   NavigationProjector(navigationController, pinToNavElement);
+   ```
+   The `pinToNavElement` can be found in the index.html and is a container which holds the navigation of the application.
+
+### Add the page to the navigation
+Now the last step is to add your `PageController` to your `NavigationController`. You have to add an Array even if it is only one page you want to add at a time.
+   ```Javascript
+   navigationController.addPageController(yourPageController);
+   ```
+
+<b>Don't worry if you are confused by now, we will go through the whole process in depth step by step in the `getting-started-tutorial` mentioned above</b>
 
 ### Remove the presentation stylesheet
 If you want to use a single navigation projector for your project, remove the following stylesheet from `index.html`:
