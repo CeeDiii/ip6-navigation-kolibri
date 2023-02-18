@@ -30,7 +30,7 @@ const homePageController = PageController("home", null); //@TODO remove "home"
  the following path: './pages/icons/house.svg'
  */
 // your code here
-homePageController.setIcon('./pages/icons/house.svg'); //@TODO remove
+homePageController.setIconPath('./pages/icons/house.svg'); //@TODO remove
 
 /*
  The last step to get our page would be to call a PageProjector with our PageController, a PinToElement and the path
@@ -93,7 +93,7 @@ navigationController.addPageControllers(homePageController); // @TODO remove
 // your code here
 
 const aboutPageController = PageController("about", null); //@TODO remove
-aboutPageController.setIcon('./pages/icons/cute-robot.svg'); //@TODO remove
+aboutPageController.setIconPath('./pages/icons/cute-robot.svg'); //@TODO remove
 PageProjector(aboutPageController, pinToContentElement, './pages/about.html'); //@TODO remove
 
 navigationController.addPageControllers(aboutPageController); //@TODO remove
@@ -134,7 +134,7 @@ navigationController.setHomePage(homePageController.getHash());
 const pinToDebugElement = document.getElementById("debug");
 
 const debugPageController = PageController("debug", null);
-debugPageController.setIcon('./pages/icons/bug.svg');
+debugPageController.setIconPath('./pages/icons/bug.svg');
 debugPageController.setVisible(false);
 DebugPageProjector(navigationController, debugPageController, pinToDebugElement);
 navigationController.addPageControllers(debugPageController);

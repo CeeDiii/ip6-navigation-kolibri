@@ -197,7 +197,7 @@ const NavigationProjector = (controller, pinToElement) => {
             setPageTitle(hash, newActive);
         });
 
-        controller.getPageController(hash).onIconChanged(newIcon => setIconSource(hash, newIcon));
+        controller.getPageController(hash).onIconPathChanged(newIcon => setIconSource(hash, newIcon));
         // END
     });
 

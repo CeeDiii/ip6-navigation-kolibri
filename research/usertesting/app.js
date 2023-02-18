@@ -117,7 +117,7 @@ const homePageController = PageController("", null);
 const pinToDebugElement = document.getElementById("debug");
 
 const debugPageController = PageController("debug", null);
-debugPageController.setIcon('./pages/icons/bug.svg');
+debugPageController.setIconPath('./pages/icons/bug.svg');
 debugPageController.setVisible(false);
 DebugPageProjector(navigationController, debugPageController, pinToDebugElement);
 navigationController.addPageController(debugPageController);

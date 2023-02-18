@@ -2,7 +2,7 @@ import {
     ACTIVE,
     DESCRIPTION,
     HASH,
-    ICON,
+    ICONPATH,
     NAVIGATIONAL,
     PARENT,
     VALUE,
@@ -44,10 +44,10 @@ export { PageController }
  *                                                                    The description can be used as a preview or teaser for a page that can be used by both {@link PageProjectorType} and {@link NavigationProjectorType}.
  * @property { () => String } getDescription                        - a getter function that returns a descriptive text of the page.
  *                                                                    See {@link setDescription} for more details.
- * @property { (iconPath: String) => void } setIcon                 - a setter function that sets the iconPath of the page (icon path must be relative to index.html).
+ * @property { (iconPath: String) => void } setIconPath             - a setter function that sets the iconPath of the page (icon path must be relative to index.html).
  *                                                                    The icon is used to visually identify a page and can be used by both {@link PageProjectorType} and {@link NavigationProjectorType}.
- * @property { () => String } getIcon                               - a getter function that returns the icon path of the page.
- *                                                                    See {@link setIcon} for more details.
+ * @property { () => String } getIconPath                           - a getter function that returns the icon path of the page.
+ *                                                                    See {@link setIconPath} for more details.
  * @property { (isActive: Boolean) => void } setActive              - a setter function that sets the active state of the page.
  *                                                                    The active state signals if a page is currently displayed.
  *                                                                    The active state should only be changed by a {@link NavigationControllerType}.
@@ -78,7 +78,7 @@ export { PageController }
  * @property { () => Boolean } isNavigational                       - a getter function that returns the navigational state of the page.
  *                                                                    See {@link setNavigational} for more details.
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onActiveChanged             - a function that registers an {@link onValueChangeCallback} that will be called whenever the active state changes.
- * @property { (callback: onValueChangeCallback<String>) => void } onIconChanged                - a function that registers an {@link onValueChangeCallback} that will be called whenever the icon path changes.
+ * @property { (callback: onValueChangeCallback<String>) => void } onIconPathChanged            - a function that registers an {@link onValueChangeCallback} that will be called whenever the icon path changes.
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onVisitedChanged            - a function that registers an {@link onValueChangeCallback} that will be called whenever the visited state changes.
  * @property { (callback: onValueChangeCallback<String>) => void } onValueChanged               - a function that registers an {@link onValueChangeCallback} that will be called whenever the value changes.
  * @property { (callback: onValueChangeCallback<Boolean>) => void } onNavigationalChanged       - a function that registers an {@link onValueChangeCallback} that will be called whenever the navigational state changes.
@@ -99,7 +99,7 @@ export { PageController }
  * @returns  PageControllerType
  * @example
  * const homePageController = PageController('home', null);
- * homePageController.setIcon('./navigation/icons/house.svg');
+ * homePageController.setIconPath('./navigation/icons/house.svg');
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
 const PageController = (qualifier, dynamicContentControllers) => {
@@ -154,8 +154,8 @@ const PageController = (qualifier, dynamicContentControllers) => {
         getValue:                pageModel.getPageObs(VALUE).getValue,
         setDescription:          pageModel.getPageObs(DESCRIPTION).setValue,
         getDescription:          pageModel.getPageObs(DESCRIPTION).getValue,
-        setIcon:                 pageModel.getPageObs(ICON).setValue,
-        getIcon:                 pageModel.getPageObs(ICON).getValue,
+        setIconPath:             pageModel.getPageObs(ICONPATH).setValue,
+        getIconPath:             pageModel.getPageObs(ICONPATH).getValue,
         setActive:               pageModel.getPageObs(ACTIVE).setValue,
         isActive:                pageModel.getPageObs(ACTIVE).getValue,
         setVisited:              pageModel.getPageObs(VISITED).setValue,
@@ -166,7 +166,7 @@ const PageController = (qualifier, dynamicContentControllers) => {
         isNavigational:          pageModel.getPageObs(NAVIGATIONAL).getValue,
         getParent:               pageModel.getPageObs(PARENT).getValue,
         onActiveChanged:         pageModel.getPageObs(ACTIVE).onChange,
-        onIconChanged:           pageModel.getPageObs(ICON).onChange,
+        onIconPathChanged:       pageModel.getPageObs(ICONPATH).onChange,
         onVisitedChanged:        pageModel.getPageObs(VISITED).onChange,
         onValueChanged:          pageModel.getPageObs(VALUE).onChange,
         onNavigationalChanged:   pageModel.getPageObs(NAVIGATIONAL).onChange,

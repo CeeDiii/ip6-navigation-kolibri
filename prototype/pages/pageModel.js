@@ -3,7 +3,7 @@ import {
     ACTIVE,
     DESCRIPTION,
     HASH,
-    ICON,
+    ICONPATH,
     NAVIGATIONAL,
     PARENT,
     VALUE,
@@ -49,7 +49,7 @@ const PageModel = qualifier => {
     pageAttr.getObs(ACTIVE, false);
     pageAttr.getObs(HASH, '#' + qualifier.replace(' ', '')); //Converter is not used because it should only apply for the hash
     pageAttr.getObs(VISITED, false);
-    pageAttr.getObs(ICON, './navigation/icons/placeholder.svg');
+    pageAttr.getObs(ICONPATH, './navigation/icons/placeholder.svg');
     pageAttr.getObs(VISIBLE, true);
     pageAttr.getObs(PARENT, null);
     pageAttr.getObs(NAVIGATIONAL, true);
@@ -58,7 +58,12 @@ const PageModel = qualifier => {
 
     return {
         getQualifier:   () => pageAttr.getQualifier(),
-        getPageObs:     obsType => pageAttr.getObs(obsType),
+        getPageObs:     obsType => {
+            if (!pageAttr.hasObs(obsType)) {
+                throw new Error(obsType + ' is not defined for pageModel.')
+            }
+            return pageAttr.getObs(obsType)
+        },
     }
 };
 

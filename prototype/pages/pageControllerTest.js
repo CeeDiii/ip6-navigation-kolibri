@@ -62,15 +62,15 @@ navigationSuite.add('isNavigational', assert => {
     assert.isTrue(!homePageController.isNavigational());
 });
 
-navigationSuite.add('onIconChanged', assert => {
+navigationSuite.add('onIconPathChanged', assert => {
     const homePageController = PageController('home', null);
     let changedIcon;
 
-    homePageController.onIconChanged(icon => changedIcon = icon);
+    homePageController.onIconPathChanged(icon => changedIcon = icon);
 
     assert.is(changedIcon, './navigation/icons/placeholder.svg');
 
-    homePageController.setIcon('./navigation/icons/house.svg');
+    homePageController.setIconPath('./navigation/icons/house.svg');
 
     assert.is(changedIcon, './navigation/icons/house.svg');
 });

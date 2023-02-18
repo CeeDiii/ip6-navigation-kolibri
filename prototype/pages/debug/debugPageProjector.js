@@ -20,7 +20,7 @@ export { DebugPageProjector }
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
- * homePageController.setIcon('./navigation/icons/house.svg');
+ * homePageController.setIconPath('./navigation/icons/house.svg');
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
 const DebugPageProjector = (navigationController, pageController, pinToElement) => {
@@ -107,10 +107,10 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
 
         tbody.innerHTML = '';
         if (null !== debugController) {
+            // add the properties of the controller that we want to ignore
+            const ignoreProperties = ['getDynamicContentControllers'];
             for (const property in debugController) {
                 if (property.startsWith('get') || property.startsWith('is')) {
-                    // add the properties of the controller that we want to ignore
-                    const ignoreProperties = ['getDynamicContentControllers'];
                     bindProperty(property, debugController, ignoreProperties);
 
                 } else if (property.startsWith('on') && property.endsWith('Changed')) {
@@ -169,7 +169,7 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
         })`);
     };
 
-    pageController.onIconChanged(iconPath => {
+    pageController.onIconPathChanged(iconPath => {
        if (null !== iconPath && undefined !== iconPath) {
            bubble.innerHTML = `<img src="${iconPath}" alt="bug-icon">`;
        }

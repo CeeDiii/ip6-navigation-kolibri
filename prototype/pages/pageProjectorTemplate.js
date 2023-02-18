@@ -18,7 +18,7 @@ export { PageProjector }
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
- * homePageController.setIcon('./navigation/icons/house.svg');
+ * homePageController.setIconPath('./navigation/icons/house.svg');
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
 const PageProjector = (pageController, pinToElement, contentFilePath) => {
@@ -87,7 +87,7 @@ const PageProjector = (pageController, pinToElement, contentFilePath) => {
                 const content = await response.text();
                 return content;
             } else {
-                throw new Error(`HTTP error: ${response.status}`);
+                console.error(`HTTP error: ${response.status}`);
             }
         } catch (e) {
             console.error(e);

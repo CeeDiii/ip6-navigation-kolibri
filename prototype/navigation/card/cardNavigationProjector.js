@@ -96,7 +96,7 @@ const NavigationProjector = (controller, pinToElement) => {
     const projectChildAnchor = (childController, childAnchor) => {
         childAnchor.classList.add('grid-item');
         const [cardIcon, cardDesc] = dom(`
-                                <img src="${childController.getIcon()}" alt="${childController.getValue()}-icon">
+                                <img src="${childController.getIconPath()}" alt="${childController.getValue()}-icon">
                                 <p>${childController.getDescription()}</p>
                             `);
         if (0 === childAnchor.children.length) {
