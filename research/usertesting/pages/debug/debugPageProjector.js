@@ -96,7 +96,7 @@ const DebugPageProjector = (navigationController, pageController, pinToElement) 
             for (const property in debugController) {
                 if (property.startsWith('get') || property.startsWith('is')) {
                     // add the properties of the controller that we want to ignore
-                    const ignoreProperties = ['getPageContentControllers'];
+                    const ignoreProperties = ['getDynamicContentControllers'];
                     bindProperty(property, debugController, ignoreProperties);
 
                 } else if (property.startsWith('on') && property.endsWith('Changed')) {

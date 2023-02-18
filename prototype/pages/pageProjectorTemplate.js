@@ -13,8 +13,8 @@ export { PageProjector }
  *
  * @constructor
  * @param { !PageControllerType } pageController - the pageController that controls the PageModelType we want to observe. Mandatory.
- * @param { !HTMLDivElement } pinToElement - the element in the DOM that we want to bind to append the pageContent. Mandatory.
- * @param { String } contentFilePath - the path to the static html content relative to index.html! Can be null.
+ * @param { !HTMLDivElement } pinToElement       - the element in the DOM that we want to bind to append the pageContent. Mandatory.
+ * @param { String } contentFilePath             - the path to the static html content (relative to the index.html file of this project). Can be null.
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
@@ -25,7 +25,7 @@ const PageProjector = (pageController, pinToElement, contentFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
 
-    // const contentControllers = pageController.getPageContentControllers();
+    // const contentControllers = pageController.getDynamicContentControllers();
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.

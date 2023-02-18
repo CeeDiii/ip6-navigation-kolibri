@@ -40,7 +40,7 @@ const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) 
             contentWrapper.innerHTML = contentHtml;
 
             const formHolder = document.getElementById('form-holder');
-            const form = projectForm(pageController.getPageContentControllers()[0]);
+            const form = projectForm(pageController.getDynamicContentControllers()[0]);
             formHolder.append(...form);
         });
 

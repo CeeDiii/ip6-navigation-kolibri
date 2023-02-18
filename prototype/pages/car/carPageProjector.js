@@ -27,7 +27,7 @@ export { CarPageProjector }
 const CarPageProjector = (pageController, pinToElement, contentFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
-    const [listController, selectionController] = pageController.getPageContentControllers();
+    const [listController, selectionController] = pageController.getDynamicContentControllers();
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.

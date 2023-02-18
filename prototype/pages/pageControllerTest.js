@@ -3,16 +3,16 @@ import {PageController} from './pageController.js';
 
 const navigationSuite = TestSuite('pageController');
 
-navigationSuite.add('getPageContentControllers', assert => {
+navigationSuite.add('getDynamicContentControllers', assert => {
     const controller1 = {};
     const controller2 = {};
     const dummyControllers = [controller1, controller2];
 
     const homePageController = PageController('home', dummyControllers);
 
-    assert.is(homePageController.getPageContentControllers(), dummyControllers);
-    assert.is(homePageController.getPageContentControllers()[0], dummyControllers[0]);
-    assert.is(homePageController.getPageContentControllers()[1], dummyControllers[1]);
+    assert.is(homePageController.getDynamicContentControllers(), dummyControllers);
+    assert.is(homePageController.getDynamicContentControllers()[0], dummyControllers[0]);
+    assert.is(homePageController.getDynamicContentControllers()[1], dummyControllers[1]);
 });
 
 navigationSuite.add('getHash', assert => {

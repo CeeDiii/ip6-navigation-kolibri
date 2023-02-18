@@ -30,7 +30,7 @@ export { PersonPageProjector }
 const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...pageContentProjectors) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
-    const [listController, selectionController] = pageController.getPageContentControllers();
+    const [listController, selectionController] = pageController.getDynamicContentControllers();
     const [pageSwitchProjector] = pageContentProjectors;
     /**
      * A function that initializes the content and stores it in the pageWrapper.

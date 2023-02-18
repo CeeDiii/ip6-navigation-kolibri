@@ -26,7 +26,7 @@ export { SimpleWorkWeekPageProjector }
 const SimpleWorkWeekPageProjector = (pageController, pinToElement, contentFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
-    const [weekController] = pageController.getPageContentControllers();
+    const [weekController] = pageController.getDynamicContentControllers();
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.
