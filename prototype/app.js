@@ -42,42 +42,42 @@ const pinToContentElement = document.getElementById("content");
 
 // Assembling 403 error page as example. Can be modified
 const errorForbiddenController = PageController("E403", null);
-errorForbiddenController.setConfiguration(/** @type PageConfigurationObject */{
+errorForbiddenController.setConfiguration(/** @type ModelConfigurationObject */{
     [VISIBLE]: false
 });
 ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
 
 // Assembling 404 error page as example. Can be modified
 const errorNotFoundController = PageController("E404", null);
-errorNotFoundController.setConfiguration(/** @type PageConfigurationObject */{
+errorNotFoundController.setConfiguration(/** @type ModelConfigurationObject */{
     [VISIBLE]: false
 });
 PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
 
 const homePageController = PageController("home", null);
 
-homePageController.setConfiguration(/** @type PageConfigurationObject */ {
+homePageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: './navigation/icons/house.svg',
     [NAVIGATIONAL]: false
 });
 HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const masterDetailViewsPageController = PageController("masterdetailviews", null);
-masterDetailViewsPageController.setConfiguration(/** @type PageConfigurationObject */ {
+masterDetailViewsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: './navigation/icons/masterdetail.svg',
     [NAVIGATIONAL]: false
 });
 MasterDetailViewsPageProjector(masterDetailViewsPageController, pinToContentElement, './pages/masterDetailViews/masterDetailViews.html');
 
 const formsPageController = PageController("forms", null);
-formsPageController.setConfiguration(/** @type PageConfigurationObject */ {
+formsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: './navigation/icons/forms.svg',
     [NAVIGATIONAL]: false
 });
 FormsPageProjector(formsPageController, pinToContentElement, './pages/forms/forms.html');
 
 const welcomePageController = PageController("welcome", null);
-welcomePageController.setConfiguration(/** @type PageConfigurationObject */ {
+welcomePageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: './navigation/icons/cute-robot.svg',
     [DESCRIPTION]: `Kolibri aims to be a sustainable, high-quality toolkit. 
     Contributions are validated through usability testing and automated tests. 
@@ -89,7 +89,7 @@ WelcomePageProjector(welcomePageController, pinToContentElement, './pages/welcom
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
 const personPageController = PageController("person", [personListController, personSelectionController]);
-personPageController.setConfiguration(/** @type PageConfigurationObject */ {
+personPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: './navigation/icons/person.svg',
     [DESCRIPTION]: `Have a go and play around with adding new entries, selecting various entries, 
     start typing in either the master or the detail view, delete entries, and change the lastname to less than three characters. See what happens.`
@@ -98,7 +98,7 @@ personPageController.setConfiguration(/** @type PageConfigurationObject */ {
 const carListController      = CarListController(Car);
 const carSelectionController = CarSelectionController(carSelectionMold);
 const carPageController = PageController("car", [carListController, carSelectionController]);
-carPageController.setConfiguration(/** @type PageConfigurationObject */ {
+carPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: './navigation/icons/car.svg',
     [DESCRIPTION]: `Have a go and play around with adding new entries, selecting various entries, 
     start typing in either the master or the detail view, delete entries, and change the brandname to less than three characters. See what happens.`,
@@ -106,7 +106,7 @@ carPageController.setConfiguration(/** @type PageConfigurationObject */ {
 CarPageProjector(carPageController, pinToContentElement, './pages/car/car.html');
 
 const simpleWorkWeekPageController = PageController("workweek", [WeekController()]);
-simpleWorkWeekPageController.setConfiguration(/** @type PageConfigurationObject */ {
+simpleWorkWeekPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: './navigation/icons/calendar.svg',
     [DESCRIPTION]: `We go from simple to more advanced user interfaces by combining previous work without touching (and possibly compromising) previous functionality. 
     You cannot break what you do not touch.`,
@@ -124,7 +124,7 @@ const formStructure = [
 ];
 const simpleFormController = SimpleFormController(formStructure);
 const simpleFormPageController = PageController("simpleform", [simpleFormController]);
-simpleFormPageController.setConfiguration(/** @type PageConfigurationObject */ {
+simpleFormPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: './navigation/icons/simpleform.svg',
     [DESCRIPTION]: `It only takes a single line of code to create the form, set up the presentation models, 
     and bind all required listeners such that model and view are always kept in sync. 
@@ -134,11 +134,11 @@ simpleFormPageController.setConfiguration(/** @type PageConfigurationObject */ {
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html');
 
 const navigationController = NavigationController();
-navigationController.setConfiguration({
+navigationController.setConfiguration(/** @type ModelConfigurationObject */ {
     [NAME]: 'Kolibri',
     [LOGO]: './img/logo/logo-new-128.svg',
     [FAVICON]: './img/logo/logo-new-128.svg',
-    [HOMEPAGE]: welcomePageController.getHash(),
+    [HOMEPAGE]: welcomePageController,
     [DEBUGMODE]: true
 });
 
@@ -162,7 +162,7 @@ const cardGridProjector = cardNavigationProjector.getGridProjector();
 cardGridProjector.setGridForPage(simpleWorkWeekPageController.getQualifier(), { rowSpan: 1 });
 cardGridProjector.setGridForPage(simpleFormPageController.getQualifier(), { rowSpan: 1 });
 
-navigationController.addPageControllers(errorForbiddenController, errorForbiddenController, debugController);
+navigationController.addPageControllers(errorForbiddenController, errorNotFoundController, debugController);
 navigationController.addPageControllers(homePageController, masterDetailViewsPageController, formsPageController);
 navigationController.addPageControllers(welcomePageController, personPageController, carPageController, simpleFormPageController, simpleWorkWeekPageController);
 

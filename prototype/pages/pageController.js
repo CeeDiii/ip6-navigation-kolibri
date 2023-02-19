@@ -15,7 +15,7 @@ export { PageController }
 
 /**
  * @template T
- * @typedef { Object.<ObservableTypeString, T>} PageConfigurationObject
+ * @typedef { Object.<ObservableTypeString, T>} ModelConfigurationObject
  */
 
 
@@ -31,7 +31,7 @@ export { PageController }
  * @property { () => ?[T] } getDynamicContentControllers - a getter function that returns the dynamic content controllers.
  *                                                         Dynamic content controllers control a model that can be projected at runtime by a {@link PageProjectorType}.
  *                                                         Can be null if none are present.
- * @property { (confObj: PageConfigurationObject) => boolean } setConfiguration - a function that sets the observables of this page for all keys in object to their value.
+ * @property { (confObj: ModelConfigurationObject) => boolean } setConfiguration - a function that sets the observables of this page for all keys in object to their value.
  * @property { () => String } getQualifier                          - a getter function that returns the qualifier for this page.
  *                                                                    The qualifier can be used for styling as it is unique and immutable.
  * @property { () => String } getHash                               - a getter function that returns the hash of the page.

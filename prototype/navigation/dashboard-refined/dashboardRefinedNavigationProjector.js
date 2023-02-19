@@ -31,7 +31,7 @@ const NavigationProjector = (controller, pinToElement) => {
         <div class="overview"></div>
         
         <!-- create overview header -->
-        <a class="logo" href="${controller.getHomePage()}">
+        <a class="logo" href="${controller.getHomePage().getHash()}">
             <img src="" alt="website-logo">
         </a>
         

@@ -21,7 +21,7 @@ export { PageModel }
  * @typedef PageModelType
  * @template T
  * @property { () => String } getQualifier - a function that returns the qualifier for this page.
- * @property { (obsType: ObservableTypeString) => IObservable<T> } getPageObs - a function that returns the observable stored under the given observable string.
+ * @property { (obsType: ObservableTypeString) => IObservable<T> } getPageObs - a function that returns the observable stored under the given observable string. Throws an error, if observable does not exist in the model.
  */
 
 /**

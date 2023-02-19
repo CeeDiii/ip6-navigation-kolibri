@@ -173,7 +173,7 @@ const NavigationProjector = (controller, pinToElement) => {
         const [navWrapper] = dom(`
             <div class="card-nav nav-wrapper">
                 <div class="card-header">
-                    <a id="card-logo" href="${controller.getHomePage()}">
+                    <a id="card-logo" href="${controller.getHomePage().getHash()}">
                         <img src="${controller.getWebsiteLogo()}" alt="${controller.getWebsiteName()}-logo"/>
                     </a>
                     <p>${controller.getWebsiteName()}</p>
