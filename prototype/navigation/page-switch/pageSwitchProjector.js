@@ -27,6 +27,23 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
         `);
 
     /**
+     * A function that renders the code block headers based on the github gists.
+     */
+    const renderCodeBlockHeaders = () => {
+        const codeBlocks = codeDiv.getElementsByTagName('table');
+        for (const codeBlock of codeBlocks) {
+            const fileNameWithExtension = codeBlock.getAttribute('data-tagsearch-path');
+            const fileNameWOExtension = fileNameWithExtension.split('.js')[0];
+            const [fileHeader] = dom(`<h3>${fileNameWOExtension}</h3>`);
+            let fileContainer = document.getElementById('file-' + fileNameWOExtension.toLowerCase() + '-js');
+            while (null != fileContainer && !fileContainer.classList.contains('gist-file')) {
+                fileContainer = fileContainer.parentNode;
+            }
+            fileContainer.parentNode.insertBefore(fileHeader, fileContainer);
+        }
+    };
+
+    /**
      * A function that creates a JSONP request for the given GitHub GistID.
      * The content will dynamically be fetched and rendered into the given codeDiv.
      *
@@ -45,6 +62,7 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
 
         const script = document.createElement("script");
         script.setAttribute("src", "https://gist.github.com/" + gistID + ".json?callback=" + callbackName);
+        script.onload = renderCodeBlockHeaders;
         document.body.appendChild(script);
     };
 
