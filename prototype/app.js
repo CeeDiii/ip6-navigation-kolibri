@@ -4,6 +4,7 @@ import { NavigationController }                            from "./navigation/na
 import { NavigationProjector }                             from "./navigation/dashboard-refined/dashboardRefinedNavigationProjector.js";
 import { BubbleStateNavigationProjector }                  from "./navigation/bubble-state/bubblestateNavigationProjector.js";
 import { TreeNavigationProjector }                         from "./navigation/basic-tree/basicTreeNavigationProjector.js";
+import { FlowerNavigationProjector }                       from "./navigation/flower/flowerNavigationProjector.js";
 import { CardNavigationProjector }                         from "./navigation/card/cardNavigationProjector.js";
 import { BreadCrumbProjector }                             from "./navigation/bread-crumbs/breadCrumbProjector.js";
 import { PageController }                                  from "./pages/pageController.js";
@@ -150,6 +151,8 @@ NavigationProjector(navigationController, pinToDashboardNavElement);
 // TreeNavigationProjector(navigationController, pinToTreeNavElement);
 const pinToBreadCrumbElement = document.getElementById('bread-crumbs');
 BreadCrumbProjector(navigationController, pinToBreadCrumbElement);
+const pinToFlowerElement = document.getElementById('flower-nav');
+FlowerNavigationProjector(navigationController, pinToFlowerElement);
 
 const debugController = PageController('debug', null);
 debugController.setVisible(false);
