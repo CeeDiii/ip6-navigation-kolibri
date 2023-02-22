@@ -168,14 +168,13 @@ const NavigationProjector = (controller, pinToElement) => {
      * A utility function that sets the HTML title attribute to the value of the page identified by hash.
      *
      * @function
-     * @param { !String } hash
+     * @param { !String } pageName
      * @param { !Boolean } active
      */
-    const setPageTitle = (hash, active) => {
-        const pageName = controller.getPageController(hash).getValue();
+    const setPageTitle = (pageName, active) => {
         if (active) {
             const title = document.getElementsByTagName("title")[0];
-            title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+            title.innerText = pageName;
         }
     };
 
