@@ -31,7 +31,7 @@ const NavigationProjector = (controller, pinToElement) => {
         <div class="overview"></div>
         
         <!-- create overview header -->
-        <a class="logo" href="${controller.getHomePage()}">
+        <a class="logo" href="${controller.getHomePage().getHash()}">
             <img src="" alt="website-logo">
         </a>
         
@@ -160,12 +160,12 @@ const NavigationProjector = (controller, pinToElement) => {
         if (null === pageController.getParent() && null === overviewNode) {
             const [overviewNavPointNode] = dom(`
                 <div class="row" id="${qualifier}-overview-node" >
-                    <a><img id="${qualifier}-overview-icon" src="${pageController.getIcon()}" alt="${pageController.getValue()}-icon"></a>
+                    <a><img id="${qualifier}-overview-icon" src="${pageController.getIconPath()}" alt="${pageController.getValue()}-icon"></a>
                 </div>
             `);
             overviewContentWrapper.append(overviewNavPointNode);
         } else if (null === pageController.getParent() && null !== overviewNode) {
-            overviewNode.src = pageController.getIcon();
+            overviewNode.src = pageController.getIconPath();
         } else if (null !== pageController.getParent() && null !== overviewNode) {
             overviewContentWrapper.removeChild(overviewNode);
         }
@@ -318,7 +318,7 @@ const NavigationProjector = (controller, pinToElement) => {
         // CREATE BINDINGS
         pageController.onParentChanged((newParent, oldParent) => {
             addNodeToTree(hash, newParent, oldParent);
-            setIconSource(pageController, pageController.getIcon());
+            setIconSource(pageController, pageController.getIconPath());
             projectOverviewNode(pageController);
             projectNavigation();
         });
@@ -329,7 +329,7 @@ const NavigationProjector = (controller, pinToElement) => {
             setPageTitle(hash, newActive);
         });
 
-        pageController.onIconChanged(newIcon => setIconSource(pageController, newIcon));
+        pageController.onIconPathChanged(newIcon => setIconSource(pageController, newIcon));
 
         pageController.onVisibleChanged(isVisible => {
             handleVisibleChange(qualifier, hash, isVisible);

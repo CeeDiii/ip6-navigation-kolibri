@@ -3,7 +3,7 @@ import {
     ACTIVE,
     DESCRIPTION,
     HASH,
-    ICON,
+    ICONPATH,
     NAVIGATIONAL,
     PARENT,
     VALUE,
@@ -21,35 +21,49 @@ export { PageModel }
  * @typedef PageModelType
  * @template T
  * @property { () => String } getQualifier - a function that returns the qualifier for this page.
- * @property { (obsType: ObservableTypeString) => IObservable<T> } getPageObs - a function that returns the observable stored under the given observable string.
+ * @property { (obsType: ObservableTypeString) => IObservable<T> } getPageObs - a function that returns the observable stored under the given observable string. Throws an error, if observable does not exist in the model.
  */
 
 /**
  * Constructor for a PageModelType
  *
  * @constructor
- * @param { !String } pageName - a name for page. the display name can be changed later, however the initial pageName must be unique as it will be set as the unchangeable hash that identifies the page. Mandatory.
+ * @param { !String } qualifier - unique qualifier for the page.
+ *                                The hash will be inferred from the qualifier, e.g. 'home' -> '#hash' and will be immutable.
+ *                                The qualifier will also be the initial page name that can be changed later.
  * @returns PageModelType
+ * @example
+ * const pageModel = PageModel('home');
  */
 
-const PageModel = pageName => {
-    const pageAttr = Attribute(pageName);
+const PageModel = qualifier => {
+    if (qualifier.includes(' ') || qualifier.includes('\n')) {
+        throw new Error('Qualifiers cannot contain spaces or new lines. Consider replacing them with "-" or "_" characters. Try: ' + qualifier.replace(/[\s\n]+/g, "-"));
+    } else if (/^(?![A-Za-z])+/.test(qualifier)) {
+        throw new Error('Qualifiers cannot start with a number. Please remove the number at the start of qualifier: ' + qualifier);
+    }
+    const pageAttr = Attribute(qualifier);
 
-    pageAttr.setQualifier(pageName); // the initial pageName will uniquely identify the page and is unchangeable
+    pageAttr.setQualifier(qualifier);
 
     pageAttr.getObs(ACTIVE, false);
-    pageAttr.getObs(HASH, '#' + pageName.replace(' ', '')); //Converter is not used because it should only apply for the hash
+    pageAttr.getObs(HASH, '#' + qualifier.replace(' ', '')); //Converter is not used because it should only apply for the hash
     pageAttr.getObs(VISITED, false);
-    pageAttr.getObs(ICON, './navigation/icons/placeholder.svg');
+    pageAttr.getObs(ICONPATH, './navigation/icons/placeholder.svg');
     pageAttr.getObs(VISIBLE, true);
     pageAttr.getObs(PARENT, null);
     pageAttr.getObs(NAVIGATIONAL, true);
     pageAttr.getObs(DESCRIPTION, '');
-    pageAttr.getObs(VALUE).setValue(pageName); // set value explicitly, so it overrides any state the model world has
+    pageAttr.getObs(VALUE).setValue(qualifier); // set value explicitly, so it overrides any state the model world has
 
     return {
         getQualifier:   () => pageAttr.getQualifier(),
-        getPageObs:     obsType => pageAttr.getObs(obsType),
+        getPageObs:     obsType => {
+            if (!pageAttr.hasObs(obsType)) {
+                throw new Error(obsType + ' is not defined for pageModel.')
+            }
+            return pageAttr.getObs(obsType)
+        },
     }
 };
 

@@ -3,16 +3,16 @@ import {PageController} from './pageController.js';
 
 const navigationSuite = TestSuite('pageController');
 
-navigationSuite.add('getPageContentControllers', assert => {
+navigationSuite.add('getDynamicContentControllers', assert => {
     const controller1 = {};
     const controller2 = {};
     const dummyControllers = [controller1, controller2];
 
     const homePageController = PageController('home', dummyControllers);
 
-    assert.is(homePageController.getPageContentControllers(), dummyControllers);
-    assert.is(homePageController.getPageContentControllers()[0], dummyControllers[0]);
-    assert.is(homePageController.getPageContentControllers()[1], dummyControllers[1]);
+    assert.is(homePageController.getDynamicContentControllers(), dummyControllers);
+    assert.is(homePageController.getDynamicContentControllers()[0], dummyControllers[0]);
+    assert.is(homePageController.getDynamicContentControllers()[1], dummyControllers[1]);
 });
 
 navigationSuite.add('getHash', assert => {
@@ -62,15 +62,15 @@ navigationSuite.add('isNavigational', assert => {
     assert.isTrue(!homePageController.isNavigational());
 });
 
-navigationSuite.add('onIconChanged', assert => {
+navigationSuite.add('onIconPathChanged', assert => {
     const homePageController = PageController('home', null);
     let changedIcon;
 
-    homePageController.onIconChanged(icon => changedIcon = icon);
+    homePageController.onIconPathChanged(icon => changedIcon = icon);
 
     assert.is(changedIcon, './navigation/icons/placeholder.svg');
 
-    homePageController.setIcon('./navigation/icons/house.svg');
+    homePageController.setIconPath('./navigation/icons/house.svg');
 
     assert.is(changedIcon, './navigation/icons/house.svg');
 });

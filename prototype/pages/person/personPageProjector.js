@@ -24,13 +24,13 @@ export { PersonPageProjector }
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
- * homePageController.setIcon('./navigation/icons/house.svg');
+ * homePageController.setIconPath('./navigation/icons/house.svg');
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
 const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...pageContentProjectors) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
-    const [listController, selectionController] = pageController.getPageContentControllers();
+    const [listController, selectionController] = pageController.getDynamicContentControllers();
     const [pageSwitchProjector] = pageContentProjectors;
     /**
      * A function that initializes the content and stores it in the pageWrapper.
@@ -118,7 +118,7 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
                 const content = await response.text();
                 return content;
             } else {
-                throw new Error(`HTTP error: ${response.status}`);
+                console.error(`HTTP error: ${response.status}`);
             }
         } catch (e) {
             console.error(e);

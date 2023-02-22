@@ -34,9 +34,9 @@ navigationSuite.add('setHomepage', assert => {
 
     assert.is(navigationController.getHomePage(), '');
 
-    navigationController.setHomePage(homePageController.getHash());
+    navigationController.setHomePage(homePageController);
 
-    assert.is(navigationController.getHomePage(), '#home');
+    assert.is(navigationController.getHomePage().getHash(), '#home');
 });
 
 navigationSuite.add('onNavigationHashAddAndDel', assert => {

@@ -96,7 +96,7 @@ const NavigationProjector = (controller, pinToElement) => {
     const projectChildAnchor = (childController, childAnchor) => {
         childAnchor.classList.add('grid-item');
         const [cardIcon, cardDesc] = dom(`
-                                <img src="${childController.getIcon()}" alt="${childController.getValue()}-icon">
+                                <img src="${childController.getIconPath()}" alt="${childController.getValue()}-icon">
                                 <p>${childController.getDescription()}</p>
                             `);
         if (0 === childAnchor.children.length) {
@@ -173,7 +173,7 @@ const NavigationProjector = (controller, pinToElement) => {
         const [navWrapper] = dom(`
             <div class="card-nav nav-wrapper">
                 <div class="card-header">
-                    <a id="card-logo" href="${controller.getHomePage()}">
+                    <a id="card-logo" href="${controller.getHomePage().getHash()}">
                         <img src="${controller.getWebsiteLogo()}" alt="${controller.getWebsiteName()}-logo"/>
                     </a>
                     <p>${controller.getWebsiteName()}</p>

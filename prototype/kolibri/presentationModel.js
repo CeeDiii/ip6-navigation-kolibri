@@ -8,10 +8,10 @@ import { id }         from "./stdlib.js";
 export { Attribute, QualifiedAttribute,
          presentationModelFromAttributeNames,
          valueOf, obsValueOf, readQualifierValue,
-         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICON, VISITED, LOGO, VISIBLE, HOMEPAGE, PARENT, NAVIGATIONAL, FAVICON, DEBUGMODE, DESCRIPTION, PATH }
+         VALID, VALUE, EDITABLE, LABEL, NAME, TYPE, ACTIVE, HASH, ICONPATH, VISITED, LOGO, VISIBLE, HOMEPAGE, PARENT, NAVIGATIONAL, FAVICON, DEBUGMODE, DESCRIPTION, PATH }
 
 /**
- * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'icon'|'visited'|'logo'|'visible'|'homepage'|'parent'|'navigational'|'favicon' | 'debugmode' | 'description' | 'path' } ObservableTypeString
+ * @typedef {'value'|'valid'|'editable'|'label'|'name'|'type'|'active'|'hash'|'iconpath'|'visited'|'logo'|'visible'|'homepage'|'parent'|'navigational'|'favicon' | 'debugmode' | 'description' | 'path' } ObservableTypeString
  * Feel free to extend this type with new unique type strings as needed for your application.
  */
 
@@ -23,11 +23,11 @@ export { Attribute, QualifiedAttribute,
 /** @type ObservableTypeString */ const TYPE         = "type"; // HTML input types: text, number, checkbox, etc.
 /** @type ObservableTypeString */ const ACTIVE       = "active";
 /** @type ObservableTypeString */ const HASH         = "hash";
-/** @type ObservableTypeString */ const ICON         = "icon";
+/** @type ObservableTypeString */ const ICONPATH     = "iconpath";
 /** @type ObservableTypeString */ const VISITED      = "visited";
 /** @type ObservableTypeString */ const LOGO         = "logo";
 /** @type ObservableTypeString */ const VISIBLE      = "visible";
-/** @type ObservableTypeString */ const HOMEPAGE      = "homepage";
+/** @type ObservableTypeString */ const HOMEPAGE     = "homepage";
 /** @type ObservableTypeString */ const PARENT       = "parent";
 /** @type ObservableTypeString */ const NAVIGATIONAL = "navigational";
 /** @type ObservableTypeString */ const FAVICON      = "favicon";

@@ -34,7 +34,7 @@ To create a page which can be used within the Kolibri navigation you will need t
    * @returns  PageControllerType
    * @example
    * const homePageController = PageController('home', null);
-   * homePageController.setIcon('./navigation/icons/house.svg');
+   * homePageController.setIconPath('./navigation/icons/house.svg');
    * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
    */
    ```
@@ -56,7 +56,7 @@ To create a page which can be used within the Kolibri navigation you will need t
    * @returns { PageProjectorType }
    * @example
    * const homePageController = PageController("home", null);
-   * homePageController.setIcon('./navigation/icons/house.svg');
+   * homePageController.setIconPath('./navigation/icons/house.svg');
    * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
    */
    ```

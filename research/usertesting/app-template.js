@@ -20,7 +20,7 @@ const pinToContentElement = document.getElementById("content");
 
 /*
  The first thing we want to do for our little SPA is to create a page we can view.
- As seen in the README.md we can do that by creating a PageController.
+ As seen in the USERTEST.md we can do that by creating a PageController.
  The code below will give us a PageController, but we need a name for our homepage.
  */
 const homePageController = PageController("home", null); //@TODO remove "home"
@@ -30,7 +30,7 @@ const homePageController = PageController("home", null); //@TODO remove "home"
  the following path: './pages/icons/house.svg'
  */
 // your code here
-homePageController.setIcon('./pages/icons/house.svg'); //@TODO remove
+homePageController.setIconPath('./pages/icons/house.svg'); //@TODO remove
 
 /*
  The last step to get our page would be to call a PageProjector with our PageController, a PinToElement and the path
@@ -59,7 +59,7 @@ const navigationController = NavigationController(); //@TODO remove
 
 /*
  To add our navigation to our SPA we need to give our NavigationController and the pinToElement to our NavigationProjector.
- We have already created a BubbleStateNavigationProjector which you can use. You previously saw in the README.md how you
+ We have already created a BubbleStateNavigationProjector which you can use. You previously saw in the USERTEST.md how you
  have to do that.
  */
 // your code here
@@ -93,7 +93,7 @@ navigationController.addPageControllers(homePageController); // @TODO remove
 // your code here
 
 const aboutPageController = PageController("about", null); //@TODO remove
-aboutPageController.setIcon('./pages/icons/cute-robot.svg'); //@TODO remove
+aboutPageController.setIconPath('./pages/icons/cute-robot.svg'); //@TODO remove
 PageProjector(aboutPageController, pinToContentElement, './pages/about.html'); //@TODO remove
 
 navigationController.addPageControllers(aboutPageController); //@TODO remove
@@ -108,23 +108,18 @@ navigationController.addPageControllers(aboutPageController); //@TODO remove
  */
 
 /**
- * 6. Starting to play around
- *
- * The bubble state navigation is fun and all but we have seen it now, and we would like to exchange the navigation
- * to a new one. Can you exchange the BubbleStateNavigationProjector with the projector from the kolibi-flower?
- */
-// @TODO add Kolibri Flower to new architecture
-
-/**
- * 7. Create a page on your own
+ * 6. Create a page on your own
  *
  * We have nearly reached the end of our user test.
  * Now, if you'd like, you can try to add a custom page to your SPA or explore what kind of functionality we haven't
- * explored yet.
+ * explored yet. Maybe you can set a default homepage, so you get redirected to a page when entering the website without
+ * a hash. Hint: Check out what functions can be called on the navigationController.
  */
 
+navigationController.setHomePage(homePageController.getHash());
+
 /**
- * 8. Way more content and features to explore
+ * 7. Way more content and features to explore
  *
  * Good job! You have successfully built an SPA with Kolibri.
  * As you can imagine, there are tons of other features and functionalities in Kolibri and in the Kolibri Navigation alone
@@ -139,7 +134,7 @@ navigationController.addPageControllers(aboutPageController); //@TODO remove
 const pinToDebugElement = document.getElementById("debug");
 
 const debugPageController = PageController("debug", null);
-debugPageController.setIcon('./pages/icons/bug.svg');
+debugPageController.setIconPath('./pages/icons/bug.svg');
 debugPageController.setVisible(false);
 DebugPageProjector(navigationController, debugPageController, pinToDebugElement);
 navigationController.addPageControllers(debugPageController);

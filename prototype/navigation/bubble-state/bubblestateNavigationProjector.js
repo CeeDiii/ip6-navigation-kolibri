@@ -128,14 +128,13 @@ const NavigationProjector = (controller, pinToElement) => {
 
         pageController.onVisitedChanged(visited => {
             setVisitedCSSClass(hash, visited);
-            projectNavigation();
         });
 
         pageController.onNavigationalChanged(() => projectNavigation());
 
         pageController.onVisibleChanged(() => projectNavigation());
 
-        pageController.onIconChanged(newIcon => {
+        pageController.onIconPathChanged(newIcon => {
             setIconSource(hash, newIcon);
         });
 

@@ -5,67 +5,57 @@
 }
 
 .switch-nav .ensemble-navigation {
-    height: 50px;
-    width: fit-content;
-    border-radius: 30px;
-    margin: auto;
-    background-color: #CCCCCC;
-    box-shadow: inset 2px 2px 5px #000000;
-    position: inherit;
-    z-index: 1;
-}
-
-.switch-nav .ensemble-navigation::before {
-    position: absolute;
-    content: "";
-    height: 46px;
-    width: 96px;
-    top: 2px;
-    left: 2px;
-    border-radius: 30px;
-    background-color: #FAFAFA;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.switch-nav .ensemble-navigation.active::before {
-    -webkit-transform: translateX(104px);
-    -ms-transform: translateX(104px);
-    transform: translateX(104px);
+    height: 60px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid #EBECFE;
 }
 
 .switch-nav .ensemble-navigation a {
-    margin: 0;
-    height: 50px;
-    width: 200px;
-    display: inline-block;
+    width: 175px;
     text-align: center;
-    color: transparent;
-    line-height: 50px;
+    background-color: #FFFFFF;
+    font-size: 16px;
+    line-height: 60px;
     text-decoration: none;
-    position: relative;
+    color: #EBECFE;
+    border-bottom: 4px solid #FFFFFF;
+}
+
+.switch-nav .ensemble-navigation a:hover {
+    color: #F066FF;
 }
 
 .switch-nav .ensemble-navigation a.active {
-    display: none;
+    background-color: #FFFFFF;
+    color: #000000;
+    border-color: #D059FF;
 }
 
 .switch-nav .ensemble-navigation a img {
-    display: none;
+    height: 16px;
+    padding-right: 6px;
+    position: relative;
+    top: 2px;
+    filter: invert(59%) sepia(54%) saturate(6075%) hue-rotate(249deg) brightness(99%) contrast(103%);
+}
+
+.switch-nav .ensemble-navigation a:hover img {
+    filter: invert(80%) sepia(55%) saturate(7141%) hue-rotate(247deg) brightness(100%) contrast(103%);
+}
+
+.switch-nav .ensemble-navigation a.active img {
+    filter: none;
 }
 
 .switch-nav .ensemble-content {
-    height: 60vh;
-    top: -56px;
     position: relative;
     overflow: scroll;
     overflow-x: hidden;
+    height: 66vh;
     background-color: #FFFFFF;
-    padding: 63px 6px 6px 6px;
-    border: #310082 solid 3px;
-    border-top-width: 62px;
-    border-radius: 6px;
+    padding: 6px;
 }
 
 .switch-nav .invisible {
