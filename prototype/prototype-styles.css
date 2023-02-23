@@ -1,3 +1,6 @@
+@import "https://webengineering-fhnw.github.io/Kolibri/css/kolibri-light-colors.css";
+@import "https://webengineering-fhnw.github.io/Kolibri/css/kolibri-light-fonts.css";
+
 :root {
     --background: #FFFFFF;
 }
@@ -12,6 +15,11 @@ body {
     overflow-anchor: none;
     margin: 3em auto 3em auto;
     padding-top: 6em;
+}
+
+section {
+    max-width:  40em;
+    margin:     1em auto 4em auto;
 }
 
 h1 {

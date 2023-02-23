@@ -7,6 +7,14 @@ import { StaticPageProjector }                             from "./pages/StaticP
 import { DebugPageProjector }                              from "./pages/debug/debugPageProjector.js";
 import { HomePageProjector }                               from "./pages/home/homePageProjector.js";
 import { PageSwitchProjector }                             from "./navigation/page-switch/pageSwitchProjector.js";
+import {
+    DEBUGMODE,
+    FAVICON,
+    HOMEPAGE,
+    ICONPATH,
+    LOGO,
+    NAME,
+    VISIBLE }                                              from "./kolibri/presentationModel.js";
 
 const pinToCardNavElement = document.getElementById('card-nav');
 const pinToContentElement = document.getElementById("content");
@@ -14,15 +22,15 @@ const pinToDebugElement = document.getElementById('debug');
 
 // Assembling 403 error page as example. Can be modified
 const errorForbiddenController = PageController("E403", null);
-errorForbiddenController.setConfiguration({
-    visible: false
+errorForbiddenController.setConfiguration(/** @type ModelConfigurationObject */{
+    [VISIBLE]: false
 });
 ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
 
 // Assembling 404 error page as example. Can be modified
 const errorNotFoundController = PageController("E404", null);
-errorNotFoundController.setConfiguration({
-    visible: false
+errorNotFoundController.setConfiguration(/** @type ModelConfigurationObject */{
+    [VISIBLE]: false
 });
 PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
 
@@ -35,28 +43,27 @@ const docsPageController = PageController("docs", null);
 StaticPageProjector(docsPageController, pinToContentElement, './pages/docs/docs.html');
 
 const navigationController = NavigationController();
-navigationController.setConfiguration({
-    name: 'Kolibri',
-    logo: './img/logo/logo-new-128.svg',
-    favicon: './img/logo/logo-new-128.svg',
-    homepage: homePageController.getHash(),
-    debugmode: true
+navigationController.setConfiguration(/** @type ModelConfigurationObject */{
+    [NAME]: 'Kolibri',
+    [LOGO]: './img/logo/logo-new-128.svg',
+    [FAVICON]: './img/logo/logo-new-128.svg',
+    [HOMEPAGE]: homePageController,
+    [DEBUGMODE]: true
 });
 
 const debugController = PageController('debug', null);
-debugController.setConfiguration({
-    visible: false,
-    icon: './navigation/icons/bug.svg'
+debugController.setConfiguration(/** @type ModelConfigurationObject */{
+    [VISIBLE]: false,
+    [ICONPATH]: './navigation/icons/bug.svg'
 });
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
 
 
 const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
 const cardGridProjector = cardNavigationProjector.getGridProjector();
-navigationController.addPageControllers(errorForbiddenController, errorForbiddenController, debugController);
 
 navigationController.addPageControllers(errorForbiddenController,
-                                        errorForbiddenController,
+                                        errorNotFoundController,
                                         debugController,
                                         homePageController,
                                         docsPageController);
