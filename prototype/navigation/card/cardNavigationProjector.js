@@ -270,13 +270,13 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { ?PageControllerType } newParent
      * @param { ?PageControllerType } oldParent
      * @param { !HTMLAnchorElement[] } parentAnchors
-     * @param { !Object } childrenCards
+     * @param { !ParentChildMap } parentChildMap
      */
-    const addAnchor = (pageController, newParent, oldParent, parentAnchors, childrenCards) => {
+    const addAnchor = (pageController, newParent, oldParent, parentAnchors, parentChildMap) => {
         if (null === newParent) {
-            addParentAnchor(pageController, newParent, oldParent, parentAnchors, childrenCards);
-        } else {
-            addChildAnchor(pageController, newParent, parentAnchors, childrenCards);
+            addParentAnchor(pageController, newParent, oldParent, parentAnchors, parentChildMap);
+        } else if (null === oldParent) {
+            addChildAnchor(pageController, newParent, parentAnchors, parentChildMap);
         }
     };
 
@@ -288,17 +288,17 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { ?PageControllerType } newParent
      * @param { ?PageControllerType } oldParent
      * @param { !HTMLAnchorElement[] } parentAnchors
-     * @param { !Object } childrenCards
+     * @param { !ParentChildMap } parentChildMap
      */
-    const addParentAnchor = (pageController, newParent, oldParent, parentAnchors, childrenCards) => {
+    const addParentAnchor = (pageController, newParent, oldParent, parentAnchors, parentChildMap) => {
         const qualifier = pageController.getQualifier();
         const pageName = pageController.getValue();
         // initialize empty child array for new parents
-        if (undefined === childrenCards[qualifier]) {
-            childrenCards[qualifier] = [];
+        if (undefined === parentChildMap[qualifier]) {
+            parentChildMap[qualifier] = [];
         }
         if (null !== oldParent) {
-            const children = childrenCards[oldParent.getQualifier()];
+            const children = parentChildMap[oldParent.getQualifier()];
             const deleteAnchorIndex = children.findIndex(anchor => anchor.id === qualifier + '-anchor');
             if (deleteAnchorIndex !== -1) {
                 const newParentAnchor = children[deleteAnchorIndex];
@@ -350,7 +350,12 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { T[] } arr
      * @param { number } i
      */
-    const removeAtIndex = (arr, i) => arr.splice(i, 1);
+    const removeAtIndex = (arr, i) => {
+        arr.splice(i, 1);
+        if (1 === arr.length && undefined === arr[0]) {
+            arr = [];
+        }
+    };
 
     /**
      * A utility function that sets the active CSS class for the given qualifier
