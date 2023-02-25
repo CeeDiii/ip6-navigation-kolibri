@@ -19,7 +19,7 @@ import {
     HOMEPAGE,
     ICONPATH,
     LOGO,
-    NAME, NAVIGATIONAL,
+    NAME, NAVIGATIONAL, VALUE,
     VISIBLE
 } from './kolibri/presentationModel.js';
 import {
@@ -62,12 +62,24 @@ docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
 });
 
 const gettingStartedController = PageController('getting-started', null);
+gettingStartedController.setConfiguration(/** @type ModelConfigurationObject */ {
+    [ICONPATH]: "./navigation/icons/start.svg",
+    [VALUE]: "Getting Started"
+});
 StaticPageProjector(gettingStartedController, pinToContentElement, './pages/getting-started/getting-started.html');
 
 const styleGuideController = PageController('style-guide', null);
+styleGuideController.setConfiguration(/** @type ModelConfigurationObject */ {
+    [ICONPATH]: "./navigation/icons/palette.svg",
+    [VALUE]: "Style Guide"
+});
 StyleGuidePageProjector(styleGuideController, pinToContentElement, './pages/style-guide/style-guide.html');
 
 const testCasesController = PageController('test-cases', null);
+testCasesController.setConfiguration(/** @type ModelConfigurationObject */ {
+    [ICONPATH]: "./navigation/icons/test.svg",
+    [VALUE]: "Test Cases"
+});
 StaticPageProjector(testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
 
 const examplePageController = PageController('example', null);
@@ -108,10 +120,18 @@ const formStructure = [
     {value: "",           label: "Color",  name: "color",  type: COLOR    }
 ];
 const simpleFormPageController = PageController('simpleform', [SimpleFormController(formStructure)]);
+simpleFormPageController.setConfiguration(/** @type ModelConfigurationObject */ {
+    [ICONPATH]: "./navigation/icons/forms.svg",
+    [VALUE]: "Simple Form"
+});
 const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector);
 
 const workDayController = PageController('workday', [DayController()]);
+workDayController.setConfiguration(/** @type ModelConfigurationObject */ {
+    [ICONPATH]: "./navigation/icons/day.svg",
+    [VALUE]: "Work Day"
+});
 const workDaySwitchProjector = PageSwitchProjector(workDayController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
 WorkDayPageProjector(workDayController, pinToContentElement, './pages/workday/WorkingHours.html', workDaySwitchProjector);
 
