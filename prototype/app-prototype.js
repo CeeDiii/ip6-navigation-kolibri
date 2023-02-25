@@ -11,7 +11,8 @@ import { SimpleFormPageProjector }                         from "./pages/simpleF
 import { PageSwitchProjector }                             from './navigation/page-switch/pageSwitchProjector.js';
 import { DayController }                                   from "./pages/workday/dayController.js";
 import { WorkDayPageProjector }                            from "./pages/workday/workDayPageProjector.js";
-
+import { WeekController }                                  from "./pages/workweek/workweek/weekController.js";
+import { WorkWeekPageProjector }                           from "./pages/workweek/workWeekPageProjector.js";
 
 import {
     DEBUGMODE,
@@ -30,8 +31,6 @@ import {
     TEXT,
     TIME
 } from "./kolibri/util/dom.js";
-
-
 
 const pinToCardNavElement = document.getElementById('card-nav');
 const pinToContentElement = document.getElementById('content');
@@ -135,6 +134,10 @@ workDayController.setConfiguration(/** @type ModelConfigurationObject */ {
 const workDaySwitchProjector = PageSwitchProjector(workDayController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
 WorkDayPageProjector(workDayController, pinToContentElement, './pages/workday/WorkingHours.html', workDaySwitchProjector);
 
+const workWeekController = PageController('workweek', [WeekController()]);
+const workWeekSwitchProjector = PageSwitchProjector(workWeekController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+WorkWeekPageProjector(workWeekController, pinToContentElement, './pages/workweek/workweek.html', workWeekSwitchProjector);
+
 navigationController.addPageControllers(
     errorForbiddenController,
     errorNotFoundController,
@@ -147,6 +150,7 @@ navigationController.addPageControllers(
     examplePageController,
     simpleFormPageController,
     workDayController,
+    workWeekController,
     teamPageController
 );
 
@@ -155,6 +159,7 @@ styleGuideController.setParent(docsPageController);
 testCasesController.setParent(docsPageController);
 simpleFormPageController.setParent(examplePageController);
 workDayController.setParent(examplePageController);
+workWeekController.setParent(examplePageController);
 
 
 
