@@ -9,6 +9,9 @@ import { StyleGuidePageProjector }                         from './pages/style-g
 import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
 import { PageSwitchProjector }                             from './navigation/page-switch/pageSwitchProjector.js';
+import { DayController }                                   from "./pages/workday/dayController.js";
+import { WorkDayPageProjector }                            from "./pages/workday/workDayPageProjector.js";
+
 
 import {
     DEBUGMODE,
@@ -106,7 +109,11 @@ const formStructure = [
 ];
 const simpleFormPageController = PageController('simpleform', [SimpleFormController(formStructure)]);
 const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
-SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector)
+SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector);
+
+const workDayController = PageController('workday', [DayController()]);
+const workDaySwitchProjector = PageSwitchProjector(workDayController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+WorkDayPageProjector(workDayController, pinToContentElement, './pages/workday/WorkingHours.html', workDaySwitchProjector);
 
 navigationController.addPageControllers(
     errorForbiddenController,
@@ -119,6 +126,7 @@ navigationController.addPageControllers(
     testCasesController,
     examplePageController,
     simpleFormPageController,
+    workDayController,
     teamPageController
 );
 
@@ -126,6 +134,7 @@ gettingStartedController.setParent(docsPageController);
 styleGuideController.setParent(docsPageController);
 testCasesController.setParent(docsPageController);
 simpleFormPageController.setParent(examplePageController);
+workDayController.setParent(examplePageController);
 
 
 
