@@ -13,8 +13,9 @@ import {
     HOMEPAGE,
     ICONPATH,
     LOGO,
-    NAME,
-    VISIBLE }                                              from "./kolibri/presentationModel.js";
+    NAME, NAVIGATIONAL,
+    VISIBLE
+} from "./kolibri/presentationModel.js";
 
 const pinToCardNavElement = document.getElementById('card-nav');
 const pinToContentElement = document.getElementById("content");
@@ -40,7 +41,12 @@ const homePageController = PageController("home", null);
 StaticPageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const docsPageController = PageController("docs", null);
-StaticPageProjector(docsPageController, pinToContentElement, './pages/docs/docs.html');
+docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
+   [NAVIGATIONAL]: false
+});
+
+const gettingStartedController = PageController("getting-started", null);
+StaticPageProjector(gettingStartedController, pinToContentElement, './pages/getting-started/getting-started.html');
 
 const navigationController = NavigationController();
 navigationController.setConfiguration(/** @type ModelConfigurationObject */{
@@ -66,7 +72,10 @@ navigationController.addPageControllers(errorForbiddenController,
                                         errorNotFoundController,
                                         debugController,
                                         homePageController,
-                                        docsPageController);
+                                        docsPageController,
+                                        gettingStartedController);
+
+gettingStartedController.setParent(docsPageController);
 
 
 
