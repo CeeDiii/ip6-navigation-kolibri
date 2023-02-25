@@ -1,6 +1,6 @@
 import { projectWeek } from "./workweek/simpleWeekProjector.js";
 
-export { SimpleWorkWeekPageProjector }
+export { WorkWeekPageProjector }
 
 /**
  * PageProjectorType is responsible to project a PageModelType's content to the DOM.
@@ -14,19 +14,22 @@ export { SimpleWorkWeekPageProjector }
  * A constructor for a PageProjectorType.
  *
  * @constructor
+ * @template T
  * @param { !PageControllerType } pageController - the pageController that controls the PageModelType we want to observe. Mandatory.
  * @param { !HTMLDivElement } pinToElement - the element in the DOM that we want to bind to append the pageContent. Mandatory.
- * @param { String } contentFilePath - the path to the static html content relative to index.html! Can be null.
+ * @param { ?String } contentFilePath - the path to the static html content relative to index.html! Can be null.
+ * @param { ...?T } pageContentProjectors - optional pageContentProjectors used to project dynamic content.
  * @returns { PageProjectorType }
  * @example
  * const homePageController = PageController("home", null);
  * homePageController.setIconPath('./navigation/icons/house.svg');
  * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
-const SimpleWorkWeekPageProjector = (pageController, pinToElement, contentFilePath) => {
+const WorkWeekPageProjector = (pageController, pinToElement, contentFilePath, ...pageContentProjectors) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
     const [weekController] = pageController.getDynamicContentControllers();
+    const [pageSwitchProjector] = pageContentProjectors;
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.
@@ -38,11 +41,14 @@ const SimpleWorkWeekPageProjector = (pageController, pinToElement, contentFilePa
         const contentPromise = fetchPageContent(contentFilePath);
         contentPromise.then(contentHtml => {
             contentWrapper.innerHTML = contentHtml;
-            const workingHoursInput = document.getElementById('workingHoursInput');
+            const workingHoursInput = contentWrapper.querySelector('#workingHoursInput');
             workingHoursInput.append(...projectWeek(weekController));
+            const switchDiv = pageSwitchProjector.projectNavigation(workingHoursInput);
+            const workweekHolder = contentWrapper.querySelector('#workweek-holder');
+            workweekHolder.append(switchDiv);
         });
 
-        const pageClass = pageController.getHash().slice(1);
+        const pageClass = pageController.getQualifier();
         contentWrapper.classList.add(pageClass);
     };
 

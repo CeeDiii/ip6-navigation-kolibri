@@ -21,7 +21,7 @@ import { PersonPageProjector }                             from "./pages/person/
 import { Car,carSelectionMold }                            from "./pages/car/car.js";
 import { CarPageProjector }                                from "./pages/car/carPageProjector.js";
 import { WeekController }                                  from "./pages/workweek/workweek/weekController.js";
-import { SimpleWorkWeekPageProjector }                     from "./pages/workweek/simpleWorkWeekPageProjector.js";
+import { WorkWeekPageProjector }                     from "./pages/workweek/workWeekPageProjector.js";
 import { CHECKBOX, COLOR, DATE, NUMBER, TEXT, TIME }       from "./kolibri/util/dom.js";
 import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
@@ -112,7 +112,7 @@ simpleWorkWeekPageController.setConfiguration(/** @type ModelConfigurationObject
     You cannot break what you do not touch.`,
 });
 
-SimpleWorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
+WorkWeekPageProjector(simpleWorkWeekPageController, pinToContentElement, './pages/workweek/workweek.html');
 
 const formStructure = [
     {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
