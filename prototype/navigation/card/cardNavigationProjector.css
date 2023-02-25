@@ -4,7 +4,6 @@
     grid-auto-columns: minmax(224px, 224px);
     grid-auto-flow: column dense;
     gap: 16px;
-
 }
 
 .card-nav .card-wrapper > a {
@@ -22,6 +21,7 @@
     font-size: 14px;
     position: fixed;
     width: 100%;
+    z-index: 1;
 }
 
 .card-nav .card-header {
