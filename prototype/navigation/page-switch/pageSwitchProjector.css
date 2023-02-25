@@ -67,7 +67,8 @@
 
 
 .switch-nav ::-webkit-scrollbar {
-    width: 18px;
+    width: 12px;
+    height: 12px;
 }
 
 .switch-nav ::-webkit-scrollbar-track {
