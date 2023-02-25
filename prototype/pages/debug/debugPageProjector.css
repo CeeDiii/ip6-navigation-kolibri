@@ -1,3 +1,8 @@
+.debug {
+    z-index: 1;
+    position: absolute;
+}
+
 .debug #debug-table {
     display: none;
 }

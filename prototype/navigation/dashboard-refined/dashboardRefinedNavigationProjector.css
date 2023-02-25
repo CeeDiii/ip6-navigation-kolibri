@@ -26,6 +26,7 @@
     display: grid;
     grid-template-columns: var(--base-unit);
     font-family:      var(--kb-font-rubik-light-regular);
+    z-index: 1;
 }
 
 .dashboard-refined-nav.open{
