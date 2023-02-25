@@ -2,11 +2,6 @@
 @import "./404/pageNotFound.css";
 @import "./debug/debugPageProjector.css";
 @import "./home/homePageProjector.css";
-@import "./masterDetailViews/masterDetailViewsPageProjector.css";
-@import "./forms/formsPageProjector.css";
-@import "./welcome/welcomePageProjector.css";
-@import "./person/instantUpdateProjector.css";
-@import "./car/instantUpdateProjector.css";
-@import "./workweek/workingHours.css";
-@import "./simpleForm/simpleFormPageProjector.css";
+@import "./style-guide/styleGuidePageProjector.css";
+
 

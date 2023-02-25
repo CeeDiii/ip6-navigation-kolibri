@@ -5,8 +5,9 @@ import { ForbiddenPageProjector }                          from "./pages/403/for
 import { PageNotFoundProjector }                           from "./pages/404/pageNotFoundProjector.js";
 import { StaticPageProjector }                             from "./pages/StaticPageProjector.js";
 import { DebugPageProjector }                              from "./pages/debug/debugPageProjector.js";
-import { HomePageProjector }                               from "./pages/home/homePageProjector.js";
+import { StyleGuidePageProjector }                         from "./pages/style-guide/styleGuidePageProjector.js";
 import { PageSwitchProjector }                             from "./navigation/page-switch/pageSwitchProjector.js";
+
 import {
     DEBUGMODE,
     FAVICON,
@@ -16,6 +17,7 @@ import {
     NAME, NAVIGATIONAL,
     VISIBLE
 } from "./kolibri/presentationModel.js";
+
 
 const pinToCardNavElement = document.getElementById('card-nav');
 const pinToContentElement = document.getElementById("content");
@@ -48,6 +50,12 @@ docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
 const gettingStartedController = PageController("getting-started", null);
 StaticPageProjector(gettingStartedController, pinToContentElement, './pages/getting-started/getting-started.html');
 
+const styleGuideController = PageController("style-guide", null);
+StyleGuidePageProjector(styleGuideController, pinToContentElement, './pages/style-guide/style-guide.html');
+
+const testCasesController = PageController("test-cases", null);
+StaticPageProjector(testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
+
 const navigationController = NavigationController();
 navigationController.setConfiguration(/** @type ModelConfigurationObject */{
     [NAME]: 'Kolibri',
@@ -68,14 +76,20 @@ DebugPageProjector(navigationController, debugController, pinToDebugElement);
 const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
 const cardGridProjector = cardNavigationProjector.getGridProjector();
 
-navigationController.addPageControllers(errorForbiddenController,
-                                        errorNotFoundController,
-                                        debugController,
-                                        homePageController,
-                                        docsPageController,
-                                        gettingStartedController);
+navigationController.addPageControllers(
+    errorForbiddenController,
+    errorNotFoundController,
+    debugController,
+    homePageController,
+    docsPageController,
+    gettingStartedController,
+    styleGuideController,
+    testCasesController
+);
 
 gettingStartedController.setParent(docsPageController);
+styleGuideController.setParent(docsPageController);
+testCasesController.setParent(docsPageController);
 
 
 
