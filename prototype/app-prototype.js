@@ -56,6 +56,15 @@ StyleGuidePageProjector(styleGuideController, pinToContentElement, './pages/styl
 const testCasesController = PageController("test-cases", null);
 StaticPageProjector(testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
 
+const examplePageController = PageController("example", null);
+docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
+    [NAVIGATIONAL]: false
+});
+
+const teamPageController = PageController('team', null);
+StaticPageProjector(teamPageController, pinToContentElement, './pages/team/team.html');
+
+
 const navigationController = NavigationController();
 navigationController.setConfiguration(/** @type ModelConfigurationObject */{
     [NAME]: 'Kolibri',
@@ -84,7 +93,10 @@ navigationController.addPageControllers(
     docsPageController,
     gettingStartedController,
     styleGuideController,
-    testCasesController
+    testCasesController,
+    examplePageController,
+    teamPageController
+
 );
 
 gettingStartedController.setParent(docsPageController);
