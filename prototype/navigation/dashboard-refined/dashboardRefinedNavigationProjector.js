@@ -201,6 +201,8 @@ const NavigationProjector = (controller, pinToElement) => {
                             rootNode.firstElementChild.href = '#E403';
                         }
                     }
+                } else if (1 === rootNodeInDetailWrapper.children.length) {
+                    rootNode.firstElementChild.href = '#E404';
                 }
             }
         }
@@ -321,11 +323,15 @@ const NavigationProjector = (controller, pinToElement) => {
             setIconSource(pageController, pageController.getIconPath());
             projectOverviewNode(pageController);
             projectNavigation();
+            if(controller.getPageController(hash).isActive()) {
+                setParentActiveCSSClass(oldParent.getHash(), false, true, true);
+                setParentActiveCSSClass(newParent.getHash(), true, false, true);
+            }
         });
 
         pageController.onActiveChanged((newActive, oldActive) => {
             setActiveCSSClass(qualifier, hash, newActive, oldActive);
-            setParentActiveCSSClass(hash, newActive, oldActive);
+            setParentActiveCSSClass(hash, newActive, oldActive, false);
             setPageTitle(hash, newActive);
         });
 
@@ -378,9 +384,16 @@ const NavigationProjector = (controller, pinToElement) => {
      * @param { !String } hash
      * @param { !Boolean } newActive
      * @param { !Boolean } oldActive
+     * @param { !Boolean } elementCanBeRootItself
      */
-    const setParentActiveCSSClass = (hash, newActive, oldActive) => {
-        const rootParent = getRootParentNode(hash);
+    const setParentActiveCSSClass = (hash, newActive, oldActive, elementCanBeRootItself) => {
+        let rootParent;
+        if(elementCanBeRootItself) {
+            rootParent = getRootParentNodeOrSelf(hash);
+        } else {
+            rootParent = getRootParentNode(hash);
+
+        }
         if (null !== rootParent) {
             const qualifier = rootParent.getQualifier();
             setActiveCSSClass(qualifier, rootParent.getHash(), newActive, oldActive);
@@ -404,6 +417,26 @@ const NavigationProjector = (controller, pinToElement) => {
             parentNode = parentNode.getParent();
         }
         return parentNode;
+    };
+
+    /**
+     * A utility function the returns the root parent node or the node itself if it is a root parent for a given hash.
+     * This is needed because we want the 'getRootParentNode' function to return null if the element itself is a root node.
+     *
+     * @function
+     * @param { String } hash
+     * @return { ?PageControllerType }
+     */
+    const getRootParentNodeOrSelf = hash => {
+        const pageController = controller.getPageController(hash);
+        let parentNode = pageController.getParent();
+        while (null !== parentNode && null !== parentNode.getParent()) {
+            parentNode = parentNode.getParent();
+        }
+        if(null !== parentNode) {
+            return parentNode;
+        }
+        return pageController;
     };
 
     /**
