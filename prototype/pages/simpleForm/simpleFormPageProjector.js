@@ -1,5 +1,4 @@
-import { projectForm, }  from "../../kolibri/projector/simpleForm/simpleFormProjector.js"
-
+import { projectForm }         from "../../kolibri/projector/simpleForm/simpleFormProjector.js"
 
 export { SimpleFormPageProjector }
 
@@ -15,18 +14,21 @@ export { SimpleFormPageProjector }
  * A constructor for a PageProjectorType.
  *
  * @constructor
+ * @template T
  * @param { !PageControllerType } pageController - the pageController that controls the PageModelType we want to observe. Mandatory.
  * @param { !HTMLDivElement } pinToElement - the element in the DOM that we want to bind to append the pageContent. Mandatory.
  * @param { String } contentFilePath - the path to the static html content relative to index.html! Can be null.
+ * @param { ...?T } pageContentProjectors - optional pageContentProjectors used to project dynamic content.
  * @returns { PageProjectorType }
  * @example
- * const homePageController = PageController("home", null);
- * homePageController.setIconPath('./navigation/icons/house.svg');
- * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
+ * const simpleFormController = PageController("home", null);
+ * simpleFormController.setIconPath('./navigation/icons/house.svg');
+ * SimpleFormPageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
-const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) => {
+const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath, ...pageContentProjectors) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
+    const [pageSwitchProjector] = pageContentProjectors;
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.
@@ -39,12 +41,16 @@ const SimpleFormPageProjector = (pageController, pinToElement, contentFilePath) 
         contentPromise.then(contentHtml => {
             contentWrapper.innerHTML = contentHtml;
 
-            const formHolder = document.getElementById('form-holder');
+            const formHolder = contentWrapper.querySelector('#form-holder');
+            const exampleDiv = document.createElement('div');
             const form = projectForm(pageController.getDynamicContentControllers()[0]);
-            formHolder.append(...form);
+            exampleDiv.append(...form);
+
+            const switchDiv = pageSwitchProjector.projectNavigation(exampleDiv);
+            formHolder.append(switchDiv);
         });
 
-        const pageClass = pageController.getHash().slice(1);
+        const pageClass = pageController.getQualifier();
         contentWrapper.classList.add(pageClass);
     };
 

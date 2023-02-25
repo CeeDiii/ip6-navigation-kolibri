@@ -23,9 +23,9 @@ export { PersonPageProjector }
  * @param { ...?T } pageContentProjectors - optional pageContentProjectors used to project dynamic content.
  * @returns { PageProjectorType }
  * @example
- * const homePageController = PageController("home", null);
- * homePageController.setIconPath('./navigation/icons/house.svg');
- * HomePageProjector(homePageController, pinToContentElement, './pages/home/home.html');
+ * const personPageController = PageController("home", null);
+ * personPageController.setIconPath('./navigation/icons/house.svg');
+ * PersonPageProjector(homePageController, pinToContentElement, './pages/home/home.html');
  */
 const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...pageContentProjectors) => {
     const pageWrapper = pinToElement;
@@ -72,7 +72,7 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
             exampleDiv.append(masterContainer, detailCard);
 
             const switchDiv = pageSwitchProjector.projectNavigation(exampleDiv);
-            const cardDiv = document.getElementsByClassName('switch-card')[0];
+            const cardDiv = document.getElementById('content-wrapper');
             cardDiv.append(switchDiv);
         });
 

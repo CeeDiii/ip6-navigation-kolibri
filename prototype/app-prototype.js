@@ -1,12 +1,14 @@
-import { NavigationController }                            from "./navigation/navigationController.js";
-import { CardNavigationProjector }                         from "./navigation/card/cardNavigationProjector.js";
-import { PageController }                                  from "./pages/pageController.js";
-import { ForbiddenPageProjector }                          from "./pages/403/forbiddenPageProjector.js";
-import { PageNotFoundProjector }                           from "./pages/404/pageNotFoundProjector.js";
-import { StaticPageProjector }                             from "./pages/StaticPageProjector.js";
-import { DebugPageProjector }                              from "./pages/debug/debugPageProjector.js";
-import { StyleGuidePageProjector }                         from "./pages/style-guide/styleGuidePageProjector.js";
-import { PageSwitchProjector }                             from "./navigation/page-switch/pageSwitchProjector.js";
+import { NavigationController }                            from './navigation/navigationController.js';
+import { CardNavigationProjector }                         from './navigation/card/cardNavigationProjector.js';
+import { PageController }                                  from './pages/pageController.js';
+import { ForbiddenPageProjector }                          from './pages/403/forbiddenPageProjector.js';
+import { PageNotFoundProjector }                           from './pages/404/pageNotFoundProjector.js';
+import { StaticPageProjector }                             from './pages/StaticPageProjector.js';
+import { DebugPageProjector }                              from './pages/debug/debugPageProjector.js';
+import { StyleGuidePageProjector }                         from './pages/style-guide/styleGuidePageProjector.js';
+import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
+import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
+import { PageSwitchProjector }                             from './navigation/page-switch/pageSwitchProjector.js';
 
 import {
     DEBUGMODE,
@@ -16,22 +18,31 @@ import {
     LOGO,
     NAME, NAVIGATIONAL,
     VISIBLE
-} from "./kolibri/presentationModel.js";
+} from './kolibri/presentationModel.js';
+import {
+    CHECKBOX,
+    COLOR,
+    DATE,
+    NUMBER,
+    TEXT,
+    TIME
+} from "./kolibri/util/dom.js";
+
 
 
 const pinToCardNavElement = document.getElementById('card-nav');
-const pinToContentElement = document.getElementById("content");
+const pinToContentElement = document.getElementById('content');
 const pinToDebugElement = document.getElementById('debug');
 
 // Assembling 403 error page as example. Can be modified
-const errorForbiddenController = PageController("E403", null);
+const errorForbiddenController = PageController('E403', null);
 errorForbiddenController.setConfiguration(/** @type ModelConfigurationObject */{
     [VISIBLE]: false
 });
 ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
 
 // Assembling 404 error page as example. Can be modified
-const errorNotFoundController = PageController("E404", null);
+const errorNotFoundController = PageController('E404', null);
 errorNotFoundController.setConfiguration(/** @type ModelConfigurationObject */{
     [VISIBLE]: false
 });
@@ -39,25 +50,25 @@ PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404
 
 
 /* ********************************************* PAGES ************************************************************ */
-const homePageController = PageController("home", null);
+const homePageController = PageController('home', null);
 StaticPageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
-const docsPageController = PageController("docs", null);
+const docsPageController = PageController('docs', null);
 docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
    [NAVIGATIONAL]: false
 });
 
-const gettingStartedController = PageController("getting-started", null);
+const gettingStartedController = PageController('getting-started', null);
 StaticPageProjector(gettingStartedController, pinToContentElement, './pages/getting-started/getting-started.html');
 
-const styleGuideController = PageController("style-guide", null);
+const styleGuideController = PageController('style-guide', null);
 StyleGuidePageProjector(styleGuideController, pinToContentElement, './pages/style-guide/style-guide.html');
 
-const testCasesController = PageController("test-cases", null);
+const testCasesController = PageController('test-cases', null);
 StaticPageProjector(testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
 
-const examplePageController = PageController("example", null);
-docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
+const examplePageController = PageController('example', null);
+examplePageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [NAVIGATIONAL]: false
 });
 
@@ -85,6 +96,18 @@ DebugPageProjector(navigationController, debugController, pinToDebugElement);
 const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
 const cardGridProjector = cardNavigationProjector.getGridProjector();
 
+const formStructure = [
+    {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
+    {value: 0,            label: "Number", name: "number", type: NUMBER   },
+    {value: "1968-04-19", label: "Date",   name: "date",   type: DATE     },
+    {value: 12 * 60 + 15, label: "Time",   name: "time",   type: TIME     },
+    {value: false,        label: "Check",  name: "check",  type: CHECKBOX },
+    {value: "",           label: "Color",  name: "color",  type: COLOR    }
+];
+const simpleFormPageController = PageController('simpleform', [SimpleFormController(formStructure)]);
+const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector)
+
 navigationController.addPageControllers(
     errorForbiddenController,
     errorNotFoundController,
@@ -95,13 +118,17 @@ navigationController.addPageControllers(
     styleGuideController,
     testCasesController,
     examplePageController,
+    simpleFormPageController,
     teamPageController
-
 );
 
 gettingStartedController.setParent(docsPageController);
 styleGuideController.setParent(docsPageController);
 testCasesController.setParent(docsPageController);
+simpleFormPageController.setParent(examplePageController);
+
+
+
 
 
 
