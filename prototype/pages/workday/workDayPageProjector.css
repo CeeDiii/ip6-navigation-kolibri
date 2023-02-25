@@ -22,10 +22,6 @@
     color: var(--kolibri-color-output);
 }
 
-#content .workday .darkTheme {
-    filter: invert(85%) hue-rotate(180deg);
-}
-
 #content .workday em {
     color: var(--kolibri-color-accent);
 }

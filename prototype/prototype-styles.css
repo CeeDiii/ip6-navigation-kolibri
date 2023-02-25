@@ -45,3 +45,6 @@ input[type=text]:focus {
     transition:          background-size linear .5s;
 }
 
+.darkTheme {
+    filter: invert(85%) hue-rotate(180deg);
+}

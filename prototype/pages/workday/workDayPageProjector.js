@@ -60,6 +60,10 @@ const WorkDayPageProjector = (pageController, pinToElement, contentFilePath, ...
                 : inputs().forEach(input => input.removeAttribute("required"));
 
 
+            checkDarkTheme.onclick = _ => checkDarkTheme.checked
+                ? document.querySelector("html").classList.add("darkTheme")
+                : document.querySelector("html").classList.remove("darkTheme");
+
             const workingHoursInput = contentWrapper.querySelector('#workingHoursInput');
             workingHoursInput.append(...projectDay(dayController));
             const workday = contentWrapper.querySelector('#workday');
