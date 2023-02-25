@@ -4,8 +4,8 @@
  */
 
 
-import { SimpleInputController } from "../../../kolibri/projector/simpleForm/simpleInputController.js";
-import { Attribute, VALUE }      from "../../../kolibri/presentationModel.js";
+import { SimpleInputController } from "../../kolibri/projector/simpleForm/simpleInputController.js";
+import { Attribute, VALUE }      from "../../kolibri/presentationModel.js";
 
 export { DayController }
 

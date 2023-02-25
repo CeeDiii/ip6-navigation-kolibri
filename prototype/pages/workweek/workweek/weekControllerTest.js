@@ -1,5 +1,5 @@
 import { TestSuite }       from "../../../kolibri/util/test.js";
-import { DayController }   from "../workday/dayController.js";
+import { DayController }   from "../../workday/dayController.js";
 import { WeekController }  from "./weekController.js";
 
 const weekControllerSuite = TestSuite("examples/workweek/weekController");
