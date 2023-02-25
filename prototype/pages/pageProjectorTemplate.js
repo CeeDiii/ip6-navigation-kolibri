@@ -45,7 +45,7 @@ const PageProjector = (pageController, pinToElement, contentFilePath) => {
             }
         });
 
-        const pageClass = pageController.getHash().slice(1);
+        const pageClass = pageController.getQualifier();
         contentWrapper.classList.add(pageClass);
     };
 
