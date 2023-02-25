@@ -9,7 +9,7 @@
     text-align: center;
     margin: 30px;
 }
-#content .person .holder {
+#content .person .holder, #content .person .gist {
     margin: 0 3em 0 3em;
 }
 #content .person input[type=text] {
@@ -35,12 +35,12 @@
     padding: 5px;
     width: 30px;
     position: relative;
-    top: -1em;
 }
 
-#content .person h2 {
+#content .person h2, #content .person h3 {
     margin-top: 25px;
     margin-bottom: 15px;
+    font-size: 1.5em;
 }
 
 #content .person {
