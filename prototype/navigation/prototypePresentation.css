@@ -1,5 +1,6 @@
 body {
     padding-top: 96px;
+    overflow-x: auto;
 }
 
 .dashboard-refined-nav {

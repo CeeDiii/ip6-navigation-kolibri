@@ -2,6 +2,7 @@
     background-color: white; /*only needed for chrome :-(*/
     max-width: 42em;
     margin:    3em auto 3em auto;
+    overflow: auto;
 }
 
 #content .simpleform fieldset {
