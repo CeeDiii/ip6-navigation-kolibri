@@ -93,6 +93,7 @@
     font-size: 14px;
     text-transform: uppercase;
     pointer-events: none;
+    letter-spacing: 0.04em;
 }
 
 .card-nav.nav-wrapper .nav-point-wrapper.childless > a {

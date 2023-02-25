@@ -14,13 +14,13 @@
 }
 
 .switch-nav .ensemble-navigation a {
-    width: 175px;
+    width: 300px;
     text-align: center;
     background-color: #FFFFFF;
     font-size: 16px;
     line-height: 60px;
     text-decoration: none;
-    color: #EBECFE;
+    color: #A0A3BD;
     border-bottom: 4px solid #FFFFFF;
 }
 
@@ -62,4 +62,19 @@
 
 .switch-nav .invisible {
     display: none;
+}
+
+
+
+.switch-nav ::-webkit-scrollbar {
+    width: 18px;
+}
+
+.switch-nav ::-webkit-scrollbar-track {
+    background: #EFF0F6;
+}
+
+.switch-nav ::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #FF2CA5 0.03%, #9317EC 99.98%);
+    border-radius: 9px;
 }
