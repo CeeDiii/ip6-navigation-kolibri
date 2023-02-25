@@ -14,3 +14,7 @@
     border-style: none;
     box-shadow: var(--kolibri-box-shadow);
 }
+
+#content .simpleform .invisible {
+    display: none;
+}

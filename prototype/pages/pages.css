@@ -7,8 +7,8 @@
 @import "./welcome/welcomePageProjector.css";
 @import "./person/instantUpdateProjector.css";
 @import "./car/instantUpdateProjector.css";
-@import "./workweek/workingHours.css";
-@import "./workday/workDayProjector.css";
+@import "./workweek/workweekPageProjector.css";
+@import "./workday/workDayPageProjector.css";
 @import "./simpleForm/simpleFormPageProjector.css";
 @import "./style-guide/styleGuidePageProjector.css";
 

@@ -132,7 +132,7 @@ workDayController.setConfiguration(/** @type ModelConfigurationObject */ {
     [VALUE]: "Work Day"
 });
 const workDaySwitchProjector = PageSwitchProjector(workDayController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
-WorkDayPageProjector(workDayController, pinToContentElement, './pages/workday/WorkingHours.html', workDaySwitchProjector);
+WorkDayPageProjector(workDayController, pinToContentElement, './pages/workday/workday.html', workDaySwitchProjector);
 
 const workWeekController = PageController('workweek', [WeekController()]);
 const workWeekSwitchProjector = PageSwitchProjector(workWeekController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');

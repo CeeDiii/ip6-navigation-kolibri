@@ -50,3 +50,7 @@
 #content .workday label ~ span {
     margin-left: 1em;
 }
+
+#content .workday .invisible {
+    display: none;
+}

@@ -41,7 +41,7 @@ const WorkWeekPageProjector = (pageController, pinToElement, contentFilePath, ..
         const contentPromise = fetchPageContent(contentFilePath);
         contentPromise.then(contentHtml => {
             contentWrapper.innerHTML = contentHtml;
-            const workingHoursInput = contentWrapper.querySelector('#workingHoursInput');
+            const workingHoursInput = contentWrapper.querySelector('#workweekInput');
             workingHoursInput.append(...projectWeek(weekController));
             const switchDiv = pageSwitchProjector.projectNavigation(workingHoursInput);
             const workweekHolder = contentWrapper.querySelector('#workweek-holder');
