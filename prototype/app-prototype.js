@@ -15,7 +15,7 @@ import { WeekController }                                  from "./pages/workwee
 import { WorkWeekPageProjector }                           from "./pages/workweek/workWeekPageProjector.js";
 
 import {
-    DEBUGMODE,
+    DEBUGMODE, DESCRIPTION,
     FAVICON,
     HOMEPAGE,
     ICONPATH,
@@ -63,21 +63,26 @@ docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
 const gettingStartedController = PageController('getting-started', null);
 gettingStartedController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: "./navigation/icons/start.svg",
-    [VALUE]: "Getting Started"
+    [VALUE]: "Getting Started",
+    [DESCRIPTION]: `Kolibri is a lightweight web UI toolkit without any dependencies. You can easily copy and integrate it into your own project.
+    It includes documentation, examples, and a testing facility.
+    Start building your SPA with Kolibri now!`
 });
 StaticPageProjector(gettingStartedController, pinToContentElement, './pages/getting-started/getting-started.html');
 
 const styleGuideController = PageController('style-guide', null);
 styleGuideController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: "./navigation/icons/palette.svg",
-    [VALUE]: "Style Guide"
+    [VALUE]: "Style Guide",
+    [DESCRIPTION]: `The style guide is the go-to resource for everything related to styling Kolibri.`
 });
 StyleGuidePageProjector(styleGuideController, pinToContentElement, './pages/style-guide/style-guide.html');
 
 const testCasesController = PageController('test-cases', null);
 testCasesController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: "./navigation/icons/test.svg",
-    [VALUE]: "Test Cases"
+    [VALUE]: "Test Cases",
+    [DESCRIPTION]: `Have a look at the live test case report.`
 });
 StaticPageProjector(testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
 
@@ -106,10 +111,6 @@ debugController.setConfiguration(/** @type ModelConfigurationObject */{
 });
 DebugPageProjector(navigationController, debugController, pinToDebugElement);
 
-
-const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
-const cardGridProjector = cardNavigationProjector.getGridProjector();
-
 const formStructure = [
     {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
     {value: 0,            label: "Number", name: "number", type: NUMBER   },
@@ -121,7 +122,11 @@ const formStructure = [
 const simpleFormPageController = PageController('simpleform', [SimpleFormController(formStructure)]);
 simpleFormPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: "./navigation/icons/forms.svg",
-    [VALUE]: "Simple Form"
+    [VALUE]: "Simple Form",
+    [DESCRIPTION]: `With Kolibri, you can easily create model-view-controller forms using the projector pattern with just one line of code. 
+    This simple form makes it easy to get started. 
+    With this example you will learn, how bindings work in Kolibri and why they are useful.
+    Give it a try!`
 });
 const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector);
@@ -129,14 +134,27 @@ SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/
 const workDayController = PageController('workday', [DayController()]);
 workDayController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: "./navigation/icons/day.svg",
-    [VALUE]: "Work Day"
+    [VALUE]: "Work Day",
+    [DESCRIPTION]: `The Work Day example shows you how you can easily add business rules to your form.`
 });
 const workDaySwitchProjector = PageSwitchProjector(workDayController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
 WorkDayPageProjector(workDayController, pinToContentElement, './pages/workday/workday.html', workDaySwitchProjector);
 
 const workWeekController = PageController('workweek', [WeekController()]);
+workWeekController.setConfiguration(/** @type ModelConfigurationObject */ {
+    [ICONPATH]: "./navigation/icons/calendar.svg",
+    [VALUE]: "Work Week",
+    [DESCRIPTION]: `The work week brings everything together through composition of components.`
+});
 const workWeekSwitchProjector = PageSwitchProjector(workWeekController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
 WorkWeekPageProjector(workWeekController, pinToContentElement, './pages/workweek/workweek.html', workWeekSwitchProjector);
+
+const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
+const cardGridProjector = cardNavigationProjector.getGridProjector();
+cardGridProjector.setGridForPage(styleGuideController.getQualifier(), { rowSpan: 1});
+cardGridProjector.setGridForPage(testCasesController.getQualifier(), { rowSpan: 1});
+cardGridProjector.setGridForPage(workDayController.getQualifier(), { rowSpan: 1});
+cardGridProjector.setGridForPage(workWeekController.getQualifier(), { rowSpan: 1});
 
 navigationController.addPageControllers(
     errorForbiddenController,
@@ -153,6 +171,9 @@ navigationController.addPageControllers(
     workWeekController,
     teamPageController
 );
+
+
+
 
 gettingStartedController.setParent(docsPageController);
 styleGuideController.setParent(docsPageController);

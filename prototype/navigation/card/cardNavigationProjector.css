@@ -167,7 +167,7 @@
     color: #14141B;
     grid-row: span 2;
     border-radius: 8px;
-    padding: 12px;
+    padding: 12px 12px 0 12px;
     display: grid;
     grid-template-rows: 32px 18px auto;
     row-gap: 8px;
