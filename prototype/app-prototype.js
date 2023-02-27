@@ -13,6 +13,9 @@ import { DayController }                                   from "./pages/workday
 import { WorkDayPageProjector }                            from "./pages/workday/workDayPageProjector.js";
 import { WeekController }                                  from "./pages/workweek/workweek/weekController.js";
 import { WorkWeekPageProjector }                           from "./pages/workweek/workWeekPageProjector.js";
+import { PersonPageProjector }                             from "./pages/person/personPageProjector.js";
+import { PersonListController, PersonSelectionController}  from "./pages/person/personController.js";
+import { Person, personSelectionMold }                     from "./pages/person/person.js";
 
 import {
     DEBUGMODE, DESCRIPTION,
@@ -131,30 +134,45 @@ simpleFormPageController.setConfiguration(/** @type ModelConfigurationObject */ 
 const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector);
 
-const workDayController = PageController('workday', [DayController()]);
-workDayController.setConfiguration(/** @type ModelConfigurationObject */ {
+const workDayPageController = PageController('workday', [DayController()]);
+workDayPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: "./navigation/icons/day.svg",
     [VALUE]: "Work Day",
     [DESCRIPTION]: `The Work Day example shows you how you can easily add business rules to your form.`
 });
-const workDaySwitchProjector = PageSwitchProjector(workDayController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
-WorkDayPageProjector(workDayController, pinToContentElement, './pages/workday/workday.html', workDaySwitchProjector);
+const workDaySwitchProjector = PageSwitchProjector(workDayPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+WorkDayPageProjector(workDayPageController, pinToContentElement, './pages/workday/workday.html', workDaySwitchProjector);
 
-const workWeekController = PageController('workweek', [WeekController()]);
-workWeekController.setConfiguration(/** @type ModelConfigurationObject */ {
+const workWeekPageController = PageController('workweek', [WeekController()]);
+workWeekPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [ICONPATH]: "./navigation/icons/calendar.svg",
     [VALUE]: "Work Week",
     [DESCRIPTION]: `The work week brings everything together through composition of components.`
 });
-const workWeekSwitchProjector = PageSwitchProjector(workWeekController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
-WorkWeekPageProjector(workWeekController, pinToContentElement, './pages/workweek/workweek.html', workWeekSwitchProjector);
+const workWeekSwitchProjector = PageSwitchProjector(workWeekPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+WorkWeekPageProjector(workWeekPageController, pinToContentElement, './pages/workweek/workweek.html', workWeekSwitchProjector);
+
+
+const personListController      = PersonListController(Person);
+const personSelectionController = PersonSelectionController(personSelectionMold);
+const personPageController = PageController("masterdetail", [personListController, personSelectionController]);
+personPageController.setConfiguration(/** @type ModelConfigurationObject */ {
+    [ICONPATH]: "./navigation/icons/masterdetail.svg",
+    [VALUE]: "Master Detail View",
+    [DESCRIPTION]: `This master detail view example shows, how easy multi-way editing and consistent updates throughout the application are. 
+    All entries are immediately synchronized, whether you edit in the master or detail view. 
+    You can build complex UIs without ever installing a dependency.`
+});
+const personSwitchProjector = PageSwitchProjector(personPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html', personSwitchProjector);
+
 
 const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
 const cardGridProjector = cardNavigationProjector.getGridProjector();
 cardGridProjector.setGridForPage(styleGuideController.getQualifier(), { rowSpan: 1});
 cardGridProjector.setGridForPage(testCasesController.getQualifier(), { rowSpan: 1});
-cardGridProjector.setGridForPage(workDayController.getQualifier(), { rowSpan: 1});
-cardGridProjector.setGridForPage(workWeekController.getQualifier(), { rowSpan: 1});
+cardGridProjector.setGridForPage(workDayPageController.getQualifier(), { rowSpan: 1});
+cardGridProjector.setGridForPage(workWeekPageController.getQualifier(), { rowSpan: 1});
 
 navigationController.addPageControllers(
     errorForbiddenController,
@@ -167,8 +185,9 @@ navigationController.addPageControllers(
     testCasesController,
     examplePageController,
     simpleFormPageController,
-    workDayController,
-    workWeekController,
+    workDayPageController,
+    workWeekPageController,
+    personPageController,
     teamPageController
 );
 
@@ -179,8 +198,9 @@ gettingStartedController.setParent(docsPageController);
 styleGuideController.setParent(docsPageController);
 testCasesController.setParent(docsPageController);
 simpleFormPageController.setParent(examplePageController);
-workDayController.setParent(examplePageController);
-workWeekController.setParent(examplePageController);
+workDayPageController.setParent(examplePageController);
+workWeekPageController.setParent(examplePageController);
+personPageController.setParent(examplePageController);
 
 
 
