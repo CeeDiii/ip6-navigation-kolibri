@@ -191,9 +191,6 @@ navigationController.addPageControllers(
     teamPageController
 );
 
-
-
-
 gettingStartedController.setParent(docsPageController);
 styleGuideController.setParent(docsPageController);
 testCasesController.setParent(docsPageController);
