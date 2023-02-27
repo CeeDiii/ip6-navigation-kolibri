@@ -24,6 +24,7 @@ export { PageNotFoundProjector }
 const PageNotFoundProjector = (pageController, pinToElement, contentFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement('div');
+    const header = document.createElement("h1");
 
     /**
      * A function that initializes the content and stores it in the pageWrapper.
@@ -35,6 +36,12 @@ const PageNotFoundProjector = (pageController, pinToElement, contentFilePath) =>
         const contentPromise = fetchPageContent(contentFilePath);
         contentPromise.then(contentHtml => {
             contentWrapper.innerHTML = contentHtml;
+            const existingH1 = contentWrapper.querySelector('h1');
+            if (null !== existingH1) {
+                header.innerText = existingH1.innerText;
+                existingH1.remove();
+            }
+            contentWrapper.prepend(header);
 
             if (pageWrapper.firstChild === null) {
                 pageWrapper.append(contentWrapper);
@@ -97,5 +104,21 @@ const PageNotFoundProjector = (pageController, pinToElement, contentFilePath) =>
             projectPage();
         }
     });
+
+    /**
+     * A utility function that sets the header of the page to the new value if it is not undefined.
+     *
+     * @param { ?String } newValue
+     */
+    const setH1 = newValue => {
+        if (undefined !== newValue) {
+            header.innerText = newValue
+        }
+    };
+
+    pageController.onValueChanged(newValue => {
+        setH1(newValue);
+    });
+
 };
 

@@ -27,6 +27,7 @@ export { CarPageProjector }
 const CarPageProjector = (pageController, pinToElement, contentFilePath) => {
     const pageWrapper = pinToElement;
     const contentWrapper = document.createElement("div");
+    const header = document.createElement("h1");
     const [listController, selectionController] = pageController.getDynamicContentControllers();
 
     /**
@@ -43,6 +44,13 @@ const CarPageProjector = (pageController, pinToElement, contentFilePath) => {
             const plusButton = document.getElementById('plus');
             const detailCard = document.getElementById('detailCard');
             const detailContainer = document.getElementById('detailContainer');
+
+            const existingH1 = contentWrapper.querySelector('h1');
+            if (null !== existingH1) {
+                header.innerText = existingH1.innerText;
+                existingH1.remove();
+            }
+            contentWrapper.prepend(header);
 
             const master = carProjectMasterView(listController, selectionController, );
             masterContainer.append(...master);
@@ -110,5 +118,21 @@ const CarPageProjector = (pageController, pinToElement, contentFilePath) => {
             projectPage();
         }
     });
+
+    /**
+     * A utility function that sets the header of the page to the new value if it is not undefined.
+     *
+     * @param { ?String } newValue
+     */
+    const setH1 = newValue => {
+        if (undefined !== newValue) {
+            header.innerText = newValue
+        }
+    };
+
+    pageController.onValueChanged(newValue => {
+        setH1(newValue);
+    });
+
 };
 
