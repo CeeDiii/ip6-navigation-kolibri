@@ -71,7 +71,13 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
             const detailForm = personProjectDetailView(selectionController, detailCard);
             detailContainer.append(...detailForm);
 
-            document.querySelector("head style").textContent += personPageCss;
+            let headStyles = document.querySelector("head style");
+            if (null === headStyles) {
+                const head = document.querySelector('head');
+                headStyles = document.createElement('style');
+                head.append(headStyles);
+            }
+            headStyles.textContent += personPageCss;
 
             // binding of the main view
             plusButton.onclick = _ => listController.addModel();
@@ -79,7 +85,7 @@ const PersonPageProjector = (pageController, pinToElement, contentFilePath, ...p
             exampleDiv.append(masterContainer, detailCard);
 
             const switchDiv = pageSwitchProjector.projectNavigation(exampleDiv);
-            const cardDiv = document.getElementById('content-wrapper');
+            const cardDiv = document.getElementById('person-holder');
             cardDiv.append(switchDiv);
         });
 
