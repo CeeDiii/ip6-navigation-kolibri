@@ -4,11 +4,12 @@ import { PageController }                                  from './pages/pageCon
 import { ForbiddenPageProjector }                          from './pages/403/forbiddenPageProjector.js';
 import { PageNotFoundProjector }                           from './pages/404/pageNotFoundProjector.js';
 import { StaticPageProjector }                             from './pages/StaticPageProjector.js';
+import { PageSwitchProjector }                             from './navigation/page-switch/pageSwitchProjector.js';
 import { DebugPageProjector }                              from './pages/debug/debugPageProjector.js';
 import { StyleGuidePageProjector }                         from './pages/style-guide/styleGuidePageProjector.js';
 import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
 import { SimpleFormPageProjector }                         from "./pages/simpleForm/simpleFormPageProjector.js";
-import { PageSwitchProjector }                             from './navigation/page-switch/pageSwitchProjector.js';
+import { TestCasesPageProjector }                          from "./pages/test-cases/testCasesPageProjector.js";
 import { DayController }                                   from "./pages/workday/dayController.js";
 import { WorkDayPageProjector }                            from "./pages/workday/workDayPageProjector.js";
 import { WeekController }                                  from "./pages/workweek/workweek/weekController.js";
@@ -16,6 +17,7 @@ import { WorkWeekPageProjector }                           from "./pages/workwee
 import { PersonPageProjector }                             from "./pages/person/personPageProjector.js";
 import { PersonListController, PersonSelectionController}  from "./pages/person/personController.js";
 import { Person, personSelectionMold }                     from "./pages/person/person.js";
+
 
 import {
     DEBUGMODE, DESCRIPTION,
@@ -87,7 +89,7 @@ testCasesController.setConfiguration(/** @type ModelConfigurationObject */ {
     [VALUE]: "Test Cases",
     [DESCRIPTION]: `Have a look at the live test case report.`
 });
-StaticPageProjector(testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
+TestCasesPageProjector(testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
 
 const examplePageController = PageController('example', null);
 examplePageController.setConfiguration(/** @type ModelConfigurationObject */ {

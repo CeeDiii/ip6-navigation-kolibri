@@ -4,11 +4,13 @@
  */
 import {accentColor, okColor} from "../style/kolibriStyle.js";
 
-export { TestSuite, total, asyncTest }
+export { TestSuite, total, asyncTest, project }
 
 import { dom }        from "./dom.js";
 import { id, Tuple }  from "../stdlib.js";
 import { Observable } from "../observable.js";
+
+const [testDiv] = dom('<div></div>');
 
 /**
  * The running total of executed test assertions.
@@ -70,7 +72,7 @@ const Assert = () => {
             messages.push(message);
         }
     }
-}
+};
 
 /**
  * @private data type to capture the test to-be-run. A triple of ctor and two getter functions.
@@ -93,7 +95,7 @@ const test = (name, callback) => {
     const assert = Assert();
     callback(assert);
     report(name, assert.results, assert.messages)
-}
+};
 
 /**
  * @callback AsyncTestCallback
@@ -117,7 +119,7 @@ const asyncTest = (name, asyncCallback) => {
             report(name, assert.results, assert.messages);
             addToTotal(assert.results.length);
         });
-}
+};
 
 /**
  * @typedef { Object } TestSuiteType
@@ -154,7 +156,7 @@ const TestSuite = suiteName => {
             }
         }
     };
-}
+};
 
 /**
  * If all test results are ok, report a summary. Otherwise, report the individual tests.
@@ -194,7 +196,7 @@ const report = (origin, results, messages) => {
                 <div ${failedStyle}>failed</div> 
         `);
     });
-}
+};
 
 /**
  * Write the formatted test results in the holding report HTML page.
@@ -202,6 +204,13 @@ const report = (origin, results, messages) => {
  * @private
  */
 const write = html =>  {
-    out.append(...dom(html));
-}
+    testDiv.append(...dom(html));
+};
+
+/**
+ * Return all test results wrapped in a div.
+ * @return { HTMLDivElement }
+ */
+const project = () => testDiv;
+
 

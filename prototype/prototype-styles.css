@@ -1,5 +1,6 @@
 @import "https://webengineering-fhnw.github.io/Kolibri/css/kolibri-light-colors.css";
 @import "https://webengineering-fhnw.github.io/Kolibri/css/kolibri-light-fonts.css";
+@import "./css/kolibri-base.css";
 
 :root {
     --background: #FFFFFF;
