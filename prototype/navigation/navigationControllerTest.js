@@ -32,7 +32,7 @@ navigationSuite.add('setHomepage', assert => {
 
     navigationController.addPageControllers(homePageController);
 
-    assert.is(navigationController.getHomePage(), '');
+    assert.is(navigationController.getHomePage(), null);
 
     navigationController.setHomePage(homePageController);
 
