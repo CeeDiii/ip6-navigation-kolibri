@@ -248,6 +248,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
         pageController.onActiveChanged(isActive => {
             setActiveCSSClass(isActive, qualifier, pageController.getParent());
+            setPageTitle(hash, isActive);
         });
 
         pageController.onVisitedChanged(visited => {
@@ -378,7 +379,21 @@ const NavigationProjector = (controller, pinToElement) => {
                 thisAnchor.classList.remove('active');
             }
         }
+    };
 
+    /**
+     * A utility function that sets the HTML title attribute to the value of the page identified by hash.
+     *
+     * @function
+     * @param { !String } hash
+     * @param { !Boolean } active
+     */
+    const setPageTitle = (hash, active) => {
+        const pageName = controller.getPageController(hash).getValue();
+        if (active) {
+            const title = document.querySelector("head title");
+            title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+        }
     };
 
     /**

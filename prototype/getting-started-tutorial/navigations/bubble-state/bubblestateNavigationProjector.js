@@ -179,7 +179,7 @@ const NavigationProjector = (controller, pinToElement) => {
     const setPageTitle = (hash, active) => {
         const pageName = controller.getPageController(hash).getValue();
         if (active) {
-            const title = document.getElementsByTagName("title")[0];
+            const title = document.querySelector("head title");
             title.innerText = pageName.charAt(0).toUpperCase() + pageName.slice(1);
         }
     };
