@@ -1,4 +1,4 @@
-#out {
+#content .test-cases #out {
     max-height: calc(100vh - 4em);
     overflow: scroll;
     display: grid;
@@ -9,19 +9,19 @@
     box-shadow: var(--kolibri-box-shadow);
 }
 
-#out div:nth-child(odd) {
+#content .test-cases #out div:nth-child(odd) {
     color: var(--kolibri-color-output);
 }
 
-#out div:nth-child(4n-3) {
+#content .test-cases #out div:nth-child(4n-3) {
     justify-self: end;
 }
 
-#grossTotal {
+#content .test-cases #grossTotal {
     color: var(--kolibri-color-output);
 }
 
-footer {
+#content .test-cases footer {
     position: fixed;
     bottom:     0;
     left:       0;
@@ -30,5 +30,4 @@ footer {
     color:      white;
     background: var(--kolibri-color-neutral);
     padding:    0.5em;
-;
 }
