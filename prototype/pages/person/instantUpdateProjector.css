@@ -5,10 +5,7 @@
     padding:    2em;
     box-shadow: var(--kolibri-box-shadow);
 }
-#content .person h1, #content .masterdetail h1 {
-    text-align: center;
-    margin: 30px;
-}
+
 #content .person .holder, #content .person .gist, #content .masterdetail .holder, #content .masterdetail .gist {
     margin: 0 3em 0 3em;
 }
