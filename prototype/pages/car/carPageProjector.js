@@ -47,7 +47,7 @@ const CarPageProjector = (pageController, pinToElement, contentFilePath) => {
 
             const existingH1 = contentWrapper.querySelector('h1');
             if (null !== existingH1) {
-                header.innerText = existingH1.innerText;
+                pageController.setValue(existingH1.textContent);
                 existingH1.remove();
             }
             contentWrapper.prepend(header);
