@@ -1,4 +1,5 @@
 import { projectWeek } from "./workweek/simpleWeekProjector.js";
+import { dom } from "../../kolibri/util/dom.js";
 
 export { WorkWeekPageProjector }
 
@@ -50,9 +51,17 @@ const WorkWeekPageProjector = (pageController, pinToElement, contentFilePath, ..
             }
             contentWrapper.prepend(header);
 
-            const workingHoursInput = contentWrapper.querySelector('#workweekInput');
+            const [workingHoursInput] = dom(` 
+                <fieldset class="workweekInput" name="workweekInput" id="workweekInput">
+                    <legend>Work Week</legend>
+                    <!-- projection will be added here: -->
+                </fieldset>`
+            );
+
+            const workweek = contentWrapper.querySelector('#workweek');
             workingHoursInput.append(...projectWeek(weekController));
-            const switchDiv = pageSwitchProjector.projectNavigation(workingHoursInput);
+            workweek.append(workingHoursInput);
+            const switchDiv = pageSwitchProjector.projectNavigation(workweek);
             const workweekHolder = contentWrapper.querySelector('#workweek-holder');
             workweekHolder.append(switchDiv);
         });

@@ -33,7 +33,9 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
         const codeBlocks = codeDiv.getElementsByTagName('table');
         for (const codeBlock of codeBlocks) {
             const fileNameWithExtension = codeBlock.getAttribute('data-tagsearch-path');
-            const fileNameWOExtension = fileNameWithExtension.split('.js')[0];
+            let fileNameWOExtension = fileNameWithExtension.split('.js')[0];
+            fileNameWOExtension = fileNameWOExtension.replace(/[^\w\s]/gi, '');
+            fileNameWOExtension = fileNameWOExtension.replace(' ', '-');
             const [fileHeader] = dom(`<h3>${fileNameWOExtension}</h3>`);
             let fileContainer = document.getElementById('file-' + fileNameWOExtension.toLowerCase() + '-js');
             while (null != fileContainer && !fileContainer.classList.contains('gist-file')) {
@@ -85,18 +87,9 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
      * @param { !String } path - the path for which this toggle decides whether to switch or not.
      */
     const toggleSwitch = path => {
-        const exampleDiv = document.getElementsByClassName('example')[0];
-        if (null !== path && undefined !== exampleDiv && 2 === navigationAnchors.length) {
-            const [exampleAnchor, codeAnchor] = navigationAnchors;
-            if (path.includes(hash + '/code')) {
-                toggleState('active', codeAnchor, exampleAnchor);
-                toggleState('invisible', exampleDiv, codeDiv);
-                navDiv.classList.add('active');
-            } else {
-                toggleState('active', exampleAnchor, codeAnchor);
-                toggleState('invisible', codeDiv, exampleDiv);
-                navDiv.classList.remove('active');
-            }
+        const exampleDiv = document.querySelector('.example');
+        if (path && exampleDiv && 2 === navigationAnchors.length) {
+            projectNavigation(exampleDiv);
         }
     };
 
@@ -154,13 +147,14 @@ const PageSwitchProjector = (hash, navigationController, gistID) => {
         const [exampleAnchor, codeAnchor] = navigationAnchors;
 
         const currentPath = navigationController.getPath();
-        if (currentPath.includes('/code')) {
-            codeAnchor.classList.add('active');
+        if (currentPath.includes(hash + '/code')) {
+            toggleState('active', codeAnchor, exampleAnchor);
+            toggleState('invisible', exampleDiv, codeDiv);
             navDiv.classList.add('active');
-            exampleDiv.classList.add('invisible');
-        } else {
-            exampleAnchor.classList.add('active');
-            codeDiv.classList.add('invisible');
+        } else if (currentPath.includes(hash)) {
+            toggleState('active', exampleAnchor, codeAnchor);
+            toggleState('invisible', codeDiv, exampleDiv);
+            navDiv.classList.remove('active');
         }
 
         return /** @type HTMLDivElement */ switchDiv;

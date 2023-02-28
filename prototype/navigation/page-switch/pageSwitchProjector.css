@@ -1,5 +1,6 @@
 .switch-nav {
-    max-width: 900px;
+
+    max-width: 48em;
     position: relative;
     margin: auto;
     box-shadow: 2px 2px 5px #888888;
@@ -60,11 +61,15 @@
     padding: 6px;
 }
 
+.switch-nav .ensemble-content div.example {
+    padding-top: 2em;
+    display: flex;
+    justify-content: center;
+}
+
 .switch-nav .invisible {
     display: none;
 }
-
-
 
 .switch-nav ::-webkit-scrollbar {
     width: 12px;

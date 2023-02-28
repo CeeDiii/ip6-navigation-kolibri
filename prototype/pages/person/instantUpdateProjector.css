@@ -6,9 +6,6 @@
     box-shadow: var(--kolibri-box-shadow);
 }
 
-#content .person .holder, #content .person .gist, #content .masterdetail .holder, #content .masterdetail .gist {
-    margin: 0 3em 0 3em;
-}
 #content .person input[type=text], #content .masterdetail input[type=text] {
     font-size:      1.1em;
     color:          var(--kolibri-color-output);
@@ -34,12 +31,6 @@
     position: relative;
 }
 
-#content .person h2, #content .person h3, #content .masterdetail h2, #content .masterdetail h3 {
-    margin-top: 25px;
-    margin-bottom: 15px;
-    font-size: 1.5em;
-}
-
 #content .person, #content .masterdetail  {
     margin-bottom: 120px;
 }
@@ -47,5 +38,9 @@
 #content .person p, #content .masterdetail p {
     padding-top: 8px;
     padding-bottom: 8px;
+}
+
+#content .person .invisible, #content .masterdetail .invisible {
+    display: none;
 }
 
