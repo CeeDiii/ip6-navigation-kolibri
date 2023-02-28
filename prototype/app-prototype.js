@@ -1,10 +1,10 @@
 import { NavigationController }                            from './navigation/navigationController.js';
 import { CardNavigationProjector }                         from './navigation/card/cardNavigationProjector.js';
+import { PageSwitchProjector }                             from './navigation/page-switch/pageSwitchProjector.js';
 import { PageController }                                  from './pages/pageController.js';
 import { ForbiddenPageProjector }                          from './pages/403/forbiddenPageProjector.js';
 import { PageNotFoundProjector }                           from './pages/404/pageNotFoundProjector.js';
 import { StaticPageProjector }                             from './pages/StaticPageProjector.js';
-import { PageSwitchProjector }                             from './navigation/page-switch/pageSwitchProjector.js';
 import { DebugPageProjector }                              from './pages/debug/debugPageProjector.js';
 import { StyleGuidePageProjector }                         from './pages/style-guide/styleGuidePageProjector.js';
 import { SimpleFormController }                            from "./kolibri/projector/simpleForm/simpleFormController.js";
@@ -14,11 +14,9 @@ import { DayController }                                   from "./pages/workday
 import { WorkDayPageProjector }                            from "./pages/workday/workDayPageProjector.js";
 import { WeekController }                                  from "./pages/workweek/workweek/weekController.js";
 import { WorkWeekPageProjector }                           from "./pages/workweek/workWeekPageProjector.js";
-import { PersonPageProjector }                             from "./pages/person/personPageProjector.js";
-import { PersonListController, PersonSelectionController}  from "./pages/person/personController.js";
 import { Person, personSelectionMold }                     from "./pages/person/person.js";
-
-
+import { PersonListController, PersonSelectionController}  from "./pages/person/personController.js";
+import { PersonPageProjector }                             from "./pages/person/personPageProjector.js";
 import {
     DEBUGMODE, DESCRIPTION,
     FAVICON,
@@ -37,28 +35,31 @@ import {
     TIME
 } from "./kolibri/util/dom.js";
 
+/* ********************************************* PIN TO ELEMENTS ************************************************************ */
 const pinToCardNavElement = document.getElementById('card-nav');
 const pinToContentElement = document.getElementById('content');
-const pinToDebugElement = document.getElementById('debug');
+const pinToDebugElement   = document.getElementById('debug');
 
-// Assembling 403 error page as example. Can be modified
+/* ********************************************* UTILITY PAGE CONTROLLERS *************************************************** */
+
 const errorForbiddenController = PageController('E403', null);
 errorForbiddenController.setConfiguration(/** @type ModelConfigurationObject */{
     [VISIBLE]: false
 });
-ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
 
-// Assembling 404 error page as example. Can be modified
 const errorNotFoundController = PageController('E404', null);
 errorNotFoundController.setConfiguration(/** @type ModelConfigurationObject */{
     [VISIBLE]: false
 });
-PageNotFoundProjector(errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
 
+const debugController = PageController('debug', null);
+debugController.setConfiguration(/** @type ModelConfigurationObject */{
+    [VISIBLE]: false,
+    [ICONPATH]: './navigation/icons/bug.svg'
+});
 
-/* ********************************************* PAGES ************************************************************ */
+/* ********************************************* PAGE CONTROLLERS ************************************************************ */
 const homePageController = PageController('home', null);
-StaticPageProjector(homePageController, pinToContentElement, './pages/home/home.html');
 
 const docsPageController = PageController('docs', null);
 docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
@@ -73,7 +74,6 @@ gettingStartedController.setConfiguration(/** @type ModelConfigurationObject */ 
     It includes documentation, examples, and a testing facility.
     Start building your SPA with Kolibri now!`
 });
-StaticPageProjector(gettingStartedController, pinToContentElement, './pages/getting-started/getting-started.html');
 
 const styleGuideController = PageController('style-guide', null);
 styleGuideController.setConfiguration(/** @type ModelConfigurationObject */ {
@@ -81,7 +81,6 @@ styleGuideController.setConfiguration(/** @type ModelConfigurationObject */ {
     [VALUE]: "Style Guide",
     [DESCRIPTION]: `The style guide is the go-to resource for everything related to styling Kolibri.`
 });
-StyleGuidePageProjector(styleGuideController, pinToContentElement, './pages/style-guide/style-guide.html');
 
 const testCasesController = PageController('test-cases', null);
 testCasesController.setConfiguration(/** @type ModelConfigurationObject */ {
@@ -89,7 +88,6 @@ testCasesController.setConfiguration(/** @type ModelConfigurationObject */ {
     [VALUE]: "Test Cases",
     [DESCRIPTION]: `Have a look at the live test case report.`
 });
-TestCasesPageProjector(testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
 
 const examplePageController = PageController('example', null);
 examplePageController.setConfiguration(/** @type ModelConfigurationObject */ {
@@ -97,24 +95,6 @@ examplePageController.setConfiguration(/** @type ModelConfigurationObject */ {
 });
 
 const teamPageController = PageController('team', null);
-StaticPageProjector(teamPageController, pinToContentElement, './pages/team/team.html');
-
-
-const navigationController = NavigationController();
-navigationController.setConfiguration(/** @type ModelConfigurationObject */{
-    [NAME]: 'Kolibri',
-    [LOGO]: './img/logo/logo-new-128.svg',
-    [FAVICON]: './img/logo/logo-new-128.svg',
-    [HOMEPAGE]: homePageController,
-    [DEBUGMODE]: true
-});
-
-const debugController = PageController('debug', null);
-debugController.setConfiguration(/** @type ModelConfigurationObject */{
-    [VISIBLE]: false,
-    [ICONPATH]: './navigation/icons/bug.svg'
-});
-DebugPageProjector(navigationController, debugController, pinToDebugElement);
 
 const formStructure = [
     {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
@@ -133,8 +113,6 @@ simpleFormPageController.setConfiguration(/** @type ModelConfigurationObject */ 
     With this example you will learn, how bindings work in Kolibri and why they are useful.
     Give it a try!`
 });
-const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'b8b91e5db694d34644fea5c013ac9f75');
-SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector);
 
 const workDayPageController = PageController('workday', [DayController()]);
 workDayPageController.setConfiguration(/** @type ModelConfigurationObject */ {
@@ -142,8 +120,6 @@ workDayPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [VALUE]: "Work Day",
     [DESCRIPTION]: `The Work Day example shows you how you can easily add business rules to your form.`
 });
-const workDaySwitchProjector = PageSwitchProjector(workDayPageController.getHash(), navigationController, '0aab51fd5a5a4d77bd15d3d6050555c2');
-WorkDayPageProjector(workDayPageController, pinToContentElement, './pages/workday/workday.html', workDaySwitchProjector);
 
 const workWeekPageController = PageController('workweek', [WeekController()]);
 workWeekPageController.setConfiguration(/** @type ModelConfigurationObject */ {
@@ -151,9 +127,6 @@ workWeekPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [VALUE]: "Work Week",
     [DESCRIPTION]: `The work week brings everything together through composition of components.`
 });
-const workWeekSwitchProjector = PageSwitchProjector(workWeekPageController.getHash(), navigationController, '20f45f893355e993f826446ffd73845e');
-WorkWeekPageProjector(workWeekPageController, pinToContentElement, './pages/workweek/workweek.html', workWeekSwitchProjector);
-
 
 const personListController      = PersonListController(Person);
 const personSelectionController = PersonSelectionController(personSelectionMold);
@@ -165,9 +138,44 @@ personPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     All entries are immediately synchronized, whether you edit in the master or detail view. 
     You can build complex UIs without ever installing a dependency.`
 });
+
+/* ********************************************* NAVIGATION CONTROLLER  ************************************************************ */
+
+const navigationController = NavigationController();
+navigationController.setConfiguration(/** @type ModelConfigurationObject */{
+    [NAME]: 'Kolibri',
+    [LOGO]: './img/logo/logo-new-128.svg',
+    [FAVICON]: './img/logo/logo-new-128.svg',
+    [HOMEPAGE]: homePageController,
+    [DEBUGMODE]: true
+});
+
+/* ********************************************* UTILITY PAGE PROJECTORS  ************************************************************ */
+
+ForbiddenPageProjector(errorForbiddenController, pinToContentElement, './pages/403/forbidden.html');
+PageNotFoundProjector (errorNotFoundController, pinToContentElement, './pages/404/pageNotFound.html');
+DebugPageProjector    (navigationController, debugController, pinToDebugElement);
+
+/* ********************************************* PAGE PROJECTORS  ******************************************************************** */
+StaticPageProjector    (homePageController, pinToContentElement, './pages/home/home.html');
+StaticPageProjector    (gettingStartedController, pinToContentElement, './pages/getting-started/getting-started.html');
+StyleGuidePageProjector(styleGuideController, pinToContentElement, './pages/style-guide/style-guide.html');
+TestCasesPageProjector (testCasesController, pinToContentElement, './pages/test-cases/test-cases.html');
+StaticPageProjector    (teamPageController, pinToContentElement, './pages/team/team.html');
+
+const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'b8b91e5db694d34644fea5c013ac9f75');
+SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector);
+
+const workDaySwitchProjector = PageSwitchProjector(workDayPageController.getHash(), navigationController, '0aab51fd5a5a4d77bd15d3d6050555c2');
+WorkDayPageProjector(workDayPageController, pinToContentElement, './pages/workday/workday.html', workDaySwitchProjector);
+
+const workWeekSwitchProjector = PageSwitchProjector(workWeekPageController.getHash(), navigationController, '20f45f893355e993f826446ffd73845e');
+WorkWeekPageProjector(workWeekPageController, pinToContentElement, './pages/workweek/workweek.html', workWeekSwitchProjector);
+
 const personSwitchProjector = PageSwitchProjector(personPageController.getHash(), navigationController, 'ee23d660b99cb062170d2a495d7698dd');
 PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html', personSwitchProjector);
 
+/* ********************************************* NAVIGATION PROJECTORS  ******************************************************************** */
 
 const cardNavigationProjector = CardNavigationProjector(navigationController, pinToCardNavElement);
 const cardGridProjector = cardNavigationProjector.getGridProjector();
@@ -175,6 +183,8 @@ cardGridProjector.setGridForPage(styleGuideController.getQualifier(), { rowSpan:
 cardGridProjector.setGridForPage(testCasesController.getQualifier(), { rowSpan: 1});
 cardGridProjector.setGridForPage(workDayPageController.getQualifier(), { rowSpan: 1});
 cardGridProjector.setGridForPage(workWeekPageController.getQualifier(), { rowSpan: 1});
+
+/* ********************************************* CONSTRUCTION THE PAGE  ************************************************************ */
 
 navigationController.addPageControllers(
     errorForbiddenController,

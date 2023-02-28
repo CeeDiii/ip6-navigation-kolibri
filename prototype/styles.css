@@ -6,8 +6,6 @@
 }
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
     font-family:      var(--kb-font-rubik-light-regular);
 }
@@ -15,10 +13,12 @@
 body {
     min-height: 100vh;
     overflow-anchor: none;
+    margin: 3em auto 3em auto;
+    padding-top: 6em;
 }
 
 section {
-    max-width:  40em;
+    max-width:  48em;
     margin:     1em auto 4em auto;
 }
 
@@ -45,3 +45,6 @@ input[type=text]:focus {
     transition:          background-size linear .5s;
 }
 
+.darkTheme {
+    filter: invert(85%) hue-rotate(180deg);
+}
