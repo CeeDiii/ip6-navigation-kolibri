@@ -1,7 +1,7 @@
 import { ObservableList } from "../../kolibri/observable.js";
 import { dom } from "../../kolibri/util/dom.js";
 
-export { NavigationProjector }
+export { NavigationProjector as DashboardRefinedProjector }
 
 /**
  * @typedef NavigationProjectorType
@@ -185,7 +185,9 @@ const NavigationProjector = (controller, pinToElement) => {
         for(const rootNode of overviewContentWrapper.getElementsByClassName('row')) {
             if(undefined !== rootNode) {
                 const rootNodeId = rootNode.id;
-                const rootQualifier = rootNodeId.substring(0, rootNodeId.indexOf('-'));
+
+                // separate qualifier from suffix, e.g. home-overview-node => home
+                const rootQualifier = rootNodeId.split('-').slice(0, -2).join('-');
                 const rootNodeInDetailWrapper = findElementById(detailTree, rootQualifier + '-node');
                 if(null !== rootNodeInDetailWrapper && 1 < rootNodeInDetailWrapper.children.length) {
                     const navigationalChildren = rootNodeInDetailWrapper.getElementsByTagName('a');
