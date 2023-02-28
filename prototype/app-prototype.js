@@ -133,7 +133,7 @@ simpleFormPageController.setConfiguration(/** @type ModelConfigurationObject */ 
     With this example you will learn, how bindings work in Kolibri and why they are useful.
     Give it a try!`
 });
-const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'b8b91e5db694d34644fea5c013ac9f75');
 SimpleFormPageProjector(simpleFormPageController, pinToContentElement, './pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector);
 
 const workDayPageController = PageController('workday', [DayController()]);
@@ -142,7 +142,7 @@ workDayPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [VALUE]: "Work Day",
     [DESCRIPTION]: `The Work Day example shows you how you can easily add business rules to your form.`
 });
-const workDaySwitchProjector = PageSwitchProjector(workDayPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+const workDaySwitchProjector = PageSwitchProjector(workDayPageController.getHash(), navigationController, '0aab51fd5a5a4d77bd15d3d6050555c2');
 WorkDayPageProjector(workDayPageController, pinToContentElement, './pages/workday/workday.html', workDaySwitchProjector);
 
 const workWeekPageController = PageController('workweek', [WeekController()]);
@@ -151,7 +151,7 @@ workWeekPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     [VALUE]: "Work Week",
     [DESCRIPTION]: `The work week brings everything together through composition of components.`
 });
-const workWeekSwitchProjector = PageSwitchProjector(workWeekPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+const workWeekSwitchProjector = PageSwitchProjector(workWeekPageController.getHash(), navigationController, '20f45f893355e993f826446ffd73845e');
 WorkWeekPageProjector(workWeekPageController, pinToContentElement, './pages/workweek/workweek.html', workWeekSwitchProjector);
 
 
@@ -165,7 +165,7 @@ personPageController.setConfiguration(/** @type ModelConfigurationObject */ {
     All entries are immediately synchronized, whether you edit in the master or detail view. 
     You can build complex UIs without ever installing a dependency.`
 });
-const personSwitchProjector = PageSwitchProjector(personPageController.getHash(), navigationController, 'e8dc0098a77a9109da6e879d8d9ed5a9');
+const personSwitchProjector = PageSwitchProjector(personPageController.getHash(), navigationController, 'ee23d660b99cb062170d2a495d7698dd');
 PersonPageProjector(personPageController, pinToContentElement, './pages/person/person.html', personSwitchProjector);
 
 
