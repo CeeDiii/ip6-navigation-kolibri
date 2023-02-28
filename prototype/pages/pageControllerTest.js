@@ -68,11 +68,11 @@ navigationSuite.add('onIconPathChanged', assert => {
 
     homePageController.onIconPathChanged(icon => changedIcon = icon);
 
-    assert.is(changedIcon, './navigation/icons/placeholder.svg');
+    assert.is(changedIcon, '../navigation/icons/placeholder.svg');
 
-    homePageController.setIconPath('./navigation/icons/house.svg');
+    homePageController.setIconPath('../navigation/icons/house.svg');
 
-    assert.is(changedIcon, './navigation/icons/house.svg');
+    assert.is(changedIcon, '../navigation/icons/house.svg');
 });
 
 navigationSuite.add('onActiveChanged', assert => {

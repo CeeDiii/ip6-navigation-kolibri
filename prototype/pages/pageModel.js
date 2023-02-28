@@ -49,7 +49,7 @@ const PageModel = qualifier => {
     pageAttr.getObs(ACTIVE, false);
     pageAttr.getObs(HASH, '#' + qualifier.replace(' ', '')); //Converter is not used because it should only apply for the hash
     pageAttr.getObs(VISITED, false);
-    pageAttr.getObs(ICONPATH, './navigation/icons/placeholder.svg');
+    pageAttr.getObs(ICONPATH, '../navigation/icons/placeholder.svg');
     pageAttr.getObs(VISIBLE, true);
     pageAttr.getObs(PARENT, null);
     pageAttr.getObs(NAVIGATIONAL, true);

@@ -26,7 +26,7 @@ export { DebugPageProjector }
 const DebugPageProjector = (navigationController, pageController, pinToElement) => {
     const pageWrapper    = pinToElement;
 
-    const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
+    const arrowSVGPathRelativeIndex = "../navigation/icons/right-arrow-gradient.svg";
 
     /**
      * A utility function that toggles the open CSS class

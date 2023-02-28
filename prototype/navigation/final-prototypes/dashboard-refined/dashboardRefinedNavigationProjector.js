@@ -24,7 +24,7 @@ const NavigationProjector = (controller, pinToElement) => {
 
     // ************** Create overview and detail wrapper *******************
 
-    const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/right-arrow-gradient.svg";
+    const arrowSVGPathRelativeIndex = "../navigation/icons/right-arrow-gradient.svg";
 
     const [overviewWrapper,  overviewLogo, overviewContentWrapper, overviewToggle] = dom(`
         <!-- create overview wrapper -->
@@ -487,7 +487,7 @@ const NavigationProjector = (controller, pinToElement) => {
             overviewIcon.src = newIcon;
             detailIcon.src = newIcon;
         } else if (null !== detailIcon) {
-            detailIcon.src = './navigation/icons/line.png';
+            detailIcon.src = '../navigation/icons/line.png';
         }
     };
 

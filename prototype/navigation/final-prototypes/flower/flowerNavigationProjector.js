@@ -23,7 +23,7 @@ const NavigationProjector = (controller, pinToElement) => {
     const observableNavigationAnchors = ObservableList([]);
     const navigationAnchors = [];
     const anchorListWrappers = {};
-    const arrowSVGPathRelativeIndex = "../prototype/navigation/icons/plus.svg";
+    const arrowSVGPathRelativeIndex = "../navigation/icons/plus.svg";
 
     /**
      * Initializes a navigation anchor
