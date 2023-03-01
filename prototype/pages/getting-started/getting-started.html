@@ -2,10 +2,10 @@
     <section>
         <h2>Under Development</h2>
         <p>
-            Kolibri and its home page are under development at
-            <a href="https://github.com/webengineering-fhnw/Kolibri/">github</a>, which is
+            Kolibri and its home page are under development on Github, which is
             also the place for any discussions and issues.
         </p>
+        <a class="btn primary glow center" href="https://github.com/webengineering-fhnw/Kolibri/" target="_blank"><img src="../navigation/icons/github.svg" alt="github-icon"><span>Github</span><span class="arrow">&#8599</span></a>
     </section>
     <section>
         <h2>Installation without dependency</h2>
@@ -28,20 +28,27 @@
         </p>
         <p>For the die-hard "but I just want to have Kolibri as a single file" developers, there is a
             <a href="https://github.com/WebEngineering-FHNW/Kolibri/blob/main/docs/production/productionBundle.js" target="_blank">production bundle</a> that always reflects the
-            latest version (see <a href="https://github.com/WebEngineering-FHNW/Kolibri/blob/main/docs/src/kolibri/version.js" target="_blank">version</a>). It contains the
+            latest version). It contains the
             jsdoc but neither the test cases nor the examples.
             This might be useful for quick experiments.
         </p>
+    </section>
+    <section class="buttons">
+        <a class="btn primary glow" href="https://raw.githubusercontent.com/WebEngineering-FHNW/Kolibri/main/docs/production/productionBundle.js" target="_blank"><span>Get Bundle</span><span class="arrow">&#8599</span></a>
+        <a class="btn accent glow" target="_blank"><span>View Version</span><span class="arrow">&#8599</span></a>
     </section>
     <section>
         <h2 id="notes-for-developers">Notes for developers</h2>
         <h3 id="sources">Sources</h3>
         <p>The src dir is under docs such that we can publish the sources directly.</p>
         <h3 id="styling">Styling</h3>
-        <p>Kolibri comes with its own
-            <a href="https://www.figma.com/file/8Yq9C2CFomC1Uv6qlzfGri/Kolibri-(α)?node-id=82%3A1326)" target="_blank">design system (figma)</a>.</p>
-        <p>When changing default css or the style API, make sure to check examples, test report, and
-            <a href="#style-guide">style overview</a>.</p>
+        <p>Kolibri comes with its own design system. You can find it in Figma.</p>
+        <p>When changing default css or the style API, make sure to check examples, test report, and the style guide.
+        <section class="buttons">
+            <a class="btn primary glow" href="https://www.figma.com/file/8Yq9C2CFomC1Uv6qlzfGri/Kolibri-(α)?node-id=82%3A1326)" target="_blank"><span>Design System</span><span class="arrow">&#8599</span></a>
+            <a class="btn accent glow" href="#style-guide">Style Guide</a>
+        </section>
+
         <h3 id="inspection-profile">Inspection Profile</h3>
         <p>The settings for the inspection profile are maintained in the file <code>JS_TypeSystem.xml</code>
             that can be imported in IntelliJIDEA under Preferences -&gt; Inspection Profile.</p>

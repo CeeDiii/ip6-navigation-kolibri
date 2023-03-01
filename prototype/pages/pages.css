@@ -1,7 +1,8 @@
 @import "./error-pages/403/forbidden.css";
 @import "./error-pages/404/pageNotFound.css";
 @import "./debug/debugPageProjector.css";
-@import "./home/homePageProjector.css";
+@import "./home/home.css";
+@import "./getting-started/getting-started.css";
 @import "./person/instantUpdateProjector.css";
 @import "./workweek/workweekPageProjector.css";
 @import "./workday/workDayPageProjector.css";
