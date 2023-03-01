@@ -1,9 +1,5 @@
 import { NavigationController }                            from '../navigation/navigationController.js';
 import { CardNavigationProjector }                         from '../navigation/final-prototypes/card/cardNavigationProjector.js';
-import { DashboardRefinedProjector }                       from "../navigation/final-prototypes/dashboard-refined/dashboardRefinedNavigationProjector.js";
-import { FlowerNavigationProjector }                       from "../navigation/final-prototypes/flower/flowerNavigationProjector.js";
-import { BubbleStateNavigationProjector }                  from "../navigation/final-prototypes/bubble-state/bubblestateNavigationProjector.js";
-import { BreadCrumbProjector }                             from "../navigation/final-prototypes/bread-crumbs/breadCrumbProjector.js";
 import { PageSwitchProjector }                             from '../navigation/final-prototypes/page-switch/pageSwitchProjector.js';
 import { PageController }                                  from '../pages/pageController.js';
 import { ForbiddenPageProjector }                          from '../pages/error-pages/403/forbiddenPageProjector.js';
@@ -40,13 +36,9 @@ import {
 } from "../kolibri/util/dom.js";
 
 /* ********************************************* PIN TO ELEMENTS ************************************************************ */
-const pinToCardNavElement          = document.getElementById('card-nav');
-const pinToFlowerNavElement        = document.getElementById('flower-nav');
-const pinToBubbleStateNavElement   = document.getElementById('bubble-state-nav');
-const pinToDashboardNavElement     = document.getElementById('dashboard-nav');
-const pinToBreadCrumbsElement      = document.getElementById('bread-crumbs-nav');
-const pinToContentElement          = document.getElementById('content');
-const pinToDebugElement            = document.getElementById('debug');
+const pinToCardNavElement = document.getElementById('card-nav');
+const pinToContentElement = document.getElementById('content');
+const pinToDebugElement   = document.getElementById('debug');
 
 /* ********************************************* UTILITY PAGE CONTROLLERS *************************************************** */
 
@@ -68,14 +60,10 @@ debugController.setConfiguration(/** @type ModelConfigurationObject */{
 
 /* ********************************************* PAGE CONTROLLERS ************************************************************ */
 const homePageController = PageController('home', null);
-homePageController.setConfiguration(/** @type ModelConfigurationObject */ {
-    [ICONPATH]: "../navigation/icons/home.svg"
-});
 
 const docsPageController = PageController('docs', null);
 docsPageController.setConfiguration(/** @type ModelConfigurationObject */ {
-    [NAVIGATIONAL]: false,
-    [ICONPATH]: "../navigation/icons/docs.svg"
+   [NAVIGATIONAL]: false
 });
 
 const gettingStartedController = PageController('getting-started', null);
@@ -101,16 +89,12 @@ testCasesController.setConfiguration(/** @type ModelConfigurationObject */ {
     [DESCRIPTION]: `Have a look at the live test case report.`
 });
 
-const examplePageController = PageController('example', null);
+const examplePageController = PageController('examples', null);
 examplePageController.setConfiguration(/** @type ModelConfigurationObject */ {
-    [NAVIGATIONAL]: false,
-    [ICONPATH]: "../navigation/icons/example.svg"
+    [NAVIGATIONAL]: false
 });
 
 const teamPageController = PageController('team', null);
-teamPageController.setConfiguration(/** @type ModelConfigurationObject */ {
-    [ICONPATH]: "../navigation/icons/team.svg"
-});
 
 const formStructure = [
     {value: "Text",       label: "Text",   name: "text",   type: TEXT     },
@@ -200,10 +184,6 @@ cardGridProjector.setGridForPage(testCasesController.getQualifier(), { rowSpan: 
 cardGridProjector.setGridForPage(workDayPageController.getQualifier(), { rowSpan: 1});
 cardGridProjector.setGridForPage(workWeekPageController.getQualifier(), { rowSpan: 1});
 
-FlowerNavigationProjector(navigationController, pinToFlowerNavElement);
-BubbleStateNavigationProjector(navigationController, pinToBubbleStateNavElement);
-DashboardRefinedProjector(navigationController, pinToDashboardNavElement);
-BreadCrumbProjector(navigationController, pinToBreadCrumbsElement);
 /* ********************************************* CONSTRUCTION THE PAGE  ************************************************************ */
 
 navigationController.addPageControllers(
