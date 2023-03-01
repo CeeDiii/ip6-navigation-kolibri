@@ -37,7 +37,9 @@ export { PageModel }
  */
 
 const PageModel = qualifier => {
-    if (qualifier.includes(' ') || qualifier.includes('\n')) {
+    if ('' === qualifier) {
+        throw new Error('Qualifiers cannot be empty.')
+    } else if (qualifier.includes(' ') || qualifier.includes('\n')) {
         throw new Error('Qualifiers cannot contain spaces or new lines. Consider replacing them with "-" or "_" characters. Try: ' + qualifier.replace(/[\s\n]+/g, "-"));
     } else if (/^(?![A-Za-z])+/.test(qualifier)) {
         throw new Error('Qualifiers cannot start with a number. Please remove the number at the start of qualifier: ' + qualifier);
