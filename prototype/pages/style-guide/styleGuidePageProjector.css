@@ -1,7 +1,8 @@
 #content .style-guide #out {
     display:    grid;
-    grid-template-columns: max-content max-content;
+    grid-template-columns: 1fr 1fr;
     grid-column-gap: 1em;
+    justify-items: center;
     position: relative;
     z-index: -1;
 }
