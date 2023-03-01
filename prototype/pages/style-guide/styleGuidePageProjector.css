@@ -21,6 +21,26 @@
     gap: 1em;
 }
 
+#content .style-guide a.center {
+    margin: 1em auto;
+}
+
+#content .style-guide a > img {
+    margin-right: 1em;
+    filter: invert(1);
+}
+
+#content .style-guide span {
+    margin-right: 1em;
+}
+
+#content .style-guide span.arrow {
+    position: absolute;
+    right: 0.25em;
+    top: 0.75em;
+    font-size: 16px;
+}
+
 #content .style-guide div.kolibri-logo-svg {
     height:         250px;
     aspect-ratio:   1;
