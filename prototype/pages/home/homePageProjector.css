@@ -54,4 +54,18 @@
     }
 }
 
+#content .home section.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+#content .home a.btn {
+    margin-right: 2em;
+}
+
+#content .home a.btn:hover {
+    /* TODO implement sparkles */
+}
+
+
 

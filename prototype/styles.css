@@ -27,6 +27,29 @@ h1 {
     text-align: center;
 }
 
+a.btn {
+    display: flex;
+    width: 12em;
+    height: 4em;
+    max-width: 18em;
+    max-height: 4em;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: var(--kolibri-box-shadow);
+}
+
+a.btn.primary {
+    color: #FFFFFF;
+    background-color: var(--kb-hsla-primary-accent);
+}
+
+a.btn.accent {
+    color: var(--kb-hsla-primary-accent);
+    border: 2px solid var(--kb-hsla-primary-accent);
+}
+
 input[type=text] {
     font-size:      1.1em;
     color:          var(--kolibri-color-output);
