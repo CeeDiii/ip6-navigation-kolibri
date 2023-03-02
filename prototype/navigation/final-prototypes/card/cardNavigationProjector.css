@@ -63,6 +63,7 @@
 }
 
 .card-nav.nav-wrapper .nav-point-wrapper {
+    height: 60px;
     position: relative;
     cursor: pointer;
 }
@@ -81,12 +82,16 @@
     transition: transform 0.2s ease;
 }
 
-.card-nav.nav-wrapper .nav-point-wrapper.open:not(.childless)::before{
+.card-nav.nav-wrapper .nav-point-wrapper:hover:not(.childless)::before,
+.card-nav.nav-wrapper .nav-point-wrapper.open:not(.childless)::before {
     transform: translate(-100%, -10%) rotate(225deg);
 }
 
 .card-nav.nav-wrapper .nav-point-wrapper > a {
-    padding: 26px;
+    padding-left: 26px;
+    padding-right: 26px;
+    display: block;
+    margin-top: 23px;
     text-decoration: none;
     color: #D9DBE9;
     font-weight: bold;
@@ -104,11 +109,13 @@
     display: none;
 }
 
+
+.card-nav.nav-wrapper .nav-point-wrapper:hover .card-wrapper,
 .card-nav.nav-wrapper .nav-point-wrapper.open .card-wrapper {
     display: inline-grid;
     position: absolute;
     right: 0;
-    top: 32px;
+    top: 56px;
     background-color: #EFF0F6;
     border-radius: 16px;
     padding: 16px;
@@ -117,13 +124,14 @@
     box-shadow: 4px 4px 7px 0 rgba(0, 0, 0, 25%);
 }
 
-.card-nav.nav-wrapper .nav-point-wrapper.open > a::before {
+.card-nav.nav-wrapper .nav-point-wrapper:not(.childless):hover > a::before,
+.card-nav.nav-wrapper .nav-point-wrapper.open:not(.childless) > a::before {
     content: "";
     opacity: 1;
     position: absolute;
     width: 0;
     height: 0;
-    top: 20px;
+    top: 44px;
     left: calc(50% - 16px);
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
@@ -146,8 +154,8 @@
     content: "";
     opacity: 1;
     position: absolute;
-    width: 6px;
-    height: 6px;
+    width: 9px;
+    height: 9px;
     top: 10px;
     right: 10px;
     border: 2px solid #BD00FF;
