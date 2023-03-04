@@ -164,7 +164,7 @@ TestCasesPageProjector (testCasesController, pinToContentElement, '../pages/test
 StaticPageProjector    (teamPageController, pinToContentElement, '../pages/team/team.html');
 
 const simpleFormPageSwitchProjector = PageSwitchProjector(simpleFormPageController.getHash(), navigationController, 'b8b91e5db694d34644fea5c013ac9f75');
-SimpleFormPageProjector(simpleFormPageController, pinToContentElement, '../pages/simpleForm/simpleForm.html', simpleFormPageSwitchProjector);
+SimpleFormPageProjector(simpleFormPageController, pinToContentElement, '../pages/simpleform/simpleForm.html', simpleFormPageSwitchProjector);
 
 const workDaySwitchProjector = PageSwitchProjector(workDayPageController.getHash(), navigationController, '0aab51fd5a5a4d77bd15d3d6050555c2');
 WorkDayPageProjector(workDayPageController, pinToContentElement, '../pages/workday/workday.html', workDaySwitchProjector);
