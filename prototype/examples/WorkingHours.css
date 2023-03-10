@@ -34,10 +34,6 @@ output {
     color: var(--kolibri-color-output);
 }
 
-.darkTheme {
-    filter: invert(85%) hue-rotate(180deg);
-}
-
 em {
     color: var(--kolibri-color-accent);
 }
