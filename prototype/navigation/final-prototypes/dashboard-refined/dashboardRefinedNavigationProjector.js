@@ -196,15 +196,16 @@ const NavigationProjector = (controller, pinToElement) => {
                         const childHash = navigationalChildren[i].hash;
                         const childPageController = controller.getPageController(childHash);
                         if (childPageController.isNavigational() && childPageController.isVisible()) {
+                            rootNode.classList.remove('invisible');
                             rootNode.firstElementChild.href = childHash;
                             break;
                         } else {
-                            // if not child is navigational or visible reroute to 403 - forbidden
-                            rootNode.firstElementChild.href = '#E403';
+                            //don't show a parent node if it has no children because they are not intended to be navigational and distract the user
+                            rootNode.classList.add('invisible');
                         }
                     }
                 } else if (1 === rootNodeInDetailWrapper.children.length) {
-                    rootNode.firstElementChild.href = '#E404';
+                    rootNode.classList.add('invisible');
                 }
             }
         }

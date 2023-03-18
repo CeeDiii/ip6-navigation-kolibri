@@ -61,7 +61,7 @@
     margin-bottom: calc(2 * var(--std-padding));
 }
 
-.dashboard-refined-nav .overview .content .row.invisible {
+.dashboard-refined-nav .invisible {
     display: none;
 }
 
@@ -228,5 +228,13 @@
 
 .dashboard-refined-nav .tree-node > .tree-node > span > a:hover {
     color: var(--kb-color-hsl-pink-500);
+}
+
+.dashboard-refined-nav .tree > div.tree-node:not(:has(div.tree-node)){
+    display: none;
+}
+
+.dashboard-refined-nav .tree > div.tree-node:has( > :nth-child(2)#debug-node) {
+    display: none;
 }
 
