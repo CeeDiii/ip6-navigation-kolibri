@@ -243,6 +243,10 @@ const NavigationProjector = (controller, pinToElement) => {
 
         pageController.onParentChanged((newParent, oldParent) => {
             addAnchor(pageController, newParent, oldParent, parentAnchors, childrenCards);
+            if(pageController.isActive()){
+                setActiveCSSClass(pageController.isActive(), pageController.getQualifier(), newParent);
+                setActiveCSSClass(!pageController.isActive(), pageController.getQualifier(), oldParent);
+            }
             projectNavigation();
         });
 
@@ -278,7 +282,7 @@ const NavigationProjector = (controller, pinToElement) => {
             addParentAnchor(pageController, newParent, oldParent, parentAnchors, parentChildMap);
         } else if (null === oldParent) {
             addChildAnchor(pageController, newParent, parentAnchors, parentChildMap);
-        } else { //@TODO if node not parent else throw error
+        } else {
             swapParents(pageController, newParent, oldParent, parentAnchors, parentChildMap);
         }
     };
