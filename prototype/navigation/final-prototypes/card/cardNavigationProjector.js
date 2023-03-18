@@ -278,6 +278,8 @@ const NavigationProjector = (controller, pinToElement) => {
             addParentAnchor(pageController, newParent, oldParent, parentAnchors, parentChildMap);
         } else if (null === oldParent) {
             addChildAnchor(pageController, newParent, parentAnchors, parentChildMap);
+        } else { //@TODO if node not parent else throw error
+            swapParents(pageController, newParent, oldParent, parentAnchors, parentChildMap);
         }
     };
 
@@ -330,6 +332,32 @@ const NavigationProjector = (controller, pinToElement) => {
         }
         if (-1 !== deleteAnchorIndex) {
             removeAtIndex(parentAnchors, deleteAnchorIndex);
+        }
+    };
+
+    /**
+     * A utility function that swaps an anchor to a new parent node
+     * and removes it from the old parent node.
+     *
+     * @param { !PageControllerType } pageController
+     * @param { ?PageControllerType } newParent
+     * @param { ?PageControllerType } oldParent
+     * @param { !HTMLAnchorElement[] } parentAnchors
+     * @param { !ParentChildMap } parentChildMap
+     */
+    const swapParents = (pageController, newParent, oldParent, parentAnchors, parentChildMap) => {
+        const qualifier = pageController.getQualifier();
+        const newChildren = childrenCards[newParent.getQualifier()];
+        const oldChildren = childrenCards[oldParent.getQualifier()];
+        const anchorIndex = oldChildren.findIndex(anchor => anchor.id === qualifier + '-anchor');
+
+        const childExists = newChildren.findIndex(child => child.id === qualifier + '-anchor');
+
+        if (-1 === childExists) {
+            newChildren.push(oldChildren[anchorIndex]);
+        }
+        if (-1 !== anchorIndex) {
+            removeAtIndex(oldChildren, anchorIndex);
         }
     };
 
