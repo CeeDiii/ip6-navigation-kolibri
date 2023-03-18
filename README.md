@@ -2,7 +2,7 @@
 Bachelor Thesis project - University of Applied Sciences Northwestern Switzerland<br>
 Fall semester 2022, 19.09.2022 – 24.03.2023<br>
 
-The research paper can be found here: TODO
+The research paper can be found here: [https://navigation-for-kolibri.gitbook.io/advanced-kolibri-navigation/](https://navigation-for-kolibri.gitbook.io/advanced-kolibri-navigation/)
 
 ## Project experts/customers
 • Prof. Dierk König<br>
