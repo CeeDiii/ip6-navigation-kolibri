@@ -1,9 +1,20 @@
 import {TestSuite} from '../kolibri/util/test.js';
 import {PageController} from './pageController.js';
+import {
+    DESCRIPTION,
+    ICONPATH,
+    NAVIGATIONAL,
+    VALUE,
+    VISIBLE,
+    ACTIVE,
+    VISITED,
+    PARENT,
+    HASH
+} from "../kolibri/presentationModel.js";
 
-const navigationSuite = TestSuite('pageController');
+const pageSuite = TestSuite('pageController');
 
-navigationSuite.add('getDynamicContentControllers', assert => {
+pageSuite.add('getDynamicContentControllers', assert => {
     const controller1 = {};
     const controller2 = {};
     const dummyControllers = [controller1, controller2];
@@ -15,13 +26,40 @@ navigationSuite.add('getDynamicContentControllers', assert => {
     assert.is(homePageController.getDynamicContentControllers()[1], dummyControllers[1]);
 });
 
-navigationSuite.add('getHash', assert => {
+pageSuite.add('initializeSuccess', assert => {
     const homePageController = PageController('home', null);
 
     assert.is(homePageController.getHash(), '#home');
 });
 
-navigationSuite.add('getValue', assert => {
+pageSuite.add('initializePageFail', assert => {
+    const [q1, q2, q3] = ['', 'test page', '1page'];
+    let e1, e2, e3 = '';
+
+
+    try {
+        const pageController = PageController(q1, null);
+    } catch (e) {
+        e1 = e.message;
+    }
+    try {
+        const pageController = PageController(q2, null);
+    } catch (e) {
+        e2 = e.message;
+    }
+    try {
+        const pageController = PageController(q3, null);
+    } catch (e) {
+        e3 = e.message;
+    }
+
+    assert.is(e1, 'Qualifiers cannot be empty.');
+    assert.is(e2, 'Qualifiers cannot contain spaces or new lines. Consider replacing them with "-" or "_" characters. Try: ' + q2.replace(/[\s\n]+/g, "-"));
+    assert.is(e3, 'Qualifiers cannot start with a number. Please remove the number at the start of qualifier: ' + q3);
+
+});
+
+pageSuite.add('getValue', assert => {
     const homePageController = PageController('home', null);
 
     assert.is(homePageController.getValue(), 'home');
@@ -31,7 +69,7 @@ navigationSuite.add('getValue', assert => {
     assert.is(homePageController.getValue(), 'HOME');
 });
 
-navigationSuite.add('getParent', assert => {
+pageSuite.add('getParent', assert => {
     const homePageController = PageController('home', null);
 
     assert.is(homePageController.getParent(), null);
@@ -42,7 +80,26 @@ navigationSuite.add('getParent', assert => {
     assert.is(homePageController.getParent(), parentHomePageController);
 });
 
-navigationSuite.add('isVisible', assert => {
+pageSuite.add('setParentFail', assert => {
+    const homePageController = PageController('home', null);
+    const parentPageController = PageController('parent', null);
+
+    homePageController.setParent(parentPageController);
+    assert.is(homePageController.getParent(), parentPageController);
+
+    // not allowed because parent cannot be the node itself
+    homePageController.setParent(homePageController);
+    assert.is(homePageController.getParent(), parentPageController);
+
+
+    // not allowed because it is a circular reference
+    parentPageController.setParent(homePageController);
+    assert.is(parentPageController.getParent(), null);
+
+
+});
+
+pageSuite.add('isVisible', assert => {
     const homePageController = PageController('home', null);
 
     assert.isTrue(homePageController.isVisible());
@@ -52,7 +109,7 @@ navigationSuite.add('isVisible', assert => {
     assert.isTrue(!homePageController.isVisible());
 });
 
-navigationSuite.add('isNavigational', assert => {
+pageSuite.add('isNavigational', assert => {
     const homePageController = PageController('home', null);
 
     assert.isTrue(homePageController.isNavigational());
@@ -62,7 +119,7 @@ navigationSuite.add('isNavigational', assert => {
     assert.isTrue(!homePageController.isNavigational());
 });
 
-navigationSuite.add('onIconPathChanged', assert => {
+pageSuite.add('onIconPathChanged', assert => {
     const homePageController = PageController('home', null);
     let changedIcon;
 
@@ -75,7 +132,7 @@ navigationSuite.add('onIconPathChanged', assert => {
     assert.is(changedIcon, '../navigation/icons/house.svg');
 });
 
-navigationSuite.add('onActiveChanged', assert => {
+pageSuite.add('onActiveChanged', assert => {
     const homePageController = PageController('home', null);
     let isActive;
 
@@ -90,7 +147,7 @@ navigationSuite.add('onActiveChanged', assert => {
     assert.isTrue(!isActive);
 });
 
-navigationSuite.add('onVisitedChanged', assert => {
+pageSuite.add('onVisitedChanged', assert => {
     const homePageController = PageController('home', null);
     let visited;
 
@@ -103,7 +160,7 @@ navigationSuite.add('onVisitedChanged', assert => {
     assert.isTrue(visited);
 });
 
-navigationSuite.add('onValueChanged', assert => {
+pageSuite.add('onValueChanged', assert => {
     const homePageController = PageController('home', null);
     let value;
 
@@ -116,7 +173,7 @@ navigationSuite.add('onValueChanged', assert => {
     assert.is(homePageController.getValue(), value);
 });
 
-navigationSuite.add('onNavigationalChanged', assert => {
+pageSuite.add('onNavigationalChanged', assert => {
     const homePageController = PageController('home', null);
     let isNavigational;
 
@@ -129,7 +186,7 @@ navigationSuite.add('onNavigationalChanged', assert => {
     assert.isTrue(!isNavigational);
 });
 
-navigationSuite.add('onVisibleChanged', assert => {
+pageSuite.add('onVisibleChanged', assert => {
     const homePageController = PageController('home', null);
     let isVisible;
 
@@ -142,7 +199,7 @@ navigationSuite.add('onVisibleChanged', assert => {
     assert.isTrue(!isVisible);
 });
 
-navigationSuite.add('onParentChanged', assert => {
+pageSuite.add('onParentChanged', assert => {
     const homePageController = PageController('home', null);
     let parent;
 
@@ -156,6 +213,45 @@ navigationSuite.add('onParentChanged', assert => {
     assert.is(homePageController.getParent(), parent);
 });
 
+pageSuite.add('setConfigurationSuccess', assert => {
+    const pageController = PageController('page', null);
+
+    const configurationSuccessful = pageController.setConfiguration(/** @type ModelConfigurationObject*/{
+        [VALUE]:        "TestName",
+        [DESCRIPTION]:  "Description",
+        [ICONPATH]:     "./icon/kolibri.png",
+        [ACTIVE]:       true,
+        [VISITED]:      true,
+        [VISIBLE]:      false,
+        [NAVIGATIONAL]: false,
+    });
+
+    assert.is(configurationSuccessful, true);
+    assert.is(pageController.getQualifier(), "page");
+    assert.is(pageController.getValue(), "TestName");
+    assert.is(pageController.getDescription(), "Description");
+    assert.is(pageController.getIconPath(), "./icon/kolibri.png");
+    assert.is(pageController.isActive(), true);
+    assert.is(pageController.getVisited(), true);
+    assert.is(pageController.isVisible(), false);
+    assert.is(pageController.isNavigational(), false);
+});
+
+pageSuite.add('setConfigurationFail', assert => {
+    const pageController = PageController('page', null);
+    const parentController = PageController('parentPage', null);
+
+    const configurationHashFail = pageController.setConfiguration(/** @type ModelConfigurationObject*/{
+        [HASH]: '#newHash',
+    });
+
+    const configurationParentFail = pageController.setConfiguration(/** @type ModelConfigurationObject*/{
+        [PARENT]: parentController,
+    });
+
+    assert.is(configurationHashFail, false);
+    assert.is(configurationParentFail, false);
+});
 
 
-navigationSuite.run();
+pageSuite.run();
