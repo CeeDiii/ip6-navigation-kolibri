@@ -109,11 +109,7 @@ input[type=text]:focus {
 }
 
 .darkTheme {
-    filter: invert(100%) hue-rotate(180deg);
-}
-
-body {
-    background-color: white;
+    filter: invert(85%) hue-rotate(180deg);
 }
 
 body {
