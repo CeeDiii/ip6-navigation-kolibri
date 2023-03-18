@@ -26,10 +26,6 @@
     color: var(--kolibri-color-output);
 }
 
-#content .workweek .darkTheme {
-    filter: invert(85%) hue-rotate(180deg);
-}
-
 #content .workweek em {
     color: var(--kolibri-color-accent);
 }

@@ -162,8 +162,8 @@ navigationController.setConfiguration(/** @type ModelConfigurationObject */{
     [NAME]: 'Kolibri',
     [LOGO]: '../img/logo/logo-new-128.svg',
     [FAVICON]: '../img/logo/logo-new-128.svg',
-    [HOMEPAGE]: homePageController,
-    [DEBUGMODE]: true
+    [DEBUGMODE]: true,
+    [HOMEPAGE]: homePageController
 });
 
 /* ********************************************* UTILITY PAGE PROJECTORS  ************************************************************ */

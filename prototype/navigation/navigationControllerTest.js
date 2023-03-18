@@ -1,6 +1,7 @@
 import {TestSuite} from '../kolibri/util/test.js';
 import {PageController} from '../pages/pageController.js';
 import {NavigationController} from './navigationController.js';
+import {DEBUGMODE, FAVICON, HOMEPAGE, LOGO, NAME} from "../kolibri/presentationModel.js";
 
 const navigationSuite = TestSuite('navigationController');
 
@@ -79,6 +80,35 @@ navigationSuite.add('onWebsiteLogoChanged', assert => {
     assert.is(logoPath, './logo/kolibri.png');
 });
 
+navigationSuite.add('onFavIconChanged', assert => {
+    const navigationController = NavigationController();
+    let logoPath;
 
+    navigationController.onFavIconChanged(newPath => logoPath = newPath);
+
+    navigationController.setFavIcon('./favicon/kolibri.png');
+
+    assert.is(logoPath, './favicon/kolibri.png');
+});
+
+navigationSuite.add('setConfiguration', assert => {
+    const navigationController = NavigationController();
+    const homePageController = PageController('home', null);
+
+    const configurationSuccessful = navigationController.setConfiguration(/** @type ModelConfigurationObject*/{
+        [NAME]:      "TestName",
+        [LOGO]:      "./logo/kolibri.png",
+        [FAVICON]:   "./favicon/kolibri.png",
+        [HOMEPAGE]:  homePageController,
+        [DEBUGMODE]: true,
+    });
+
+    assert.is(configurationSuccessful, true);
+    assert.is(navigationController.getWebsiteName(), "TestName");
+    assert.is(navigationController.getWebsiteLogo(), "./logo/kolibri.png");
+    assert.is(navigationController.getFavIcon(), "./favicon/kolibri.png");
+    assert.is(navigationController.getHomePage(), homePageController);
+    assert.is(navigationController.isDebugMode(), true);
+});
 
 navigationSuite.run();

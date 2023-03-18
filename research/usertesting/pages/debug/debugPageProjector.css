@@ -68,6 +68,7 @@
     height: 50px;
     border-radius: 25px;
     right: 40px;
+    bottom: 40px;
     background-color: #EBECFE;
     box-shadow: 0 2px 5px 0 hsla(234, 18%, 68.4%, 1);
     display: flex;

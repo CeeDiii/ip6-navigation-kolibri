@@ -12,9 +12,8 @@
 }
 
 body {
-    min-height: 100vh;
     overflow-anchor: none;
-    margin: 3em auto 3em auto;
+    margin: auto auto 7em auto;
     padding-top: 6em;
 }
 
@@ -111,4 +110,8 @@ input[type=text]:focus {
 
 .darkTheme {
     filter: invert(85%) hue-rotate(180deg);
+}
+
+body {
+    background-color: white;
 }
